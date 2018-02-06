@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?GetWindowActive@Element@DirectUI@@QAE_NXZ

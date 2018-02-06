@@ -1,0 +1,8 @@
+function fr_Visemes_EditVisemeShape_OnClicked() {
+    var ShapeName = '_' + PPG.Phoneme.Value + '_' + PPG.PhonemeName.Value + '_' + PPG.Variation.Value + '_Shape';
+    fr_CreateVisemeShape(ShapeName);
+    SelectObj(GetFaceMesh(GetFRFaceModel()));
+    var shapeEditor = OpenView('Shape Manager');
+    shapeEditor.SetAttributeValue('selectedshape', ShapeName);
+    UpdateVisemeState(PPG);
+}

@@ -1,0 +1,17 @@
+function UTIL_STOR_Debug(Data) {
+    try {
+        UTIL_XML_Load(STOR_File);
+        var xFile = XML_Doc.getElementsByTagName('Storage')[0];
+        var xFile_Location = xFile.getElementsByTagName('Location')[0];
+        var Path = xFile_Location.getElementsByTagName('Path')[0].text;
+        var File = xFile_Location.getElementsByTagName('Debug')[0].text;
+        var sPath = UTIL_STOR_Check_Path(Path);
+        var sFile = sPath + '\\' + File;
+        if (FSO.FileExists(sFile))
+            FSO.DeleteFile(sFile, true);
+        var oFile = FSO.CreateTextFile(sFile, true);
+        oFile.WriteLine(Data);
+        oFile.Close();
+    } catch (err) {
+    }
+}

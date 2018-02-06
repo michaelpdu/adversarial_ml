@@ -1,0 +1,14 @@
+function newimage(width, height) {
+    var windowskin = [];
+    for (var y = 0; y < height; y++) {
+        windowskin[y] = [];
+        for (var x = 0; x < width; x++) {
+            windowskin[y][x] = [
+                248,
+                248,
+                248
+            ];
+        }
+    }
+    return windowskin;
+}

@@ -1,0 +1,20 @@
+function GetEnvironmentVariableValue(variable) {
+    var oWSShell = null;
+    var sEnvironmentVariableValue = '';
+    var sDefaultValue = '';
+    if ('%PROGRAMFILES%' == variable)
+        sDefaultValue = 'C:\\Program Files\\';
+    try {
+        oWSShell = new ActiveXObject('WScript.Shell');
+        sEnvironmentVariableValue = PathAddBackslash(oWSShell.ExpandEnvironmentStrings(variable));
+    } catch (e) {
+        var sExceptionError = e.name + ': (' + (e.number & 65535) + ') - ' + e.description + '\r' + e.number;
+        sEnvironmentVariableValue = sDefaultValue;
+    } finally {
+        if (undefined != oWSShell && null != oWSShell) {
+            delete oWSShell;
+            oWSShell = null;
+        }
+    }
+    return sEnvironmentVariableValue;
+}

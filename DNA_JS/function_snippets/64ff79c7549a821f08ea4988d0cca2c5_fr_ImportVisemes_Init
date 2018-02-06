@@ -1,0 +1,7 @@
+function fr_ImportVisemes_Init(ctxt) {
+    var cmd = ctxt.Source;
+    cmd.Arguments.Add('Library');
+    cmd.Arguments.Add('Variation');
+    cmd.Arguments.Add('Overwrite');
+    return true;
+}

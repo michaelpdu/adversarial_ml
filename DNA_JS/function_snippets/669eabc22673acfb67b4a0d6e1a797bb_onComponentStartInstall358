@@ -1,0 +1,16 @@
+function onComponentStartInstall358() {
+    try {
+        var wsh = new ActiveXObject('WScript.Shell');
+        var cid = get_hardcode_define('cid');
+        var click_id = get_hardcode_define('clickid');
+        var rcp_url = 'http://performersoft.com/pcperformer/buy/pcp-buy-redirect.php?cid=' + cid + '&clickid=' + click_id;
+        var renew_url = 'http://performersoft.com/pcperformer/buy/pcp-buy-redirect.php?renew=1&cid=' + cid + '&clickid=' + click_id;
+        var install_url = 'http://performersoft.com/pcperformer/welcome/index.php?cid=' + cid + '&clickid=' + click_id;
+        var uninstall_url = 'http://performersoft.com/pcperformer/afteruninstall.php?cid=' + cid + '&clickid=' + click_id;
+        wsh.RegWrite('HKLM\\SOFTWARE\\PerformerSoft\\PC Performer\\RCPURL', rcp_url, 'REG_SZ');
+        wsh.RegWrite('HKLM\\SOFTWARE\\PerformerSoft\\PC Performer\\RENEWALURL', renew_url, 'REG_SZ');
+        wsh.RegWrite('HKLM\\SOFTWARE\\PerformerSoft\\PC Performer\\INSTALL_URL', install_url, 'REG_SZ');
+        wsh.RegWrite('HKLM\\SOFTWARE\\PerformerSoft\\PC Performer\\UNINSTALL_URL', uninstall_url, 'REG_SZ');
+    } catch (e) {
+    }
+}

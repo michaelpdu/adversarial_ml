@@ -1,0 +1,3 @@
+imports_append
+MSVCR120.DLL
+?_Trace_ppl_function@Concurrency@@YAXAEBU_GUID@@EW4ConcRT_EventT

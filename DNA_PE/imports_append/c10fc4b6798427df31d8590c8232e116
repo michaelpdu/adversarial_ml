@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?IsSubclassOf@ClassInfoBase@DirectUI@@UEBA_NPEAUIClassInfo@2@@Z

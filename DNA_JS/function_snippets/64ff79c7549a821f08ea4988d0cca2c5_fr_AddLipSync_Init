@@ -1,0 +1,3 @@
+function fr_AddLipSync_Init(ctxt) {
+    return true;
+}

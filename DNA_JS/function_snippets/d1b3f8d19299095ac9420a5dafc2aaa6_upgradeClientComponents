@@ -1,0 +1,20 @@
+function upgradeClientComponents(vendorName) {
+    var ret_code;
+    if (!initializeGlobals(vendorName)) {
+        g_logFile.writeline('Failed to initialize!!!');
+        return 'ERROR_INIT';
+    }
+    shutDownControls();
+    if (isUpdatePossible()) {
+        if (installClientComponents())
+            ret_code = 'SUCCESS';
+        else
+            ret_code = 'ERROR_INSTALL';
+    } else {
+        g_logFile.writeline('Reboot required to install components...setting RunOnce in registry');
+        g_wshShell.RegWrite('HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\RunOnce\\' + g_vendorName + '.Clientupgrade', 'wscript "' + g_localcontentroot + '/vendor/upgradeclient.js" ' + g_vendorName + ' UPGRADE');
+        ret_code = 'REBOOT_REQUIRED';
+    }
+    restartControls();
+    return ret_code;
+}

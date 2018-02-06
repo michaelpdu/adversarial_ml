@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?GetValue@Element@DirectUI@@QEAAPEAVValue@2@P6APEBUPropertyInfo@

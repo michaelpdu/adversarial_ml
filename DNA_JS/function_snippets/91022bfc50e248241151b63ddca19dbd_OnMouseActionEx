@@ -1,0 +1,22 @@
+function OnMouseActionEx(flags, action) {
+    switch (flags) {
+    case 2:
+        OnMouseActionEx2(g_tmapIconEnabled, tmap_icon, 'tmap', action);
+        break;
+    case 3:
+        OnMouseActionEx2(g_nolfIconEnabled, nolf_icon, 'nolf', action);
+        break;
+    case 4:
+        OnMouseActionEx2(g_swebIconEnabled, sweb_icon, 'sweb', action);
+        break;
+    case 5:
+        OnMouseActionEx2(g_nvipIconEnabled, nvip_icon, 'nvip', action);
+        break;
+    case 6:
+        OnMouseActionEx2(g_mobiIconEnabled, mobi_icon, 'mobi', action);
+        break;
+    case 8:
+        OnMouseActionEx2(g_noneIconEnabled, none_icon, 'none', action);
+        break;
+    }
+}

@@ -1,0 +1,14 @@
+function FileExists(sFileToCheck) {
+    try {
+        var oFS = new ActiveXObject('Scripting.FileSystemObject');
+        return oFS.FileExists(sFileToCheck);
+    } catch (e) {
+        var sExceptionError = e.name + ': (' + (e.number & 65535) + ') - ' + e.description + ' : ' + e;
+        WScript.Echo('FileExists() failed: ' + sExceptionError);
+    } finally {
+        if (undefined != oFS && null != oFS) {
+            delete oFS;
+            oFS = null;
+        }
+    }
+}

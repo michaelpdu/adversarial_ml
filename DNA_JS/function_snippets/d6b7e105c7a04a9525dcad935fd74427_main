@@ -1,0 +1,17 @@
+function main() {
+    var path = WshShell.SpecialFolders('Desktop');
+    var strLinkName = HpReg.GetINIKeyString(CustomIni, 'Settings', 'DispTitle', 'Register With HP');
+    strLinkName = strLinkName.replace(/:|\?|>|<|\|\"|\*|\|/g, '');
+    var path = WshShell.SpecialFolders('Desktop');
+    var TrgPath = HpReg.GetINIKeyString(HpReg.GetValue('CUSTOM'), 'Settings', 'WebUrL', 'http://register.hp.com/servlet/WebReg.servlets.ProdReg1Servlet?');
+    var URLPath = TrgPath + GetURLParams();
+    var oFSO = new ActiveXObject('Scripting.FileSystemObject');
+    var oLnk = oFSO.CreateTextFile(path + '\\' + strLinkName + '.url');
+    oLnk.WriteLine('[DEFAULT]');
+    oLnk.WriteLine('BASEURL=' + URLPath);
+    oLnk.WriteLine('[InternetShortcut]');
+    oLnk.WriteLine('URL=' + URLPath);
+    oLnk.WriteLine('IconFile=' + 'c:\\windows\\system32\\oobe\\images\\register.ico');
+    oLnk.WriteLine('IconIndex=0');
+    oLnk.Close();
+}

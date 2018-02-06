@@ -1,0 +1,10 @@
+function CreateGUIDs() {
+    try {
+        var strRawGUID = wizard.CreateGuid();
+        var strFormattedGUID = wizard.FormatGuid(strRawGUID, 0);
+        wizard.AddSymbol('CLSID_REGISTRY_FORMAT', strFormattedGUID);
+    } catch (e) {
+        var L_alert3_ErrorMessage = 'CreateGUIDs() \uFFFDo\uFFFDͿ\uFFFD\uFFFD~: ';
+        wizard.ReportError(L_alert3_ErrorMessage + e.description);
+    }
+}

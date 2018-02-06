@@ -1,0 +1,20 @@
+function createDesktopIcon(type, desp, path, iconpath) {
+    var ispObj;
+    ispObj = Wshshell.CreateShortCut(DesktopPath + '\\' + desp);
+    if (type == '0') {
+        ispObj.TargetPath = path;
+        ispObj.WorkingDirectory = fso.GetparentFolderName(path);
+        if (iconpath == '') {
+            ispObj.IconLocation = path;
+        } else {
+            ispObj.IconLocation = iconpath;
+        }
+    } else if (type == '1') {
+        var iedir = HPSendObj.GetIEDirectory();
+        ispObj.TargetPath = iedir + '\\iexplore.exe';
+        ispObj.Arguments = path;
+        ispObj.IconLocation = iconpath;
+    } else {
+    }
+    ispObj.Save();
+}

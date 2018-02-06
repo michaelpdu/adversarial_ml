@@ -1,0 +1,6 @@
+function StripExt(filename) {
+    var extstart = filename.lastIndexOf('.');
+    if (extstart < 0)
+        return filename;
+    return filename.substring(0, extstart);
+}

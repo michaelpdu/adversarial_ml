@@ -1,0 +1,5 @@
+function SetUserKeywordFromName(Obj) {
+    var a = Obj.Name.split('_');
+    var b = a.join(',');
+    SetUserKeyword(Obj, b);
+}

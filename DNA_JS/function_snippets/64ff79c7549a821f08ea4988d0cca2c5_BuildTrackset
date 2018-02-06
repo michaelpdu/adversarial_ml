@@ -1,0 +1,14 @@
+function BuildTrackset(Model) {
+    var Mixer = GetMixer(Model);
+    var TrackCompoundName = Model.Mixer.FullName;
+    var TrackName = 'Phoneme';
+    var TrackInsertPosition = null;
+    var PhonemeTracks = new ActiveXObject('XSI.Collection');
+    var Track = AddTrack(Model, TrackCompoundName, 0, TrackName + '_Speech', TrackInsertPosition);
+    PhonemeTracks.Add(Track);
+    SetUserKeyword(Track, 'Phoneme,Speech');
+    var Track = AddTrack(Model, TrackCompoundName, 2, TrackName + '_Audio', TrackInsertPosition);
+    PhonemeTracks.Add(Track);
+    SetUserKeyword(Track, 'Phoneme,Audio');
+    return PhonemeTracks;
+}

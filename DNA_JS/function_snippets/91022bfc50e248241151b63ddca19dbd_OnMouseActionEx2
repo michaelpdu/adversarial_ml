@@ -1,0 +1,11 @@
+function OnMouseActionEx2(bIconEnabled, objIcon, strIcon, action) {
+    if (bIconEnabled) {
+        objIcon.disabled = false;
+        objIcon.style.cursor = 'pointer';
+        objIcon.src = 'images/icons/' + strIcon + '/' + action + '.png';
+    } else {
+        objIcon.disabled = true;
+        objIcon.style.cursor = 'auto';
+        objIcon.src = 'images/icons/' + strIcon + '/disabled.png';
+    }
+}

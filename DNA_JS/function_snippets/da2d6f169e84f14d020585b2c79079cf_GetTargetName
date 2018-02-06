@@ -1,0 +1,265 @@
+function GetTargetName(strName, strProjectName, strResPath, strHelpPath) {
+    try {
+        var strTarget = strName;
+        var strSafeProjHelpFileName = wizard.FindSymbol('SAFE_PROJECT_HELP_FILE_NAME');
+        var strRC2FileName = wizard.FindSymbol('RC2_FILE_NAME');
+        if (strName.substr(0, 4) == 'root') {
+            if (strName == 'root.ico' || strName == 'root.manifest') {
+                strTarget = strResPath + '\\' + strProjectName + strName.substr(4);
+            } else if (strName == 'root.rc2') {
+                strTarget = strResPath + '\\' + strRC2FileName + strName.substr(4);
+            } else if (strName == 'root.hpj' || strName == 'root.cnt') {
+                strTarget = strProjectName + strName.substr(4);
+                strTarget = strHelpPath + '\\' + strTarget;
+            } else if (strName == 'root.hhc' || strName == 'root.hhk' || strName == 'root.hhp') {
+                strTarget = strSafeProjHelpFileName + strName.substr(4);
+                strTarget = strHelpPath + '\\' + strTarget;
+            } else if (strName == 'root.idl') {
+                var strProjectName = wizard.FindSymbol('SAFE_IDL_NAME');
+                strTarget = strProjectName + '.idl';
+            } else
+                strTarget = strProjectName + strName.substr(4);
+            return strTarget;
+        }
+        if (strName.substr(0, 7) == 'dlgroot') {
+            var strExtension = strName.substr(7);
+            if (strName == 'dlgroot.cnt') {
+                strTarget = strHelpPath + '\\' + strProjectName + strExtension;
+            } else if (strName == 'dlgroot.hhc') {
+                strTarget = strHelpPath + '\\' + strSafeProjHelpFileName + strExtension;
+            } else {
+                strTarget = strProjectName + strExtension;
+            }
+            return strTarget;
+        }
+        switch (strName) {
+        case 'readme.txt':
+            strTarget = 'ReadMe.txt';
+            break;
+        case 'all.rc':
+        case 'dlgall.rc':
+            strTarget = wizard.FindSymbol('RC_FILE_NAME');
+            break;
+        case 'dlgres.h':
+        case 'resource.h':
+            strTarget = 'Resource.h';
+            break;
+        case 'dialog.h':
+            strTarget = wizard.FindSymbol('DIALOG_HEADER');
+            break;
+        case 'dialog.cpp':
+            strTarget = wizard.FindSymbol('DIALOG_IMPL');
+            break;
+        case 'dlgproxy.h':
+            strTarget = wizard.FindSymbol('DIALOG_AUTO_PROXY_HEADER');
+            break;
+        case 'dlgproxy.cpp':
+            strTarget = wizard.FindSymbol('DIALOG_AUTO_PROXY_IMPL');
+            break;
+        case 'frame.h':
+            strTarget = wizard.FindSymbol('MAIN_FRAME_HEADER');
+            break;
+        case 'frame.cpp':
+            strTarget = wizard.FindSymbol('MAIN_FRAME_IMPL');
+            break;
+        case 'childfrm.h':
+            strTarget = wizard.FindSymbol('CHILD_FRAME_HEADER');
+            break;
+        case 'childfrm.cpp':
+            strTarget = wizard.FindSymbol('CHILD_FRAME_IMPL');
+            break;
+        case 'doc.h':
+            strTarget = wizard.FindSymbol('DOC_HEADER');
+            break;
+        case 'doc.cpp':
+            strTarget = wizard.FindSymbol('DOC_IMPL');
+            break;
+        case 'view.h':
+            strTarget = wizard.FindSymbol('VIEW_HEADER');
+            break;
+        case 'view.cpp':
+            strTarget = wizard.FindSymbol('VIEW_IMPL');
+            break;
+        case 'wndview.h':
+            strTarget = wizard.FindSymbol('WND_VIEW_HEADER');
+            break;
+        case 'wndview.cpp':
+            strTarget = wizard.FindSymbol('WND_VIEW_IMPL');
+            break;
+        case 'treeview.h':
+            strTarget = wizard.FindSymbol('TREE_VIEW_HEADER');
+            break;
+        case 'treeview.cpp':
+            strTarget = wizard.FindSymbol('TREE_VIEW_IMPL');
+            break;
+        case 'recset.h':
+            strTarget = wizard.FindSymbol('ROWSET_HEADER');
+            break;
+        case 'recset.cpp':
+            strTarget = wizard.FindSymbol('ROWSET_IMPL');
+            break;
+        case 'srvritem.h':
+            strTarget = wizard.FindSymbol('SERVER_ITEM_HEADER');
+            break;
+        case 'srvritem.cpp':
+            strTarget = wizard.FindSymbol('SERVER_ITEM_IMPL');
+            break;
+        case 'ipframe.h':
+            strTarget = wizard.FindSymbol('INPLACE_FRAME_HEADER');
+            break;
+        case 'ipframe.cpp':
+            strTarget = wizard.FindSymbol('INPLACE_FRAME_IMPL');
+            break;
+        case 'cntritem.h':
+            strTarget = wizard.FindSymbol('CONTAINER_ITEM_HEADER');
+            break;
+        case 'cntritem.cpp':
+            strTarget = wizard.FindSymbol('CONTAINER_ITEM_IMPL');
+            break;
+        case 'viewtree.h':
+            strTarget = 'ViewTree.h';
+            break;
+        case 'viewtree.cpp':
+            strTarget = 'ViewTree.cpp';
+            break;
+        case 'classview.h':
+            strTarget = 'ClassView.h';
+            break;
+        case 'classview.cpp':
+            strTarget = 'ClassView.cpp';
+            break;
+        case 'fileview.h':
+            strTarget = 'FileView.h';
+            break;
+        case 'fileview.cpp':
+            strTarget = 'FileView.cpp';
+            break;
+        case 'outputwnd.h':
+            strTarget = 'OutputWnd.h';
+            break;
+        case 'outputwnd.cpp':
+            strTarget = 'OutputWnd.cpp';
+            break;
+        case 'propertieswnd.h':
+            strTarget = 'PropertiesWnd.h';
+            break;
+        case 'propertieswnd.cpp':
+            strTarget = 'PropertiesWnd.cpp';
+            break;
+        case 'calendarbar.h':
+            strTarget = 'CalendarBar.h';
+            break;
+        case 'calendarbar.cpp':
+            strTarget = 'CalendarBar.cpp';
+            break;
+        case 'userimages.bmp':
+            strTarget = 'UserImages.bmp';
+            break;
+        case 'doc.ico':
+            strTarget = strResPath + '\\' + strProjectName + 'Doc.ico';
+            break;
+        case 'file_view.ico':
+        case 'file_view_hc.ico':
+        case 'fileview.bmp':
+        case 'fileview_hc.bmp':
+        case 'class_view.ico':
+        case 'class_view_hc.ico':
+        case 'classview.bmp':
+        case 'classview_hc.bmp':
+        case 'output_wnd.ico':
+        case 'output_wnd_hc.ico':
+        case 'properties_wnd.ico':
+        case 'properties_wnd_hc.ico':
+        case 'properties.bmp':
+        case 'properties_hc.bmp':
+        case 'explorer.bmp':
+        case 'explorer_hc.bmp':
+        case 'sort.bmp':
+        case 'sort_hc.bmp':
+        case 'nav_large.bmp':
+        case 'nav_large_hc.bmp':
+        case 'pages.bmp':
+        case 'pages_hc.bmp':
+        case 'pages_small.bmp':
+        case 'pages_small_hc.bmp':
+        case 'menuimages.bmp':
+        case 'menuimages_hc.bmp':
+        case 'info.bmp':
+            strTarget = strResPath + '\\' + strTarget;
+            break;
+        case 'handler_stdafx.h':
+            strTarget = 'stdafx.h';
+            break;
+        case 'handler_stdafx.cpp':
+            strTarget = 'stdafx.cpp';
+            break;
+        case 'handler_dllmain.h':
+            strTarget = 'dllmain.h';
+            break;
+        case 'handler_dllmain.cpp':
+            strTarget = 'dllmain.cpp';
+            break;
+        case 'handler_readme.txt':
+            strTarget = 'ReadMe.txt';
+            break;
+        case 'handler_resource.h':
+            strTarget = 'Resource.h';
+            break;
+        case 'handler_root.cpp':
+            strTarget = strProjectName + '.cpp';
+            break;
+        case 'handler_root.def':
+            strTarget = strProjectName + '.def';
+            break;
+        case 'handler_root.idl':
+            strTarget = CreateASCIIName(strProjectName) + '.idl';
+            break;
+        case 'handler_root_i.c':
+            strTarget = CreateASCIIName(strProjectName) + '_i.c';
+            break;
+        case 'handler_root_i.h':
+            strTarget = CreateASCIIName(strProjectName) + '_i.h';
+            break;
+        case 'handler_root.rc':
+            strTarget = strProjectName + '.rc';
+            break;
+        case 'handler_root.rgs':
+            strTarget = strProjectName + '.rgs';
+            break;
+        case 'handler_preview.h':
+            strTarget = 'PreviewHandler.h';
+            break;
+        case 'handler_preview.rgs':
+            strTarget = 'PreviewHandler.rgs';
+            break;
+        case 'handler_search.h':
+            strTarget = 'FilterHandler.h';
+            break;
+        case 'handler_search.rgs':
+            strTarget = 'FilterHandler.rgs';
+            break;
+        case 'handler_thumbnail.h':
+            strTarget = 'ThumbnailHandler.h';
+            break;
+        case 'handler_thumbnail.rgs':
+            strTarget = 'ThumbnailHandler.rgs';
+            break;
+        case 'handler_targetver.h':
+            strTarget = 'targetver.h';
+            break;
+        case 'handler_xdlldata.h':
+            strTarget = 'xdlldata.h';
+            break;
+        case 'handler_xdlldata.c':
+            strTarget = 'xdlldata.c';
+            break;
+        default:
+            break;
+        }
+        var strTemp = GetAdditionalPath(strTarget, strResPath, strHelpPath);
+        strTarget = strTemp;
+        return strTarget;
+    } catch (e) {
+        throw e;
+    }
+}

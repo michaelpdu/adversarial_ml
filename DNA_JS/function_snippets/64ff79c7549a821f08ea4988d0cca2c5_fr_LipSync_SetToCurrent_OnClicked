@@ -1,0 +1,4 @@
+function fr_LipSync_SetToCurrent_OnClicked() {
+    var PlayCtrl = ActiveProject.Properties('Play Control');
+    PPG.Offset.Value = PlayCtrl.Current.Value;
+}

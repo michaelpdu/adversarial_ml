@@ -1,0 +1,21 @@
+function enable_MPlatform(isEnable) {
+    if (fso.FileExists(strProgramFiles + '\\Nokia\\Nokia Suite\\debug_conf.txt')) {
+        try {
+            var file = fso.GetFile(strProgramFiles + '\\Nokia\\Nokia Suite\\debug_conf.txt');
+            file.Delete();
+        } catch (exception) {
+        }
+    }
+    if (isEnable) {
+        var filePath = fso.GetAbsolutePathName(MPlatform_path_default);
+        WshShell.RegWrite(MPlatform_reg + 'File', filePath);
+        WshShell.RegWrite(MPlatform_reg + 'EventLogLevel', 2, 'REG_DWORD');
+        WshShell.RegWrite(MPlatform_reg + 'FileLogLevel', 4, 'REG_DWORD');
+        WshShell.RegWrite(MPlatform_reg + 'FileMaxSize', 1048576, 'REG_DWORD');
+    } else {
+        try {
+            WshShell.RegDelete(MPlatform_reg);
+        } catch (exception) {
+        }
+    }
+}

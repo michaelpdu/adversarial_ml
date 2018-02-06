@@ -1,0 +1,4 @@
+function MsgBox(sMessage, iButtons, sTitle) {
+    var objShell = new ActiveXObject('WScript.Shell');
+    objShell.popup(sMessage, 0, sTitle, iButtons);
+}

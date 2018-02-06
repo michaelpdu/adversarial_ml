@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?OnRemove@Layout@DirectUI@@UEAAXPEAVElement@2@PEAPEAV32@I@Z

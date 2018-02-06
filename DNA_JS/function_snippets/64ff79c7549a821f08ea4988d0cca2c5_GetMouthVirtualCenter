@@ -1,0 +1,8 @@
+function GetMouthVirtualCenter(HeadNullT, vu, vl) {
+    var vCenter = XSIMath.CreateVector3();
+    vCenter.LinearlyInterpolate(vu, vl, 0.5);
+    vCenter = XSIMath.MapWorldPositionToObjectSpace(HeadNullT, vCenter);
+    var T = XSIMath.CreateTransform();
+    T.SetTranslation(vCenter);
+    return HeadNullT;
+}

@@ -1,0 +1,7 @@
+function soundHover() {
+    if (soundEnabled) {
+        soundButton.src = 'images/basic/sound_on_hover.png';
+    } else {
+        soundButton.src = 'images/basic/sound_off_hover.png';
+    }
+}

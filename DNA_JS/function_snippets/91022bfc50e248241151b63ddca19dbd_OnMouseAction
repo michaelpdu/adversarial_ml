@@ -1,0 +1,24 @@
+function OnMouseAction(action) {
+    switch (g_nOverallStatus) {
+    case STATE_GOOD:
+        action_button.src = 'images/green/' + action + '.png';
+        break;
+    case STATE_WARNING:
+        action_button.src = 'images/orange/' + action + '.png';
+        break;
+    case STATE_WARNING_NO_BUTTON:
+        action_button.src = 'images/orange/normal.png';
+        break;
+    case STATE_BAD:
+    case STATE_EXPIRED:
+        action_button.src = 'images/red/' + action + '.png';
+        break;
+    case STATE_BAD_NO_BUTTON:
+        action_button.src = 'images/red/normal.png';
+        break;
+    case STATE_FIXING:
+    case STATE_UNRESPONSIVE:
+    default:
+        break;
+    }
+}

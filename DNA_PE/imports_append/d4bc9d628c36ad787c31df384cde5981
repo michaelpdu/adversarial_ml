@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?GetPVLAnimationState@Element@DirectUI@@QAEHXZ

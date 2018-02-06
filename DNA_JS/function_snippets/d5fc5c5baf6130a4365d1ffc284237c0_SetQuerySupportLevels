@@ -1,0 +1,33 @@
+function SetQuerySupportLevels() {
+    var strQuerySupportLevels = '';
+    var bIsFirst = true;
+    if (wizard.FindSymbol('QUERY_ASSOCIATORS').toString().toUpperCase() == 'TRUE') {
+        strQuerySupportLevels += '"WQL:Associators"';
+        bIsFirst = false;
+    }
+    if (wizard.FindSymbol('QUERY_CUSTOM').toString().toUpperCase() == 'TRUE') {
+        if (bIsFirst == false) {
+            strQuerySupportLevels += ',';
+        }
+        strQuerySupportLevels += '"WQL:V1ProviderDefined"';
+        bIsFirst = false;
+    }
+    if (wizard.FindSymbol('QUERY_UNARY').toString().toUpperCase() == 'TRUE') {
+        if (bIsFirst == false) {
+            strQuerySupportLevels += ',';
+        }
+        strQuerySupportLevels += '"WQL:UnarySelect"';
+        bIsFirst = false;
+    }
+    if (wizard.FindSymbol('QUERY_REFERENCES').toString().toUpperCase() == 'TRUE') {
+        if (bIsFirst == false) {
+            strQuerySupportLevels += ',';
+        }
+        strQuerySupportLevels += '"WQL:References"';
+        bIsFirst = false;
+    }
+    if (bIsFirst == false) {
+        wizard.AddSymbol('QUERYSUPPORTS_LEVEL', strQuerySupportLevels);
+        wizard.AddSymbol('SUPPORTS_QUERY', true);
+    }
+}

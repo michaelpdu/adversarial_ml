@@ -1,0 +1,7 @@
+function OnRegister(Path) {
+    var key = 'HKEY_CURRENT_USER\\Software\\EidosMedia\\Methode\\Addins\\ChainsPanel\\';
+    wshell.RegWrite(key + 'Name', 'Publish Chains from Panel', 'REG_SZ');
+    wshell.RegWrite(key + 'Path', Path, 'REG_SZ');
+    wshell.RegWrite(key + 'Description', 'M\uFFFDthode ChainDoc Addin', 'REG_SZ');
+    wshell.RegWrite(key + 'Enabled', 'yes', 'REG_SZ');
+}

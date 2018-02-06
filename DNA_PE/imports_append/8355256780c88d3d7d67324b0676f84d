@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?OnChildLostFocus@DialogElement@DirectUI@@UEAA_NPEAVElement@2@@Z

@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?GetClassInfoPtr@PushButton@DirectUI@@SAPEAUIClassInfo@2@XZ

@@ -1,0 +1,12 @@
+function flipPiece(which, now) {
+    if (now == 1) {
+        flipPiece1(10, 0, which);
+    } else {
+        flipPiece1(0, 10, which);
+    }
+    if (which == piece_choice) {
+        playerColor = -now;
+    } else if (which == piece_start) {
+        startColor = -now;
+    }
+}

@@ -1,0 +1,6 @@
+function SelectMouthControls(in_ctxt) {
+    SelectWithKey(GetKeyed([
+        'Mouth',
+        'Control'
+    ]));
+}

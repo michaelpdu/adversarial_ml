@@ -1,0 +1,5 @@
+function PathAddBackslash(sPath) {
+    if ('/' != sPath.charAt(sPath.length - 1) && '\\' != sPath.charAt(sPath.length - 1))
+        sPath += '\\';
+    return sPath;
+}

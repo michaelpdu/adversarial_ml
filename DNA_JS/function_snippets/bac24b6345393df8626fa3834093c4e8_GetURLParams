@@ -1,0 +1,96 @@
+function GetURLParams() {
+    var HpoobeRegPath = 'HKLM\\Software\\Hewlett-Packard\\hpoobe\\';
+    var UrlParam = 'appID=java_wreg_wreg_genpg';
+    var ProdOS = GetRegValue(HpoobeRegPath, 'OSTYPE');
+    var pcType = GetRegValue(HpoobeRegPath, 'PCTYPE');
+    switch (ProdOS.toUpperCase()) {
+    case 'PRO':
+        ProdOS = '012';
+        break;
+    case 'HOME':
+        ProdOS = '011';
+        break;
+    default:
+        ProdOS = '995';
+        break;
+    }
+    if (pcType.toUpperCase() == 'EPC') {
+        ProdOS = '029';
+    }
+    UrlParam += '&prodOS=' + ProdOS;
+    var strLangCtry = GetRegValue(HpoobeRegPath, 'ULC');
+    if (strLangCtry == '') {
+        strLangCtry = GetRegValue(HpoobeRegPath, 'Lang_Country');
+    }
+    if (strLangCtry == '') {
+        strLangCtry = WshShell.ExpandEnvironmentStrings('%ISO_LG%') + '_' + WshShell.ExpandEnvironmentStrings('%ISO_COUNTRY%');
+    }
+    var strISOLang = '';
+    var strISOCtry = '';
+    if (strLangCtry.length == 5) {
+        strLangCtry = strLangCtry.toUpperCase();
+        switch (strLangCtry) {
+        case 'ZH_CN': {
+                strISOLang = '13';
+                strISOCtry = 'CN';
+            }
+            break;
+        case 'ZH_HK': {
+                strISOLang = '12';
+                strISOCtry = 'HK';
+            }
+            break;
+        case 'ZH_TW': {
+                strISOLang = '12';
+                strISOCtry = 'TW';
+            }
+            break;
+        default: {
+                var tmp = strLangCtry.split('_');
+                if (tmp.length == 2) {
+                    strISOLang = tmp[0];
+                    strISOCtry = tmp[1];
+                }
+            }
+            break;
+        }
+    }
+    if (strISOCtry != '')
+        UrlParam += '&gwCountry=' + strISOCtry.toUpperCase();
+    if (strISOLang != '')
+        UrlParam += '&language=' + strISOLang.toLowerCase();
+    var SysInfoRegPath = HpReg.GetINIKeyString(CustomIni, 'Settings', 'HPSysInfoRegKey', '');
+    if (SysInfoRegPath != '' && SysInfoRegPath.charAt(SysInfoRegPath.length - 1) != '\\')
+        SysInfoRegPath += '\\';
+    if (GetRegValue(SysInfoRegPath, 'BORNON') == '') {
+        WshShell.Run(HpReg.GetINIKeyString(CustomIni, 'Settings', 'RegInitEXE', ''), 1);
+    }
+    var purchDate = GetRegValue(SysInfoRegPath, 'BORNON');
+    if (purchDate != '') {
+        var tmp = purchDate.split(' ');
+        if (tmp.length > 1) {
+            tmp = tmp[0].split('-');
+            if (tmp.length == 3) {
+                UrlParam += '&PURCH_DT_MONTH=' + tmp[0];
+                UrlParam += '&PURCH_DT_DAY=' + tmp[1];
+                UrlParam += '&PURCH_DT_YEAR=' + tmp[2];
+            }
+        }
+    }
+    var ProdSerialId = GetRegValue(SysInfoRegPath, 'SerialNumber');
+    if (ProdSerialId != '')
+        UrlParam += '&PROD_SERIAL_ID=' + ProdSerialId;
+    UrlParam += '&application=305';
+    var modelID = GetRegValue(SysInfoRegPath, 'ProductNumber');
+    if (modelID != '') {
+        modelID = modelID.split('-');
+        if (modelID.length == 2)
+            UrlParam += '&modelID=' + modelID[0];
+    }
+    var Brand = GetRegValue(HpoobeRegPath, 'BRAND');
+    if (Brand != '') {
+        UrlParam += '&LF=';
+        UrlParam += Brand.toLowerCase();
+    }
+    return UrlParam;
+}

@@ -1,0 +1,11 @@
+function updatePreview() {
+    themeIndex = 3 - themeSelector.selectedIndex;
+    colorIndex = colorSelector.selectedIndex + 1;
+    colorIndex = THEME_COLOR_MAP[themeIndex - 1][colorIndex - 1];
+    var tmpSel = colorSelector.selectedIndex;
+    for (var i = 0; i < 4; i++) {
+        colorSelector.options[i] = new Option(COLOR_NAMES[themeIndex - 1][i], i + 1);
+    }
+    colorSelector.selectedIndex = tmpSel;
+    themeThumb.src = 'images/preview/reversi_preview_' + themeIndex + colorIndex + '.jpg';
+}

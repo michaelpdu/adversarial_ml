@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?SetInnerBorderThickness@TouchEdit2@DirectUI@@QAEJHHHH@Z

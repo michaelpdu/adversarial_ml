@@ -1,0 +1,8 @@
+function ReturnNewProperty(obj, pcol) {
+    var p = obj.properties;
+    for (var i = 0; i < p.count; i++) {
+        if (!pcol(p(i).FullName))
+            return p(i);
+    }
+    return null;
+}

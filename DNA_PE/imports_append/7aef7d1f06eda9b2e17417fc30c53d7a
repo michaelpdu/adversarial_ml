@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?GetClassInfoW@DialogElement@DirectUI@@UAEPAUIClassInfo@2@XZ

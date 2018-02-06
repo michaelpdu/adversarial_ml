@@ -1,0 +1,3 @@
+imports_append
+MSVCR120.DLL
+?_GetNumberOfVirtualProcessors@_CurrentScheduler@details@Concurr

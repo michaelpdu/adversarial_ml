@@ -1,0 +1,12 @@
+function createFolderPath(folder) {
+    try {
+        g_logFile.writeline('CreateFolderPath : ' + folder);
+        if (!g_fso.FolderExists(folder)) {
+            createFolderPath(g_fso.GetParentFolderName(folder));
+            g_fso.createFolder(folder);
+        }
+    } catch (e) {
+        g_wshShell.PopUp('Error in CreateFolderPath : ' + e);
+        g_logFile.writeline('Error in CreateFolderPath : ' + e);
+    }
+}

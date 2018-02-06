@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?GetImmediateChild@Element@DirectUI@@QEAAPEAV12@PEAV12@@Z

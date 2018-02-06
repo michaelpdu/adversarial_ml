@@ -1,0 +1,7 @@
+function WriteRegValue(sRegPath, RegKey, RegValue) {
+    try {
+        var szPathKey = sRegPath + RegKey;
+        RegValue = WshShell.Regwrite(szPathKey, RegValue);
+    } catch (e) {
+    }
+}

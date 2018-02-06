@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?OnKeyFocusMoved@TouchHWNDElement@DirectUI@@UEAAXPEAVElement@2@0

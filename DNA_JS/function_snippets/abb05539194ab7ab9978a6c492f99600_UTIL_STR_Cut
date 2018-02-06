@@ -1,0 +1,6 @@
+function UTIL_STR_Cut(Str, Length) {
+    if (Str.length > Length)
+        return Str.substring(0, Length - 3) + '...';
+    else
+        return Str;
+}

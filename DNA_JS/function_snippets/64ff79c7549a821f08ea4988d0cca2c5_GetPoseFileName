@@ -1,0 +1,3 @@
+function GetPoseFileName(PPG, ipa, name) {
+    return PPG.LibraryPath.Value + XSIUtils.Slash + PPG.Language.Value + XSIUtils.Slash + PPG.Variation.Value + XSIUtils.Slash + ipa + '_' + name + '.frpre';
+}

@@ -1,0 +1,42 @@
+function BuildConverters(commonConfigPath, worksiteID) {
+    var XmlDoc = null;
+    var convertersNode = null;
+    var applicationEle = null;
+    var categoryEle = null;
+    var entryEle = null;
+    var sub_entryEle = null;
+    try {
+        XmlDoc = new ActiveXObject('Msxml2.DOMDocument');
+        XmlDoc.setProperty('SelectionLanguage', 'XPath');
+        XmlDoc.load(commonConfigPath);
+        convertersNode = XmlDoc.selectSingleNode('//configuration//application[@id=\'' + worksiteID + '\']//category[@id=\'FileConverterCore\']//entry[@id=\'converters\']');
+        if (null == convertersNode) {
+            categoryEle = XmlDoc.selectSingleNode('//configuration//application[@id=\'' + worksiteID + '\']//category[@id=\'FileConverterCore\']');
+            if (null == categoryEle) {
+                applicationEle = XmlDoc.selectSingleNode('//configuration//application[@id=\'' + worksiteID + '\']');
+                categoryEle = XmlDoc.createElement('category');
+                categoryEle.setAttribute('id', 'FileConverterCore');
+                applicationEle.appendChild(categoryEle);
+                categoryEle = XmlDoc.selectSingleNode('//configuration//application[@id=\'' + worksiteID + '\']//category[@id=\'FileConverterCore\']');
+            }
+            if (null != categoryEle) {
+                entryEle = XmlDoc.createElement('entry');
+                entryEle.setAttribute('id', 'converters');
+                categoryEle.appendChild(entryEle);
+                sub_entryEle = XmlDoc.createElement('sub-entry');
+                sub_entryEle.setAttribute('id', 'ACIPDFProcess.Converter');
+                sub_entryEle.text = 'enable';
+                entryEle.appendChild(sub_entryEle);
+            }
+            XmlDoc.save(commonConfigPath);
+        }
+    } catch (e) {
+        var sExceptionError = e.name + ': (' + (e.number & 65535) + ') - ' + e.description + '\r' + e.number;
+        WScript.Echo('BuildConverters(): ' + sExceptionError);
+    } finally {
+        if (undefined != XmlDoc && null != XmlDoc) {
+            delete XmlDoc;
+            XmlDoc = null;
+        }
+    }
+}

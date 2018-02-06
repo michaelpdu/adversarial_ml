@@ -1,0 +1,7 @@
+function GetMarkerVectors(Markers) {
+    var Vectors = new Array(Markers.count);
+    for (var i = 0; i < Markers.count; i++) {
+        Vectors[i] = Markers(i).Kinematics.Global.Transform.Translation;
+    }
+    return Vectors;
+}

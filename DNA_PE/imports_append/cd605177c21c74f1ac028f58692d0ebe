@@ -1,0 +1,3 @@
+imports_append
+MSVCR100.DLL
+?before@type_info@@QBEHABV1@@Z

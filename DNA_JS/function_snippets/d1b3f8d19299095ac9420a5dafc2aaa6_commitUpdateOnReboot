@@ -1,0 +1,28 @@
+function commitUpdateOnReboot() {
+    try {
+        vendorPrefsFile = g_localcontentroot + '/vendor/vendorprefs.xml';
+        var xmlfile = g_fso.GetFile(vendorPrefsFile);
+        vendorPrefsFile = xmlfile.ShortPath;
+        var loadedXML = g_xmlDoc.load(vendorPrefsFile);
+        if (loadedXML) {
+            var updateCtrlProgId = g_xmlDoc.selectSingleNode('/Vendor/ProgIDs/ContentUpdateCtrl').text;
+            g_logFile.writeline('Update Ctrl Prog ID: ' + updateCtrlProgId);
+            var updateObj = new ActiveXObject(updateCtrlProgId);
+            updateObj.commitUpdate();
+        } else {
+            g_wshShell.PopUp('Unable to load vendorprefs.xml');
+            g_logFile.writeline('Unable to load vendorprefs.xml');
+        }
+    } catch (e) {
+        g_wshShell.PopUp('Error in CommitUpdateOnReboot : ' + e);
+        g_logFile.writeline('Error in CommitUpdateOnReboot : ' + e);
+    }
+    try {
+        var searchCtrlProgId = g_xmlDoc.selectSingleNode('/Vendor/ProgIDs/SearchCtrl').text;
+        searchCtrl = new ActiveXObject(searchCtrlProgId);
+        searchCtrl.createIndex();
+    } catch (e) {
+        g_logFile.writeline('Exception while creating indices ' + e.description);
+        g_logFile.writeline('Exception while creating indices ' + e.description);
+    }
+}

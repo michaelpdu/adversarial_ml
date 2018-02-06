@@ -1,0 +1,11 @@
+function GetFRFaceModel() {
+    try {
+        var Model = fr_GetFaceModel();
+    } catch (e) {
+        logmessage('Face Robot FR.dll Failed to load properly. Command("fr_GetFaceModel") was not recognized!', siError);
+        var Model = ActiveSceneRoot.FindChild('Face', siModelType);
+        if (!Model)
+            Model = ActiveSceneRoot.AddModel(null, 'Face');
+    }
+    return Model;
+}

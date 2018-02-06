@@ -1,0 +1,20 @@
+function XSILoadPlugin(in_reg) {
+    in_reg.Author = 'Softimage';
+    in_reg.Name = 'Lipsynch';
+    in_reg.Email = '';
+    in_reg.URL = '';
+    in_reg.Major = 1;
+    in_reg.Minor = 0;
+    in_reg.RegisterCommand('fr_ImportSpeech', 'fr_ImportSpeech');
+    in_reg.RegisterCommand('fr_LoadVisemePose', 'fr_LoadVisemePose');
+    in_reg.RegisterCommand('fr_SaveVisemePose', 'fr_SaveVisemePose');
+    in_reg.RegisterCommand('fr_CopyVisemeLibrary', 'fr_CopyVisemeLibrary');
+    in_reg.RegisterCommand('fr_CreateVisemeVariation', 'fr_CreateVisemeVariation');
+    in_reg.RegisterCommand('fr_CreateVisemeShape', 'fr_CreateVisemeShape');
+    in_reg.RegisterCommand('fr_ImportVisemes', 'fr_ImportVisemes');
+    in_reg.RegisterCommand('fr_PrepareForPhonemes', 'fr_PrepareForPhonemes');
+    in_reg.RegisterCommand('fr_EditVisemes', 'fr_EditVisemes');
+    in_reg.RegisterCommand('fr_AddLipSync', 'fr_AddLipSync');
+    in_reg.RegisterProperty('fr_LipSync');
+    in_reg.RegisterProperty('fr_Visemes');
+}

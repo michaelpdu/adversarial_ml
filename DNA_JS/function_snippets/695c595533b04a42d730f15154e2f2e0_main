@@ -1,0 +1,4 @@
+function main() {
+    var WshShell = new ActiveXObject('WScript.Shell');
+    WshShell.Run('net start JobManagerService121', 0, true);
+}

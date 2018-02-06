@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?SetRangeMax@CCTrackBar@DirectUI@@QAEJH@Z

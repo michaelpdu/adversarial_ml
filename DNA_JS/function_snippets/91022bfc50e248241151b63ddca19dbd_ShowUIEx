@@ -1,0 +1,5 @@
+function ShowUIEx(flags) {
+    if (g_pStatus != null) {
+        g_pStatus.ShowUIEx(g_MainUI, flags);
+    }
+}

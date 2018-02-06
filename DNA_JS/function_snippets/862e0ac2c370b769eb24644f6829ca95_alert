@@ -1,0 +1,3 @@
+function alert(str) {
+    wshell.Popup(str, 0, 'Alert');
+}

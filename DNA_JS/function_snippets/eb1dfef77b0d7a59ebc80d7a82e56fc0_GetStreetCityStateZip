@@ -1,0 +1,45 @@
+function GetStreetCityStateZip(sData, iElement) {
+    var nPos1stComma = sData.indexOf(',');
+    var nPosLastSpace = sData.lastIndexOf(' ');
+    var sCity = '';
+    var sState = '';
+    var sZip = '';
+    var sCSZ = sData.substr(nPos1stComma + 1);
+    var sStreet = sData.substr(0, nPos1stComma);
+    if (1 == iElement)
+        return StripWhiteSpace(sStreet);
+    else {
+        sData = sCSZ;
+        nPos1stComma = sData.indexOf(',');
+        nPosLastSpace = sData.lastIndexOf(' ');
+    }
+    if (-1 < nPos1stComma) {
+        sCity = sData.substr(0, nPos1stComma);
+        sState = sData.substr(nPos1stComma + 1, nPosLastSpace - nPos1stComma);
+        sZip = sData.substr(nPosLastSpace + 1);
+        if (!isNaN(sZip) || -1 < sZip.indexOf('-')) {
+            if (3 == iElement)
+                return StripWhiteSpace(sState);
+            if (4 == iElement)
+                return StripWhiteSpace(sZip);
+        }
+        if (2 == iElement)
+            return StripWhiteSpace(sCity);
+    } else if (-1 < nPosLastSpace) {
+        sCity = sData.substr(0, nPosLastSpace);
+        sZip = sData.substr(nPosLastSpace + 1);
+        if (!isNaN(sZip) || -1 < sZip.indexOf('-')) {
+            if (2 == iElement)
+                return StripWhiteSpace(sCity);
+            if (4 == iElement)
+                return StripWhiteSpace(sZip);
+        } else {
+            if (2 == iElement)
+                return StripWhiteSpace(sCity);
+        }
+    } else {
+        if (2 == iElement)
+            return StripWhiteSpace(sCity);
+    }
+    return '';
+}

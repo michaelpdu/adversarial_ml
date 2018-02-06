@@ -1,0 +1,22 @@
+function UTIL_STOR_Load_Default() {
+    try {
+        UTIL_XML_Load(STOR_File);
+        var xFile = XML_Doc.getElementsByTagName('Storage')[0];
+        var xFile_Data = xFile.getElementsByTagName('Data')[0];
+        var xFile_Value = xFile_Data.getElementsByTagName('Value');
+        i = 0;
+        var Temp = '';
+        var Temp_Name = '';
+        var Temp_Default = '';
+        while (i < xFile_Value.length) {
+            Temp = xFile_Value[i];
+            Temp_Name = Temp.getAttribute('Name');
+            Temp_Default = Temp.getAttribute('Default');
+            System.Gadget.Settings.write(Temp_Name, Temp_Default);
+            i++;
+        }
+    } catch (err) {
+        var X = 'File (Load Default) I/O Error: ' + err;
+        UTIL_STOR_Debug(X);
+    }
+}

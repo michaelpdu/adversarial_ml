@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?SetNotifyHandler@CCBase@DirectUI@@QAEXP6GHIIJPAJPAX@Z1@Z

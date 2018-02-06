@@ -1,0 +1,7 @@
+function Abort(sMessage, sTitle) {
+    MsgBox(sMessage, vbCritical, sTitle);
+    if (objExcelApp) {
+        objExcelApp.Quit();
+    }
+    WScript.Quit(1);
+}

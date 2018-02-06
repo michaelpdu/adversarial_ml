@@ -1,0 +1,5 @@
+function IsFactoryVisemeFolder(filename) {
+    var installpath = GetFaceRobotPath('Viseme', true, 1, false);
+    installpath = installpath.substr(0, path.length - 1);
+    return installpath.toLowerCase() == filename.toLowerCase();
+}

@@ -1,0 +1,3 @@
+imports_append
+MSVCRT.DLL
+vfprintf_s

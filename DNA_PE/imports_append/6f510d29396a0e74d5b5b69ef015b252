@@ -1,0 +1,3 @@
+imports_append
+MSVCR100.DLL
+?IsCurrentTaskCollectionCanceling@Context@Concurrency@@SA_NXZ

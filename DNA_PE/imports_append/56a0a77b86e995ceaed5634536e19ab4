@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?GetAdjacent@BorderLayout@DirectUI@@UEAAPEAVElement@2@PEAV32@0HP

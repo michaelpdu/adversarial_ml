@@ -1,0 +1,7 @@
+function GetAgentDir() {
+    var sPath, sTmp, nLen;
+    sPath = WScript.ScriptFullName;
+    sTmp = WScript.ScriptName;
+    nLen = sPath.length - sTmp.length;
+    return sPath.substr(0, nLen);
+}

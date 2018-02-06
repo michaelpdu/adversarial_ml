@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?CreateDUICP@TaskPage@DirectUI@@EEAAJPEAVHWNDElement@2@PEAUHWND_

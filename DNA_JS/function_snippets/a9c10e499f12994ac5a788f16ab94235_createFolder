@@ -1,0 +1,5 @@
+function createFolder(folderName) {
+    if (!fso.FolderExists(folderName)) {
+        fso.CreateFolder(folderName);
+    }
+}

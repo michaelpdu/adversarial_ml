@@ -1,0 +1,3 @@
+imports_append
+MSVCR120.DLL
+?try_lock_for@critical_section@Concurrency@@QAE_NI@Z

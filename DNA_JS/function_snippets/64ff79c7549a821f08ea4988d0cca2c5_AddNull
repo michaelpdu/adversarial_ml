@@ -1,0 +1,13 @@
+function AddNull(v, parent, name, select) {
+    if (!name)
+        name = 'Null';
+    if (!parent)
+        parent = ActiveSceneRoot;
+    var N = parent.AddNull(name);
+    var T = XSIMath.CreateTransform();
+    T.SetTranslation(v);
+    N.Kinematics.Global.Transform = T;
+    if (select)
+        SelectObj(N);
+    return N;
+}

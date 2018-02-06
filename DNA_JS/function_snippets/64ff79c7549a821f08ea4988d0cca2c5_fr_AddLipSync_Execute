@@ -1,0 +1,4 @@
+function fr_AddLipSync_Execute() {
+    var Model = GetFRFaceModel();
+    GetProp(Model, 'fr_LipSync', true);
+}

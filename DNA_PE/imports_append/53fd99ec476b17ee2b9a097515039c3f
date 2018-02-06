@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?GetClassInfoPtr@HWNDHost@DirectUI@@SGPAUIClassInfo@2@XZ

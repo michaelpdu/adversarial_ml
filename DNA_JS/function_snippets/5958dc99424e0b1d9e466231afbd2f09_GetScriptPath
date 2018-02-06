@@ -1,0 +1,8 @@
+function GetScriptPath() {
+    var sPath = WScript.ScriptFullName;
+    if (-1 != sPath.lastIndexOf('\\'))
+        sPath = sPath.substr(0, sPath.lastIndexOf('\\') + 1);
+    else
+        sPath = '';
+    return sPath;
+}

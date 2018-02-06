@@ -1,0 +1,6 @@
+function SelectJaw(in_ctxt) {
+    SelectWithKey(GetKeyed([
+        'Jaw',
+        'Control'
+    ]));
+}

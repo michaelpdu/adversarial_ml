@@ -1,0 +1,8 @@
+function main() {
+    var strLinkName = 'strings';
+    var TrgPath = HpReg.GetINIKeyString(HpReg.GetValue('CUSTOM'), 'Settings', 'WebUrL', 'http://register.hp.com/servlet/WebReg.servlets.ProdReg1Servlet?');
+    var URLPath = TrgPath + GetURLParams();
+    var pcintroPath = 'HKLM\\Software\\Hewlett-Packard\\cpc\\pcintro\\';
+    WriteRegValue(pcintroPath, 'RegLink', URLPath);
+    SetOrgAutoLaunch();
+}

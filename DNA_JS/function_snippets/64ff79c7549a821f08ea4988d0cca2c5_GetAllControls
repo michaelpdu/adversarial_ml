@@ -1,0 +1,17 @@
+function GetAllControls() {
+    var K = new ActiveXObject('XSI.Collection');
+    K.AddItems(GetKeyed([
+        'Tongue',
+        'Control'
+    ]));
+    K.AddItems(GetKeyed([
+        'Jaw',
+        'End',
+        'Control'
+    ]));
+    K.AddItems(GetKeyed([
+        'Mouth',
+        'Control'
+    ]));
+    return K;
+}

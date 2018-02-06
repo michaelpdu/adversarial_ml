@@ -1,0 +1,12 @@
+function fr_CreateVisemeShape_Execute(ShapeName) {
+    if (ShapeName && !CorrectiveShapeExists(ShapeName)) {
+        var Mesh = GetFaceMesh(GetFRFaceModel());
+        var shapeKey = StoreShapeKey(Mesh, ShapeName, siShapeLocalReferenceMode, null, null, null, siShapeContentSecondaryShape, true);
+        if (shapeKey != null) {
+            SetValue(Mesh.fullname + '.clustershapecombiner.ShowResult', false);
+            SetValue(Mesh.fullname + '.clustershapecombiner.SoloIndex', 1);
+        } else
+            logmessage('Failed to create corrective shape : ' + ShapeName, siError);
+    }
+    return null;
+}

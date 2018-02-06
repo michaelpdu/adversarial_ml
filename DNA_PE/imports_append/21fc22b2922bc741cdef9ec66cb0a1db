@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?WndProc@HWNDElement@DirectUI@@UEAA_JPEAUHWND__@@I_K_J@Z

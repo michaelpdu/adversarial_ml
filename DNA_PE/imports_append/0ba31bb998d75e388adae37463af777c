@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?GetShowKeyFocus@TouchButton@DirectUI@@QEAA_NXZ

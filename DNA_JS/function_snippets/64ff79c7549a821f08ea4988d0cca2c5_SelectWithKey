@@ -1,0 +1,12 @@
+function SelectWithKey(Objects) {
+    var keymod = GetKeyboardState()(1);
+    if (keymod == 1) {
+        AddToSelection(Objects);
+    } else if (keymod == 2 || keymod == 6) {
+        ToggleSelection(Objects, null, true);
+    } else if (keymod == 3 || keymod == 7) {
+        RemoveFromSelection(Objects, null);
+    } else {
+        SelectObj(Objects);
+    }
+}

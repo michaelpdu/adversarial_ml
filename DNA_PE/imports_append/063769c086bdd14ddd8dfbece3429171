@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?GetClassInfoPtr@AnimationStrip@DirectUI@@SGPAUIClassInfo@2@XZ

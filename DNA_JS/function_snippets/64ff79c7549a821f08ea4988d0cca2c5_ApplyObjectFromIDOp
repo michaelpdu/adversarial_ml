@@ -1,0 +1,6 @@
+function ApplyObjectFromIDOp(Port, Object) {
+    AddScriptedOp(Port.FullName, ObjectFromID_Update.toString(), [
+        Port.FullName,
+        Object.FullName
+    ], 'ObjectFromID', 'JScript', 2);
+}

@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?LoadFromFile@DUIFactory@DirectUI@@QEAAJPEBG0PEAVElement@2@PEAKP

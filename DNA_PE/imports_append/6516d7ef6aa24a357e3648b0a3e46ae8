@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?PropSheet_SendMessage@TaskPage@DirectUI@@IEAA_JI_K_J@Z

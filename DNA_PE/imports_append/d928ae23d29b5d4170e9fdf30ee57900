@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?OnPropertyChanging@Element@DirectUI@@UAE_NPAUPropertyInfo@2@HPA

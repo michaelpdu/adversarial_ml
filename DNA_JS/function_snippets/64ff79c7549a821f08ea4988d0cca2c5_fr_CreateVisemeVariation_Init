@@ -1,0 +1,6 @@
+function fr_CreateVisemeVariation_Init(ctxt) {
+    var cmd = ctxt.Source;
+    cmd.Arguments.Add('Variation');
+    cmd.Arguments.Add('CopyFrom');
+    return true;
+}

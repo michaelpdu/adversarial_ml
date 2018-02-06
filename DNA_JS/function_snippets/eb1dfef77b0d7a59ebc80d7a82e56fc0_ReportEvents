@@ -1,0 +1,20 @@
+function ReportEvents(sMessage, sLogPath) {
+    var oFileSystemObject = null;
+    var fsoLogFile = null;
+    var ForReading = 1;
+    var ForWriting = 2;
+    var ForAppending = 8;
+    try {
+        oFileSystemObject = new ActiveXObject('Scripting.FileSystemObject');
+        fsoLogFile = oFileSystemObject.OpenTextFile(sLogPath + 'ReportEvents.txt', ForAppending, true);
+        fsoLogFile.WriteLine(sMessage);
+        fsoLogFile.Close();
+    } catch (e) {
+        var sExceptionError = e.name + ': (' + (e.number & 65535) + ') - ' + e.description;
+    } finally {
+        if (undefined != oFileSystemObject && null != oFileSystemObject) {
+            delete oFileSystemObject;
+            oFileSystemObject = null;
+        }
+    }
+}

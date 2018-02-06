@@ -1,0 +1,70 @@
+function AddSpecificConfig(proj, strProjectName, strProjectPath) {
+    try {
+        var bAutomation = wizard.FindSymbol('AUTOMATION');
+        var bServer = wizard.FindSymbol('MINI_SERVER');
+        var bDynamicMFC = wizard.FindSymbol('DYNAMIC_MFC');
+        if (!bServer) {
+            bServer = wizard.FindSymbol('FULL_SERVER');
+            if (!bServer)
+                bServer = wizard.FindSymbol('CONTAINER_SERVER');
+        }
+        var oConfigs = proj.Object.Configurations;
+        for (var nCntr = 1; nCntr <= oConfigs.Count; nCntr++) {
+            var config = oConfigs(nCntr);
+            var bDebug = false;
+            if (-1 != config.Name.indexOf('Debug'))
+                bDebug = true;
+            config.CharacterSet = charSetUNICODE;
+            var CLTool = config.Tools('VCCLCompilerTool');
+            if (bDynamicMFC) {
+                config.UseOfMFC = useMfcDynamic;
+            } else {
+                config.UseOfMFC = useMfcStatic;
+            }
+            var strDefines = CLTool.PreprocessorDefinitions;
+            if (strDefines != '')
+                strDefines += ';';
+            strDefines += GetPlatformDefine(config);
+            if (bDebug) {
+                strDefines += '_WINDOWS;_DEBUG';
+            } else {
+                strDefines += '_WINDOWS;NDEBUG';
+            }
+            CLTool.PreprocessorDefinitions = strDefines;
+            var LinkTool = config.Tools('VCLinkerTool');
+            LinkTool.GenerateDebugInformation = true;
+            LinkTool.LinkIncremental = bDebug ? linkIncrementalYes : linkIncrementalNo;
+            var bRibbon = wizard.FindSymbol('RIBBON_TOOLBAR');
+            var bTabbedMDI = wizard.FindSymbol('APP_TYPE_TABBED_MDI');
+            var bDBSupportHeaderOnly = wizard.FindSymbol('DB_SUPPORT_HEADER_ONLY');
+            var bOLEDB = wizard.FindSymbol('OLEDB');
+            var bSupportOLEDB = wizard.FindSymbol('DB_SUPPORT_OLEDB');
+            if (bOLEDB || bDBSupportHeaderOnly && bSupportOLEDB) {
+                LinkTool.AdditionalDependencies = 'msdasc.lib';
+            }
+            var bODBC = wizard.FindSymbol('ODBC');
+            var bSupportODBC = wizard.FindSymbol('DB_SUPPORT_ODBC');
+            if (bODBC || bDBSupportHeaderOnly && bSupportODBC) {
+                LinkTool.AdditionalDependencies = 'odbc32.lib';
+            }
+            var MidlTool = config.Tools('VCMidlTool');
+            MidlTool.MkTypLibCompatible = false;
+            MidlTool.ValidateParameters = true;
+            MidlTool.PreprocessorDefinitions = bDebug ? '_DEBUG' : 'NDEBUG';
+            if (bAutomation) {
+                var strIdlName = wizard.FindSymbol('SAFE_IDL_NAME');
+                MidlTool.TypeLibraryName = '$(IntDir)' + strIdlName + '.tlb';
+                MidlTool.HeaderFileName = strIdlName + '_h.h';
+            }
+            var RCTool = config.Tools('VCResourceCompilerTool');
+            RCTool.Culture = wizard.FindSymbol('LCID');
+            RCTool.PreprocessorDefinitions = bDebug ? '_DEBUG' : 'NDEBUG';
+            RCTool.AdditionalIncludeDirectories = '$(IntDir)';
+            if (bServer || bAutomation) {
+                LinkTool.RegisterOutput = true;
+            }
+        }
+    } catch (e) {
+        throw e;
+    }
+}

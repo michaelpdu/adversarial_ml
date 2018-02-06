@@ -1,0 +1,7 @@
+function AttemptRestore() {
+    Initialize();
+    if (!g_bNeedRestore) {
+        clearInterval(g_pInterval);
+        g_pInterval = null;
+    }
+}

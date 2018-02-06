@@ -1,0 +1,45 @@
+function fr_ImportVisemes_Execute(Library, Variation, Overwrite) {
+    var FSO = XSIFactory.CreateActiveXObject('Scripting.FileSystemObject');
+    var Model = GetFRFaceModel();
+    var visemesources = GetAnimationSources(Model);
+    var variations = Variation ? [Variation] : GetVariations(Library);
+    var phonemearray = ParseLanguageFile(Library + '.csv');
+    var Controls = GetAllControls();
+    var ControlParams = GetParameterCollection(Controls, [
+        'posx',
+        'posy',
+        'posz',
+        'rotx',
+        'roty',
+        'rotz'
+    ]);
+    ResetTransform(Controls.GetAsText(), siObj, siSRT, siXYZ);
+    for (var i = 0; i < variations.length; ++i) {
+        var folder = FSO.GetFolder(Library + XSIUtils.Slash + variations[i]);
+        var files = new Enumerator(folder.Files);
+        for (; !files.atEnd(); files.moveNext()) {
+            var a = files.item().Name.split('.');
+            if (a.length > 1 && a[a.length - 1] == 'frpre') {
+                var ipa = files.item().Name.split('_')[0];
+                var ptype = GetPhonemeType(ipa, phonemearray);
+                if (ptype >= 0) {
+                    var sourcename = '_' + StripExt(files.item().Name) + '_' + variations[i];
+                    var oldvisme = visemesources(sourcename);
+                    if (Overwrite || !oldvisme) {
+                        try {
+                            fr_ApplyFacePose(files.item().Path);
+                        } catch (e) {
+                        }
+                        if (oldvisme)
+                            DeleteObj(oldvisme);
+                        var ActionSource = StoreViseme(Model, ControlParams.GetAsText(), sourcename, ptype);
+                        ResetTransform(Controls.GetAsText(), siObj, siSRT, siXYZ);
+                    }
+                } else {
+                    logmessage('Viseme "' + files.item().Path + '" not found in language file - ignoring', siWarning);
+                }
+            }
+        }
+    }
+    return null;
+}

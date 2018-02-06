@@ -1,0 +1,13 @@
+function GetVariations(folder) {
+    var FSO = XSIFactory.CreateActiveXObject('Scripting.FileSystemObject');
+    var variations = [];
+    if (!folder || !FSO.FolderExists(folder)) {
+        return variations;
+    }
+    var fc = new Enumerator(FSO.GetFolder(folder).SubFolders);
+    for (; !fc.atEnd(); fc.moveNext()) {
+        variations.push(fc.item().Name);
+    }
+    variations.sort();
+    return variations;
+}

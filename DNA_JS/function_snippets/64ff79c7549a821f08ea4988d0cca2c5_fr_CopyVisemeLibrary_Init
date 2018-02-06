@@ -1,0 +1,8 @@
+function fr_CopyVisemeLibrary_Init(ctxt) {
+    var cmd = ctxt.Source;
+    cmd.Arguments.Add('From');
+    cmd.Arguments.Add('To');
+    cmd.Arguments.Add('Overwrite');
+    cmd.Arguments.Add('CopyVisemes');
+    return true;
+}

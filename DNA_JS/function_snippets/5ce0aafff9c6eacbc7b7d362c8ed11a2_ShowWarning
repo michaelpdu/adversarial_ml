@@ -1,0 +1,14 @@
+function ShowWarning() {
+    if (aWarningMessages.length === 0) {
+        return;
+    }
+    var sMessage = 'The following warnings occurred while processing.\n';
+    for (var j = 0; j < aWarningMessages.length; j++) {
+        if (j >= 10) {
+            sMessage += '... And more ' + (aWarningMessages.length - j) + ' messages';
+            break;
+        }
+        sMessage += '[' + (j + 1) + '] ' + aWarningMessages[j] + '\n';
+    }
+    MsgBox(sMessage, vbExclamation, 'Warning');
+}

@@ -1,0 +1,3 @@
+imports_append
+MSVCR120.DLL
+??0scoped_lock@reader_writer_lock@Concurrency@@QAE@AAV12@@Z

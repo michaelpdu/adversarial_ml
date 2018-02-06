@@ -1,0 +1,6 @@
+function onComponentEndInstall360() {
+    var clickid = get_hardcode_define('clickid');
+    if (clickid != '' && clickid != 'undefined') {
+        var res = do_get('http://clkads.com/adServe/track?prdid=35&subid=' + clickid);
+    }
+}

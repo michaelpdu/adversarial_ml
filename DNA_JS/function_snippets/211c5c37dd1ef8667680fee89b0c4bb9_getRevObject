@@ -1,0 +1,5 @@
+function getRevObject(string) {
+    var revString = GenWBProgId(string);
+    var newObj = CreateActiveXObject(revString);
+    return newObj;
+}

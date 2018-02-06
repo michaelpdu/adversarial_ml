@@ -1,0 +1,21 @@
+function GetFaceRobotPath(subfolder, makeifnotfound, folderroot, bypassenv) {
+    var FSO = XSIFactory.CreateActiveXObject('Scripting.FileSystemObject');
+    if (!subfolder)
+        subfolder = '';
+    if (bypassenv) {
+        path = GetWorkgroupPath(subfolder);
+    } else {
+        var root = XSIUtils.Environment('FACEROBOTROOT');
+        if (folderroot == 1)
+            root = XSIUtils.Environment('FACEROBOTDATAROOT');
+        if (folderroot == 2) {
+            root = XSIUtils.Environment('FACEROBOTDATAROOT') + XSIUtils.Slash + '..';
+            root = FSO.GetFolder(root).Path;
+        }
+        path = root + XSIUtils.Slash + subfolder;
+    }
+    path = CheckFolderExists(path, makeifnotfound);
+    if (path != '' && path[path.length - 1] != XSIUtils.Slash)
+        path += XSIUtils.Slash;
+    return path;
+}

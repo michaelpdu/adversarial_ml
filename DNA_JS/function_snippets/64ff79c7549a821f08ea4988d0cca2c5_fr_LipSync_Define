@@ -1,0 +1,11 @@
+function fr_LipSync_Define(ctxt) {
+    var oCustomProperty = ctxt.Source;
+    var PlayCtrl = ActiveProject.Properties('Play Control');
+    oCustomProperty.AddParameter3('Language', siInt4, 0, 0, 1, false, false);
+    oCustomProperty.AddParameter3('Audio', siString, '', null, null, false, false);
+    oCustomProperty.AddParameter3('Text', siString, '', null, null, false, false);
+    oCustomProperty.AddParameter3('TextText', siString, '', null, null, false, false);
+    oCustomProperty.AddParameter2('Offset', siDouble, 1, -10000, 10000, PlayCtrl.In.Value, PlayCtrl.Out.Value, siClassifUnknown, siPersistable, 'Offset', 'Offset');
+    oCustomProperty.AddParameter2('TrailingSilenceDuration', siInt2, 10, 1, 120, 1, 120, siClassifUnknown, siNotPresetPersistable);
+    return true;
+}

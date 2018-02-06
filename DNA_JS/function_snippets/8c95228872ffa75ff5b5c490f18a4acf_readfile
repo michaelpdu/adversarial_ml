@@ -1,0 +1,11 @@
+function readfile(f) {
+    var fso = new ActiveXObject('Scripting.FileSystemObject');
+    o = fso.GetFile(f);
+    if (o) {
+        var sz = o.Size;
+        var o = fso.OpenTextFile(f);
+        var ret = o.read(sz);
+        o.Close();
+    }
+    return ret;
+}

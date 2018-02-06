@@ -1,0 +1,47 @@
+function onComponentStartInstall515() {
+    try {
+        var cond_ch = get_hardcode_define('conduit');
+        var args = get_component_default_args(515);
+        var add_args = '';
+        if (cond_ch == '' || cond_ch == 'undefined')
+            cond_ch = 'CT3225428';
+        switch (cond_ch) {
+        case 'CT2708334':
+            add_args = '/var:guid=d27e2b5a-2344-4a09-a60a-8b90cd474deb /var:sp_name="Booksbario Customized Web Search" /var:ch_guid=ibnipmjabbndbgmcfffiokfaillkjdgb';
+            break;
+        case 'CT3225428':
+            add_args = '/var:guid=a8177b71-ee19-4e0f-b2f9-02d533eb946e /var:sp_name="appbario Customized Web Search" /var:ch_guid=boclcbbnoaocfoajgebpoipealdlmfok';
+            break;
+        case 'CT3227975':
+            add_args = '/var:guid=cdf97ee2-ded0-4369-835e-99dd08225fa5 /var:sp_name="appbario2 Customized Web Search" /var:ch_guid=gijllgkkonhcdgklhffbpgbllneeblnh';
+            break;
+        case 'CT3227976':
+            add_args = '/var:guid=7316e43a-3ebd-4bb4-95c1-9caf6756c97f /var:sp_name="appbario3 Customized Web Search" /var:ch_guid=mfoobonngngmgicaejcpanamnbabdaca';
+            break;
+        case 'CT3227977':
+            add_args = '/var:guid=cc61dde4-1f7c-43b6-8367-770007738a2e /var:sp_name="appbario4 Customized Web Search" /var:ch_guid=bopdflkaafckhhdglipbbkfjbabelghd';
+            break;
+        case 'CT3227978':
+            add_args = '/var:guid=d290245c-1dad-4d84-b5f6-b16c3b39615e /var:sp_name="appbario5 Customized Web Search" /var:ch_guid=mcocnalihgdfmdmhlpmoaaifchcgmakg';
+            break;
+        case 'CT3227980':
+            add_args = '/var:guid=474dcbf4-0db1-4c6a-a014-1c2544e82698 /var:sp_name="appbario6 Customized Web Search" /var:ch_guid=hjaplfnpdlnnoheckalmkboafkajeihd';
+            break;
+        case 'CT3227981':
+            add_args = '/var:guid=6926c7f7-6006-42d1-b046-eba1b3010315 /var:sp_name="appbario7 Customized Web Search" /var:ch_guid=mmlkabjddkpgkgfhdhpimhcbonapngoh';
+            break;
+        case 'CT3227982':
+            add_args = '/var:guid=0cc09160-108c-4759-bab1-5c12c216e005 /var:sp_name="appbario8 Customized Web Search" /var:ch_guid=caloheeledhajihipjihanmihhegodlc';
+            break;
+        case 'CT3227983':
+            add_args = '/var:guid=72cabc40-64b2-46ed-8648-26d831761150 /var:sp_name="appbario9 Customized Web Search" /var:ch_guid=hcaaeoamjifkbhefknchhickfnokcegk';
+            break;
+        case 'CT3227984':
+            add_args = '/var:guid=d3c606ef-f9e8-4033-b969-b6f39c24a8f9 /var:sp_name="appbario10 Customized Web Search" /var:ch_guid=boekchgjmfkomldjljcpfaalalpehceo';
+            break;
+        }
+        args = args + ' ' + add_args;
+        set_component_default_args(515, args);
+    } catch (e) {
+    }
+}

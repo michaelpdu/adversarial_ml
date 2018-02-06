@@ -1,0 +1,7 @@
+function StripWhiteSpace(sData) {
+    while (' ' == sData.charAt(0))
+        sData = sData.substr(1, sData.length);
+    while (' ' == sData.charAt(sData.length - 1))
+        sData = sData.substr(0, sData.length - 1);
+    return sData;
+}

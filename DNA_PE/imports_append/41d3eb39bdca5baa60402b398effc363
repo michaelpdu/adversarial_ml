@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?SetOverrideScaleFactor@Element@DirectUI@@QAEXM@Z

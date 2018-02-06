@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?GetPadding@Element@DirectUI@@QAEPBUtagRECT@@PAPAVValue@2@@Z

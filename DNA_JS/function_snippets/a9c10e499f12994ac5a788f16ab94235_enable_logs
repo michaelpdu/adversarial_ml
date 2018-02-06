@@ -1,0 +1,15 @@
+function enable_logs(isEnable) {
+    if (Win_OS == 'NOTSUPPORT') {
+        WScript.Echo('Error: Operation System doesn\'t support.');
+        return;
+    }
+    enable_globalLogging(isEnable);
+    enable_msapi(isEnable);
+    enable_MPlatform(isEnable);
+    enable_DesktopSyncEngine(isEnable);
+    if (isEnable) {
+        P('Logs are enabled.');
+    } else {
+        P('Logs are disabled.');
+    }
+}

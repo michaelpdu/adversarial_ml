@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?GetMinSize@Element@DirectUI@@QEAAPEBUtagSIZE@@PEAPEAVValue@2@@Z

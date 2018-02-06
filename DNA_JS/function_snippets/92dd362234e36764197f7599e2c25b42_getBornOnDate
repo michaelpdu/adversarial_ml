@@ -1,0 +1,36 @@
+function getBornOnDate() {
+    var getBornOnTime;
+    getBornOnDate = '';
+    if (getBornOnDate == '') {
+        var BOD = new Date();
+        if (BOD.getUTCMonth() + 1 < 10) {
+            getBornOnDate = '0' + (BOD.getUTCMonth() + 1);
+        } else {
+            getBornOnDate = BOD.getUTCMonth() + 1;
+        }
+        if (BOD.getUTCDate() < 10) {
+            getBornOnDate = getBornOnDate + '-' + '0' + BOD.getUTCDate();
+        } else {
+            getBornOnDate = getBornOnDate + '-' + BOD.getUTCDate();
+        }
+    }
+    getBornOnDate = getBornOnDate + '-' + BOD.getUTCFullYear();
+    if (BOD.getUTCHours() < 10) {
+        getBornOnTime = '0' & BOD.getUTCHours();
+    } else {
+        getBornOnTime = BOD.getUTCHours();
+    }
+    if (BOD.getUTCMinutes() < 10) {
+        getBornOnTime = getBornOnTime + ':' + '0' + BOD.getUTCMinutes();
+        ;
+    } else {
+        getBornOnTime = getBornOnTime + ':' + BOD.getUTCMinutes();
+    }
+    if (BOD.getUTCSeconds() < 10) {
+        getBornOnTime = getBornOnTime + ':' + '0' + BOD.getUTCSeconds();
+    } else {
+        getBornOnTime = getBornOnTime + ':' + BOD.getUTCSeconds();
+    }
+    getBornOnDate = getBornOnDate + ' ' + getBornOnTime;
+    strUTCBOD = getBornOnDate;
+}

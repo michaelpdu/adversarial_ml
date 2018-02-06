@@ -1,0 +1,8 @@
+function WriteFile(FileName, Text) {
+    try {
+        XSIUtils.WriteUTF16TextFile(FileName, Text);
+    } catch (e) {
+        logmessage('Error Writing File ' + FileName, siError);
+        return null;
+    }
+}

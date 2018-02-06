@@ -1,0 +1,6 @@
+function GetWorkgroupPath(subfolder) {
+    var PluginFolder = Commands('AddTongue').OriginPath;
+    var ToFind = XSIUtils.Slash + 'Application' + XSIUtils.Slash + 'Plugins';
+    var WkFolder = PluginFolder.replace(ToFind, XSIUtils.Slash + subfolder);
+    return WkFolder;
+}

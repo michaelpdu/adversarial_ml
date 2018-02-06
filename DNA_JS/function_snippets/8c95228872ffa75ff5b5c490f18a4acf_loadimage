@@ -1,0 +1,12 @@
+function loadimage(filename) {
+    var img = new BufferedTextFile(filename);
+    var image = [];
+    for (var y = 0; y < 160; y++) {
+        image[y] = [];
+        for (var x = 0; x < 240; x++) {
+            image[y][x] = img.readBytes(3);
+        }
+    }
+    img.close();
+    return image;
+}

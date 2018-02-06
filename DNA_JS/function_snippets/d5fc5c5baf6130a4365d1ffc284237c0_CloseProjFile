@@ -1,0 +1,12 @@
+function CloseProjFile(strFileName, selProj) {
+    var activeDoc;
+    var nDocs;
+    for (nDocs = 1; nDocs <= selProj.DTE.Documents.Count; nDocs++) {
+        activeDoc = selProj.DTE.Documents.Item(nDocs);
+        if (activeDoc.Name == strFileName) {
+            activeDoc.Close();
+            break;
+        }
+    }
+    return;
+}

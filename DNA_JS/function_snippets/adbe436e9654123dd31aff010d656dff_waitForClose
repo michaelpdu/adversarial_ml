@@ -1,0 +1,18 @@
+function waitForClose() {
+    var maxWait = 120000;
+    var eachWait = 10000;
+    var totalWait = 0;
+    var okToClose = true;
+    fso = new ActiveXObject('Scripting.FileSystemObject');
+    messagesFolder = wshShell.ExpandEnvironmentStrings('%APPDATA%') + '\\Motive\\Acme\\plugin\\store\\messages';
+    while (fso.GetFolder(messagesFolder + '\\inbox').files.Count > 0 || fso.GetFolder(messagesFolder + '\\outbox').files.Count > 0) {
+        WScript.Sleep(eachWait);
+        totalWait += eachWait;
+        if (totalWait >= maxWait) {
+            okToClose = false;
+            break;
+        }
+    }
+    if (okToClose)
+        shutdownPCHButton(resetPollState);
+}

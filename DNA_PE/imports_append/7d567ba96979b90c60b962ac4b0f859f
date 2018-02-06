@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?FireClickEvent@TouchButton@DirectUI@@UEAAXIIW4ClickDevice@12@PE

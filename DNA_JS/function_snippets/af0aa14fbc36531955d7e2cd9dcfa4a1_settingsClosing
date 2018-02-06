@@ -1,0 +1,15 @@
+function settingsClosing(event) {
+    if (event.closeAction == event.Action.commit) {
+        System.Gadget.Settings.write('reversi.difficulty', difficultySelector.selectedIndex);
+        System.Gadget.Settings.write('soundEnabled', soundEnabled);
+        themeIndex = 3 - themeSelector.selectedIndex;
+        colorIndex = colorSelector.selectedIndex + 1;
+        twoPlayer = two_player_box.checked;
+        colorIndex = THEME_COLOR_MAP[themeIndex - 1][colorIndex - 1];
+        System.Gadget.Settings.write('themeIndex', themeIndex);
+        System.Gadget.Settings.write('colorIndex', colorIndex);
+        System.Gadget.Settings.write('PlayerColor', playerColor);
+        System.Gadget.Settings.write('startColor', startColor);
+        System.Gadget.Settings.write('twoPlayer', twoPlayer);
+    }
+}

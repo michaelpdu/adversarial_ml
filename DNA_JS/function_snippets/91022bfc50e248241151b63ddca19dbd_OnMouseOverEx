@@ -1,0 +1,3 @@
+function OnMouseOverEx(flags) {
+    OnMouseActionEx(flags, 'hover');
+}

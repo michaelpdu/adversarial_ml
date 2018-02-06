@@ -1,0 +1,62 @@
+function SetATLConfigsToolSettings(oProj, strProjectName) {
+    var oConfigs = oProj.Object.Configurations;
+    for (var nCntr = 1; nCntr <= oConfigs.Count; nCntr++) {
+        var config = oConfigs(nCntr);
+        var bDebug = false;
+        if (-1 != config.Name.indexOf('Debug')) {
+            bDebug = true;
+        }
+        var strIdlName = wizard.FindSymbol('SAFE_IDL_NAME');
+        var MidlTool = config.Tools('VCMidlTool');
+        MidlTool.MkTypLibCompatible = false;
+        MidlTool.TargetEnvironment = midlTargetWin32;
+        if (bDebug)
+            MidlTool.PreprocessorDefinitions = '_DEBUG';
+        else
+            MidlTool.PreprocessorDefinitions = 'NDEBUG';
+        MidlTool.HeaderFileName = strIdlName + '_i.h';
+        MidlTool.InterfaceIdentifierFileName = strIdlName + '_i.c';
+        MidlTool.ProxyFileName = strIdlName + '_p.c';
+        MidlTool.GenerateStublessProxies = true;
+        MidlTool.TypeLibraryName = '$(IntDir)' + strIdlName + '.tlb';
+        MidlTool.DLLDataFileName = '';
+        MidlTool.ValidateParameters = true;
+        var CLTool = config.Tools('VCCLCompilerTool');
+        CLTool.UsePrecompiledHeader = pchUseUsingSpecific;
+        CLTool.WarningLevel = WarningLevel_3;
+        if (bDebug) {
+            CLTool.Optimization = optimizeDisabled;
+            CLTool.PreprocessorDefinitions = 'WIN32;_WINDOWS;_DEBUG;_USRDLL';
+        } else {
+            CLTool.Optimization = optimizeMaxSpeed;
+            CLTool.PreprocessorDefinitions = 'WIN32;_WINDOWS;NDEBUG;_USRDLL';
+        }
+        var RCTool = config.Tools('VCResourceCompilerTool');
+        RCTool.Culture = wizard.FindSymbol('LCID');
+        RCTool.AdditionalIncludeDirectories = '$(IntDir)';
+        if (bDebug)
+            RCTool.PreprocessorDefinitions = '_DEBUG';
+        else
+            RCTool.PreprocessorDefinitions = 'NDEBUG';
+        var LinkTool = config.Tools('VCLinkerTool');
+        LinkTool.SubSystem = subSystemWindows;
+        LinkTool.IgnoreImportLibrary = true;
+        var strDefFile = '.\\' + strProjectName + '.def';
+        LinkTool.ModuleDefinitionFile = strDefFile;
+        LinkTool.GenerateDebugInformation = true;
+        if (bDebug) {
+            LinkTool.LinkIncremental = linkIncrementalYes;
+        } else {
+            LinkTool.LinkIncremental = linkIncrementalNo;
+            LinkTool.EnableCOMDATFolding = optFolding;
+            LinkTool.OptimizeReferences = optReferences;
+        }
+        LinkTool.RegisterOutput = true;
+        if (wizard.FindSymbol('SEARCH_HANDLER')) {
+            var L_SettingPermissions_Text = '\uFFFD\uFFFD\uFFFDô\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD DLL \uFFFD\uFFFDȨ\uFFFD\uFFFD(\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD SearchFilterHost.exe \uFFFD\uFFFD\uFFFD\uFFFD)...';
+            var PostBuildTool = config.Tools('VCPostBuildEventTool');
+            PostBuildTool.Description = L_SettingPermissions_Text;
+            PostBuildTool.CommandLine = 'icacls.exe "$(TargetPath)" /grant *S-1-5-32-545:RX';
+        }
+    }
+}

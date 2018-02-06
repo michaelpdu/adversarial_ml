@@ -1,0 +1,9 @@
+function HSC_Version() {
+    var strValue = '';
+    try {
+        var WSHShell = new ActiveXObject('WScript.Shell');
+        strValue = WSHShell.RegRead('HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\{A93C4E94-1005-489D-BEAA-B873C1AA6CFC}\\DisplayVersion');
+    } catch (e) {
+    }
+    return strValue;
+}

@@ -1,0 +1,11 @@
+function fr_Visemes_Define(ctxt) {
+    var path = GetFaceRobotPath('Viseme', true, 1, false);
+    var visemepath = path.substr(0, path.length - 1);
+    var oCustomProperty = ctxt.Source;
+    oCustomProperty.AddParameter3('LibraryPath', siString, visemepath, null, null, false, false);
+    oCustomProperty.AddParameter3('Language', siString, 'USEnglish', null, null, false, false);
+    oCustomProperty.AddParameter3('Phoneme', siString, '', null, null, false, false);
+    oCustomProperty.AddParameter3('Variation', siString, 'Normal', null, null, false, false);
+    oCustomProperty.AddParameter3('PhonemeName', siString, '', null, null, false, true);
+    return true;
+}

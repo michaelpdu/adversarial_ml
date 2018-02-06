@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?IsFirstElement@HWNDElement@DirectUI@@QAE_NPAVElement@2@@Z

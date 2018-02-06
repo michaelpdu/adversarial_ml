@@ -1,0 +1,9 @@
+function SelectJawAndCorners(in_ctxt) {
+    var JawCol = GetKeyed(['Jaw']);
+    JawCol.AddItems(GetKeyed([
+        'Mouth',
+        'Control',
+        'Corner'
+    ]));
+    SelectWithKey(JawCol);
+}

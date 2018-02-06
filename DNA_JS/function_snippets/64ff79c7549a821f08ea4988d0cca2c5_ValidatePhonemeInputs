@@ -1,0 +1,4 @@
+function ValidatePhonemeInputs(Model, Files) {
+    var FSO = XSIFactory.CreateActiveXObject('Scripting.FileSystemObject');
+    return Files[0] && Files[1] && FSO.FileExists(Files[0]) && FSO.FileExists(Files[1]);
+}

@@ -1,0 +1,3 @@
+function nextFrame() {
+    flipPiece1(currframe, currfinal, currwhich);
+}

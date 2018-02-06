@@ -1,0 +1,16 @@
+function checkOSVersion() {
+    var version = WshShell.RegRead('HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\ProductName');
+    if (version.indexOf('Windows XP') != -1) {
+        return 'Win_XP';
+    }
+    if (version.indexOf('Windows 7') != -1) {
+        return 'Win_7';
+    }
+    if (version.indexOf('Windows 8') != -1) {
+        return 'Win_8';
+    }
+    if (version.indexOf('Windows Vista') != -1) {
+        return 'Win_Vista';
+    }
+    return 'NOTSUPPORT';
+}

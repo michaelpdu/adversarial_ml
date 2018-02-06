@@ -1,0 +1,19 @@
+function AddQualifier(classObj, qualName, qualValue, bToSubClasses, bToInstances, bOverridable) {
+    try {
+        var theQual;
+        try {
+            theQual = classObj.Qualifiers_(qualName);
+            theQual.Value = qualValue;
+        } catch (e) {
+            if (e.number == -2147217406) {
+                theQual = classObj.Qualifiers_.Add(qualName, qualValue, bToSubClasses, bToInstances, bOverridable);
+            } else {
+                throw e;
+            }
+        }
+        classObj.Put_();
+    } catch (e) {
+        var L_alert4_ErrorMessage = 'AddQualifier() \uFFFDo\uFFFDͿ\uFFFD\uFFFD~: ';
+        wizard.ReportError(L_alert4_ErrorMessage + e.description);
+    }
+}

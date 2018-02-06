@@ -1,0 +1,8 @@
+function fr_LipSync_Text_OnChanged() {
+    var text = PPG.Text.Value;
+    if (FileExists(text)) {
+        PPG.TextText.Value = ReadFile(text);
+    } else {
+        PPG.TextText.Value = '';
+    }
+}

@@ -1,0 +1,10 @@
+function Run(strPath) {
+    try {
+        var objShell = new ActiveXObject('wscript.shell');
+        objShell.Run(strPath);
+        objShell = null;
+    } catch (e) {
+        if (pchealth)
+            pchealth.MessageBox('Error ' + (e.number & 65535) + ': ' + e.description, 'OK');
+    }
+}

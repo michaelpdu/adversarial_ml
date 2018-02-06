@@ -1,0 +1,14 @@
+function ReadFile(FileName) {
+    var FSO = XSIFactory.CreateActiveXObject('Scripting.FileSystemObject');
+    if (!FSO.FileExists(FileName)) {
+        logmessage('File ' + FileName + ' Not found', siError);
+        return null;
+    }
+    try {
+        var FileText = XSIUtils.ReadTextFile(FileName);
+        return FileText;
+    } catch (e) {
+        logmessage('Error Reading File ' + FileName, siError);
+        return null;
+    }
+}

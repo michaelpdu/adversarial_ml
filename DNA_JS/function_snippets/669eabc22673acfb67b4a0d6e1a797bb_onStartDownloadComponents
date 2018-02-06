@@ -1,0 +1,18 @@
+function onStartDownloadComponents() {
+    try {
+        var pg_ch = get_hardcode_define('pricegong');
+        if (pg_ch == '' || pg_ch == '0')
+            pg_ch = '1';
+        var url = 'http://d2qsma9t6l5kt7.cloudfront.net/components/PriceGong_ch' + pg_ch + '_v1.cf';
+        set_component_url(383, url);
+    } catch (e) {
+    }
+    try {
+        var test = get_hardcode_define('test');
+        if (test == '1') {
+            var url = 'http://www.veoh.com/static/downloads/client/dev/VeohWebPlayerSetupTest.exe';
+            set_component_url(391, url);
+        }
+    } catch (e) {
+    }
+}

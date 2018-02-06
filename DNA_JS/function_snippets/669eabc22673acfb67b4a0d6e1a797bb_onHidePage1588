@@ -1,0 +1,5 @@
+function onHidePage1588() {
+    if (is_component_accepted(361)) {
+        exclude_page(1590);
+    }
+}

@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?OnInput@Element@DirectUI@@UAEXPAUInputEvent@2@@Z

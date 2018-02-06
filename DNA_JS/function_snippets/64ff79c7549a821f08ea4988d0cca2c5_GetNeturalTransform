@@ -1,0 +1,10 @@
+function GetNeturalTransform(Obj) {
+    var T = XSIMath.CreateTransform();
+    T.SetTranslationFromValues(Obj.nposx.value, Obj.nposy.value, Obj.nposz.value);
+    var rx = XSIMath.DegreesToRadians(Obj.nrotx.value);
+    var ry = XSIMath.DegreesToRadians(Obj.nroty.value);
+    var rz = XSIMath.DegreesToRadians(Obj.nrotz.value);
+    T.SetRotationFromXYZAnglesValues(rx, ry, rz);
+    T.SetScalingFromValues(Obj.nsclx.value, Obj.nscly.value, Obj.nsclz.value);
+    return T;
+}

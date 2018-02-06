@@ -1,0 +1,37 @@
+function IsWMIOk(selProj, selObj) {
+    try {
+        if (!CanAddATLClass(selProj, selObj)) {
+            return false;
+        }
+        try {
+            var locator = new ActiveXObject('WbemScripting.SWbemLocator');
+            var services = locator.ConnectServer('', 'root\\default');
+        } catch (e) {
+            var L_alert5_ErrorMessage = '\uFFFDL\uFFFDk\uFFFDs\uFFFDu\uFFFD\uFFFD WMI\uFFFDC\uFFFD\uFFFD\uFFFDˬd\uFFFDz\uFFFDq\uFFFD\uFFFD\uFFFDW\uFFFDO\uFFFD_\uFFFDw\uFFFDw\uFFFD\uFFFD WMI';
+            throw L_alert5_ErrorMessage;
+        }
+        var classObj = services.Get('StdRegProv');
+        var methObject = classObj.Methods_.Item('GetExpandedStringValue');
+        var inParmsInstance = methObject.InParameters.SpawnInstance_();
+        inParmsInstance.Properties_.Add('sSubKeyName', 8);
+        inParmsInstance.Properties_('sSubKeyName').Value = 'SOFTWARE\\Microsoft\\WBEM';
+        inParmsInstance.Properties_.Add('sValueName', 8);
+        inParmsInstance.Properties_('sValueName').Value = 'Build';
+        var outParms = classObj.ExecMethod_('GetExpandedStringValue', inParmsInstance);
+        if (outParms.Properties_('ReturnValue').Value != 0) {
+            var L_alert6_ErrorMessage = '\uFFFDL\uFFFDk\uFFFDP\uFFFDw WMI \uFFFDիؽs\uFFFD\uFFFD';
+            throw L_alert6_ErrorMessage;
+        }
+        if (outParms.Properties_('sValue').Value >= '1085') {
+            return true;
+        } else {
+            var L_alert7_ErrorMessage = '\uFFFDw\uFFFD\u02E6b\uFFFDz\uFFFDq\uFFFD\uFFFD\uFFFDW\uFFFD\uFFFD WMI \uFFFD\uFFFD\uFFFD\uFFFD\uFFFDO ';
+            var L_alert8_ErrorMessage = '\uFFFDC\uFFFDݭn\uFFFD\uFFFD\uFFFD\uFFFD 1085 \uFFFDΧ\uFFFD\uFFFDs\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD~\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFDo\uFFFDӺ\uFFFD\uFFFDF\uFFFDC';
+            throw L_alert7_ErrorMessage + outParms.Properties_('sValue').Value + L_alert8_ErrorMessage;
+        }
+    } catch (e) {
+        var L_alert9_ErrorMessage = '\uFFFD]\uFFFD\uFFFD\uFFFDo\uFFFDͥH\uFFFDU\uFFFD\uFFFD\uFFFD~\uFFFDA\uFFFDҥH\uFFFDL\uFFFDk\uFFFDs\uFFFDW WMI \uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD鴣\uFFFDѪ̪\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFDz\uFFFD\uFFFD\uFFFDM\uFFFD\uFFFD:\n\r';
+        wizard.ReportError(L_alert9_ErrorMessage + e);
+        return false;
+    }
+}

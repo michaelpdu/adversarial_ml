@@ -1,0 +1,4 @@
+function NET_Http(request) {
+    this.__proto__ = NET_Http.prototype;
+    this.request = request;
+}

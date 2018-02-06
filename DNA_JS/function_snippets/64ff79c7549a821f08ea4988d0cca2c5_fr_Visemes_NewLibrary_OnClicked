@@ -1,0 +1,36 @@
+function fr_Visemes_NewLibrary_OnClicked() {
+    var localpath = Application.ActiveProject2.Path + XSIUtils.Slash + 'Viseme';
+    if (PPG.LibraryPath.Value.toLowerCase() == localpath.toLowerCase())
+        localpath = '';
+    var copyLib = ActiveSceneRoot.AddProperty('CustomProperty', false, 'Create_New_Library');
+    copyLib.AddParameter3('FromLibraryPath', siString, PPG.LibraryPath.Value, null, null, false, false);
+    copyLib.AddParameter3('ToLibraryPath', siString, localpath, null, null, false, false);
+    copyLib.AddParameter3('Overwrite', siBool, false, 0, false, false);
+    copyLib.AddParameter3('CopyVisemes', siBool, true, 0, false, false);
+    var item;
+    var layout = copyLib.PPGLayout;
+    layout.AddGroup('Source Library');
+    item = layout.AddItem('FromLibraryPath', 'From', siControlFolder);
+    item.setAttribute(siUINoLabel, true);
+    layout.AddSpacer(0, 10);
+    item = layout.AddItem('CopyVisemes', 'Copy Viseme Files');
+    layout.EndGroup();
+    layout.AddGroup('Destination Library');
+    item = layout.AddItem('ToLibraryPath', 'To', siControlFolder);
+    item.setAttribute(siUINoLabel, true);
+    layout.AddSpacer(0, 10);
+    item = layout.AddItem('Overwrite', 'Overwrite Existing Files');
+    layout.EndGroup();
+    layout.SetAttribute(siUIHelpFile, '<FactoryPath>/Doc/<DocLangPref>/xsidocs.chm::/propref_facebot_CreateNewLibrary.htm');
+    try {
+        InspectObj(copyLib, null, null, siModal);
+        fr_CopyVisemeLibrary(copyLib.FromLibraryPath.Value, copyLib.ToLibraryPath.Value, copyLib.Overwrite.Value, copyLib.CopyVisemes.Value);
+        var FSO = XSIFactory.CreateActiveXObject('Scripting.FileSystemObject');
+        if (FSO.FolderExists(copyLib.ToLibraryPath.Value)) {
+            PPG.LibraryPath.Value = copyLib.ToLibraryPath.Value;
+        }
+    } catch (e) {
+    }
+    Deleteobj(copyLib);
+    UpdateVisemeState(PPG);
+}

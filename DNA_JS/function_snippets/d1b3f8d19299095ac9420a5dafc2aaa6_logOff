@@ -1,0 +1,11 @@
+function logOff() {
+    g_logFile.writeline('Logging off');
+    var Locator = new ActiveXObject('WbemScripting.SWbemLocator');
+    var Service = Locator.connectserver();
+    Service.Security_.ImpersonationLevel = 3;
+    Service.Security_.Privileges.AddAsString('SeShutdownPrivilege');
+    var ClassObj = Service.InstancesOf('Win32_OperatingSystem');
+    var Enum = new Enumerator(ClassObj);
+    var instance = Enum.item();
+    instance.Win32Shutdown(0);
+}

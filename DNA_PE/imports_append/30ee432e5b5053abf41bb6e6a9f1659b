@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?ElementFromPoint@HWNDElement@DirectUI@@QAEPAVElement@2@PAUtagPO

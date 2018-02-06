@@ -1,0 +1,9 @@
+function Uninitialize() {
+    try {
+        if (g_pStatus != null) {
+            g_pStatus.RegisterForUpdates(false);
+            g_pStatus.OnUpdate(Update, false);
+        }
+    } catch (err) {
+    }
+}

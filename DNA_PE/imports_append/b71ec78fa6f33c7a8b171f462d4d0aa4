@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?GetKeyFocusedElement@HWNDElement@DirectUI@@SAPEAVElement@2@XZ

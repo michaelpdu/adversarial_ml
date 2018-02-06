@@ -1,0 +1,22 @@
+function GetFaceMesh(Model) {
+    if (!Model)
+        Model = GetFRFaceModel(false);
+    if (!Model)
+        return null;
+    var FaceMesh;
+    var FaceMeshes = GetKeyed([
+        'Face',
+        'Mesh'
+    ], Model);
+    if (FaceMeshes.count)
+        return FaceMeshes(0);
+    var FaceConnection = Model.Properties('FaceConnections');
+    if (FaceConnection && FaceConnection.Mesh) {
+        var FaceName = FaceConnection.Mesh.value;
+        FaceMesh = Model.FindChild(FaceName);
+        if (FaceMesh && FaceMesh.type == 'polymsh')
+            return FaceMesh;
+    }
+    FaceMesh = fr_sget('meshes', 'Mesh');
+    return FaceMesh;
+}

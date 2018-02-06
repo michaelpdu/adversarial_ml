@@ -1,0 +1,10 @@
+function fr_LipSync_SaveText_OnClicked() {
+    if (PPG.Text.Value) {
+        if (!FileExists(PPG.Text.Value) || XSIUIToolkit.Msgbox('Overwrite existing file: ' + PPG.Text.Value + '?', siMsgYesNo | siMsgQuestion, 'Overwrite File') == siMsgYes) {
+            WriteFile(PPG.Text.Value, PPG.TextText.Value);
+            PPG.TextText.Value = ReadFile(PPG.Text.Value);
+        }
+    } else {
+        logmessage('No filename specified.', siError);
+    }
+}

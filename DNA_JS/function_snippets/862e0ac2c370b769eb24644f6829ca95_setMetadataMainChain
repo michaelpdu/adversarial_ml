@@ -1,0 +1,3 @@
+function setMetadataMainChain(pName) {
+    alert(pName);
+}

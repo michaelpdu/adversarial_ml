@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?OnListenedPropertyChanged@TouchEdit2@DirectUI@@EAEXPAVElement@2

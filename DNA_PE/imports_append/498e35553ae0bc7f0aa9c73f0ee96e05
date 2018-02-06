@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?GetDataEntry@Macro@DirectUI@@QAEPAUIDataEntry@2@XZ

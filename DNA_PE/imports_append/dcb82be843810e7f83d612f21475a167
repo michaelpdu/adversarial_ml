@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?SetDynamicScaling@DUIXmlParser@DirectUI@@QAEXW4DynamicScalePars

@@ -1,0 +1,21 @@
+function BuildCommonConfigApplication(XmlDoc, commonConfigPath, worksiteID) {
+    var FolderConfigNode = XmlDoc.selectSingleNode('//configuration//application[@id=\'' + worksiteID + '\']');
+    var applicationEle = null;
+    var categoryEle = null;
+    var entryEle = null;
+    var sub_entryEle = null;
+    if (null == FolderConfigNode) {
+        FolderConfigNode = XmlDoc.selectSingleNode('//configuration');
+        if (null == FolderConfigNode) {
+            FolderConfigNode = XmlDoc.createElement('configuration');
+            XmlDoc.appendChild(FolderConfigNode);
+            FolderConfigNode = XmlDoc.selectSingleNode('//configuration');
+        }
+        if (null != FolderConfigNode) {
+            applicationEle = XmlDoc.createElement('application');
+            applicationEle.setAttribute('id', worksiteID);
+            XmlDoc.documentElement.appendChild(applicationEle);
+        }
+        XmlDoc.save(commonConfigPath);
+    }
+}

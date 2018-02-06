@@ -1,0 +1,12 @@
+function runAnsys(strFullCmd) {
+    var WshShell = new ActiveXObject('WScript.Shell');
+    var oExec = WshShell.Exec(strFullCmd);
+    while (oExec.Status == 0) {
+        if (!oExec.StdOut.AtEndOfStream)
+            WScript.Echo(oExec.StdOut.ReadAll());
+        if (!oExec.StdErr.AtEndOfStream)
+            WScript.Echo(oExec.StdErr.ReadAll());
+        WScript.Sleep(2000);
+    }
+    return oExec.ExitCode;
+}

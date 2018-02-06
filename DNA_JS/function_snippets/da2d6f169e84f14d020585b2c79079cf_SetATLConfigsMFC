@@ -1,0 +1,17 @@
+function SetATLConfigsMFC(oProj) {
+    var bDynamicMFC = wizard.FindSymbol('DYNAMIC_MFC');
+    var oConfigs = oProj.Object.Configurations;
+    for (var nCntr = 1; nCntr <= oConfigs.Count; nCntr++) {
+        var config = oConfigs(nCntr);
+        var bDebug = false;
+        if (-1 != config.Name.indexOf('Debug')) {
+            bDebug = true;
+        }
+        var CLTool = config.Tools('VCCLCompilerTool');
+        if (bDynamicMFC) {
+            config.UseOfMFC = useMfcDynamic;
+        } else {
+            config.UseOfMFC = useMfcStatic;
+        }
+    }
+}

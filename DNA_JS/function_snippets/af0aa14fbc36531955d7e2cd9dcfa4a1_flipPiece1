@@ -1,0 +1,38 @@
+function flipPiece1(frame, finalframe, which) {
+    var WHITEFINAL = 0;
+    var BLACKFINAL = 10;
+    var currframe = frame;
+    var currfinal = finalframe;
+    var currwhich = which;
+    function nextFrame() {
+        flipPiece1(currframe, currfinal, currwhich);
+    }
+    switch (finalframe) {
+    case BLACKFINAL:
+        currframe++;
+        if (currframe > BLACKFINAL) {
+            currframe = BLACKFINAL;
+        }
+        if (currframe == BLACKFINAL) {
+            which.src = 'images/piece/piece' + BLACKFINAL + '.png';
+            m_iCurrentFrame = BLACKFINAL;
+        } else {
+            which.src = 'images/piece/piece' + currframe + '.png';
+            m_timeout = setTimeout(nextFrame, 20);
+        }
+        break;
+    case WHITEFINAL:
+        currframe--;
+        if (currframe < WHITEFINAL) {
+            currframe = WHITEFINAL;
+        }
+        if (currframe == WHITEFINAL) {
+            which.src = 'images/piece/piece' + WHITEFINAL + '.png';
+            m_iCurrentFrame = WHITEFINAL;
+        } else {
+            which.src = 'images/piece/piece' + currframe + '.png';
+            m_timeout = setTimeout(nextFrame, 20);
+        }
+        break;
+    }
+}

@@ -1,0 +1,7 @@
+function SelectMouthCenter(in_ctxt) {
+    SelectWithKey(GetKeyed([
+        'Mouth',
+        'Control',
+        'Center'
+    ]));
+}

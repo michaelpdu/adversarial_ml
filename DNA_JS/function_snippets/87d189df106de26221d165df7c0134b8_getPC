@@ -1,0 +1,24 @@
+function getPC() {
+    var oPC = new Object();
+    var sDllPath = null;
+    var sProduct = null;
+    var aProduct = new Array();
+    var oShell = null;
+    var iErrorCode = null;
+    try {
+        oDmi = new ActiveXObject('DMI.SMI');
+        oPC.serialNumber = oDmi.GetDataListValueByName('System Serial Number');
+        sProduct = oDmi.GetDataListValueByName('Product Name');
+        getProduct(aProduct, sProduct);
+        oPC.productName = aProduct[0];
+        oPC.productNumber = aProduct[1];
+    } catch (e) {
+        sDllPath = '"%programfiles%\\HPQ\\HP Help and Support\\ScDmi.dll"';
+        oShell = new ActiveXObject('WScript.Shell');
+        iErrorCode = oShell.run('regsvr32 -s ' + sDllPath, 0, true);
+        if (0 == iErrorCode) {
+            oPC = getPC();
+        }
+    }
+    return oPC;
+}

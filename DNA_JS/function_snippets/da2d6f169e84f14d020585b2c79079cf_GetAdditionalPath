@@ -1,0 +1,65 @@
+function GetAdditionalPath(strName, strResPath, strHelpPath) {
+    try {
+        var strFullName = strName;
+        switch (strName) {
+        case 'buttons.bmp':
+        case 'filelarge.bmp':
+        case 'filesmall.bmp':
+        case 'main.bmp':
+        case 'writelarge.bmp':
+        case 'writesmall.bmp':
+        case 'ribbon.mfcribbon-ms':
+            strFullName = strResPath + '\\' + strName;
+            break;
+        case 'tbdh_.bmp':
+        case 'tbd__.bmp':
+        case 'tbrh_.bmp':
+        case 'tbr__.bmp':
+        case 'tbah_.bmp':
+        case 'tba__.bmp':
+        case 'tbedh.bmp':
+        case 'tbed_.bmp':
+        case 'tbeah.bmp':
+        case 'tbea_.bmp':
+        case 'tbndm.bmp':
+        case 'tbndmh.bmp':
+        case 'tbnds.bmp':
+        case 'tbndsh.bmp':
+            strFullName = strResPath + '\\Toolbar.bmp';
+            break;
+        case 'tbah_256.bmp':
+        case 'tba__256.bmp':
+        case 'tbdh_256.bmp':
+        case 'tbd__256.bmp':
+        case 'tbeah_256.bmp':
+        case 'tbea_256.bmp':
+        case 'tbedh_256.bmp':
+        case 'tbed_256.bmp':
+        case 'tbrh_256.bmp':
+        case 'tbr__256.bmp':
+        case 'tbndmh256.bmp':
+        case 'tbndm256.bmp':
+        case 'tbndsh256.bmp':
+        case 'tbnds256.bmp':
+            strFullName = strResPath + '\\Toolbar256.bmp';
+            break;
+        case 'tba_i.bmp':
+        case 'tbrhi.bmp':
+        case 'tbr_i.bmp':
+        case 'tbahi.bmp':
+            strFullName = strResPath + '\\IToolbar.bmp';
+            break;
+        case 'tba_i256.bmp':
+        case 'tbrhi256.bmp':
+        case 'tbr_i256.bmp':
+        case 'tbahi256.bmp':
+            strFullName = strResPath + '\\IToolbar256.bmp';
+            break;
+        default:
+            break;
+        }
+        return strFullName;
+    } catch (e) {
+        throw e;
+    }
+}

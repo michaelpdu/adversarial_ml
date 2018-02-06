@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?SyncRect@HWNDHost@DirectUI@@IEAAXI_N@Z

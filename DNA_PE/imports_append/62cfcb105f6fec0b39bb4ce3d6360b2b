@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?GetUiaFocusDelegate@TouchEdit2@DirectUI@@UEAAPEAVElement@2@XZ

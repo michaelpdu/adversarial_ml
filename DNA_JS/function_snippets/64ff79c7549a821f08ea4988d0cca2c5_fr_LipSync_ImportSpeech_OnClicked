@@ -1,0 +1,14 @@
+function fr_LipSync_ImportSpeech_OnClicked() {
+    var pset = PPG.Inspected(0);
+    var PlayCtrl = ActiveProject.Properties('Play Control');
+    var trailingSilenceParameter = PPG.TrailingSilenceDuration;
+    var SpeechAction;
+    if (typeof trailingSilenceParameter == 'undefined')
+        SpeechAction = fr_ImportSpeech(PPG.Audio.Value, PPG.Text.Value, PPG.Offset.Value, PPG.Language.Value);
+    else
+        SpeechAction = fr_ImportSpeech(PPG.Audio.Value, PPG.Text.Value, PPG.Offset.Value, PPG.Language.Value, trailingSilenceParameter.Value);
+    if (SpeechAction) {
+        InspectObj(SpeechAction + '.SpeechBlend');
+        ShowOptionalPanel('lipsync_stow');
+    }
+}

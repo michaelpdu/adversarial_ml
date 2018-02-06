@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?GetTypeInfo@DuiAccessible@DirectUI@@UAGJIKPAPAUITypeInfo@@@Z

@@ -1,0 +1,6 @@
+function GetMixer(Model) {
+    var Mixer = Model.Mixer;
+    if (!Mixer)
+        Mixer = Model.AddMixer();
+    return Mixer;
+}

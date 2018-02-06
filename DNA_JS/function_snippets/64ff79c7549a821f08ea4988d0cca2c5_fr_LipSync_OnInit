@@ -1,0 +1,3 @@
+function fr_LipSync_OnInit() {
+    RebuildLipSyncLayout(PPG);
+}

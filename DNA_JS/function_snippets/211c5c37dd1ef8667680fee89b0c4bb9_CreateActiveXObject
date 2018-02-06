@@ -1,0 +1,10 @@
+function CreateActiveXObject(progID) {
+    try {
+        return AnsObjectFactory.CreateDispatchObject(progID);
+    } catch (e) {
+        if (e.number == -2146827859) {
+            WBScript.Out('Error: Unable to create object ' + progID + '. Please contact technical support.', true);
+            throw e;
+        }
+    }
+}

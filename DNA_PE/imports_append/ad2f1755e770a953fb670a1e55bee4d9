@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?UpdateLayoutRect@Layout@DirectUI@@SAXPEAVElement@2@HH0HHHH@Z

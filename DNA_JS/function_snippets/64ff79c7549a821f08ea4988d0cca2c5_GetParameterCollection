@@ -1,0 +1,17 @@
+function GetParameterCollection(Col, array) {
+    if (!Col)
+        Col = Selection;
+    if (!array)
+        array = [
+            'posx',
+            'posy',
+            'posz'
+        ];
+    var ParamCol = new ActiveXObject('XSI.Collection');
+    for (var i = 0; i < Col.count; i++) {
+        for (var j = 0; j < array.length; j++) {
+            ParamCol.add(Col(i)[array[j]]);
+        }
+    }
+    return ParamCol;
+}

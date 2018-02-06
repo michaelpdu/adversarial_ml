@@ -1,0 +1,3 @@
+imports_append
+ADVAPI32.DLL
+SetPrivateObjectSecurityEx

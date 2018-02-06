@@ -1,0 +1,9 @@
+function CorrectiveShapeExists(ShapeName) {
+    var Mesh = GetFaceMesh(GetFRFaceModel());
+    var ResolveShape = new ActiveXObject('XSI.Collection');
+    try {
+        ResolveShape.SetAsText(Mesh + '.polymsh.cls.*.' + ShapeName);
+    } catch (e) {
+    }
+    return ResolveShape.count != 0;
+}

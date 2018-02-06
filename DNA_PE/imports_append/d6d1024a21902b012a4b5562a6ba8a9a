@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?SetPosition@ModernProgressBar@DirectUI@@QEAAJH@Z

@@ -1,0 +1,4 @@
+function fr_PrepareForPhonemes_Init(ctxt) {
+    var cmd = ctxt.Source;
+    return true;
+}

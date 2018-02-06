@@ -1,0 +1,8 @@
+function convertFormula(sFormula) {
+    var worksheet = objSpecialWorkbook.Sheets(1);
+    var originalContent = worksheet.Cells(1, 1).Formula;
+    worksheet.Cells(1, 1).Formula = sFormula;
+    sFormula = worksheet.Cells(1, 1).FormulaLocal;
+    worksheet.Cells(1, 1).Formula = originalContent;
+    return sFormula;
+}

@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?GetClickDevice@TouchButton@DirectUI@@QEAA?AW4ClickDevice@12@XZ

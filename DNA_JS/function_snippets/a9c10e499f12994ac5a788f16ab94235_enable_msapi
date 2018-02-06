@@ -1,0 +1,18 @@
+function enable_msapi(isEnable) {
+    if (check_file_exists(msapi_log_cfg)) {
+        PY('MSAPI');
+        fso.DeleteFile(msapi_log_cfg);
+    } else {
+        PN('MSAPI');
+    }
+    if (isEnable) {
+        createFolder(msapi_log_cfg_path);
+        var f = fso.CreateTextFile(msapi_log_cfg, true);
+        f.WriteLine('Tracelevel=4');
+        f.WriteLine('LogFile="msapilog.log"');
+        f.WriteLine('ClearLog=1');
+        f.WriteLine('curl_verbose=1');
+        f.WriteLine('TraceFlags=0');
+        f.Close();
+    }
+}

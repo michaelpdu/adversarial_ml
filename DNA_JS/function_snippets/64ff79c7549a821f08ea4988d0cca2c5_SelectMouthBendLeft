@@ -1,0 +1,8 @@
+function SelectMouthBendLeft(in_ctxt) {
+    SelectWithKey(GetKeyed([
+        'Mouth',
+        'Control',
+        'Bend',
+        'Left'
+    ]));
+}

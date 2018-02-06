@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?get_accParent@DuiAccessible@DirectUI@@UAGJPAPAUIDispatch@@@Z

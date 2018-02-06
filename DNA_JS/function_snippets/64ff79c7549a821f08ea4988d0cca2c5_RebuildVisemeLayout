@@ -1,0 +1,37 @@
+function RebuildVisemeLayout(PPG) {
+    var layout = PPG.PPGLayout;
+    layout.Clear();
+    var item;
+    layout.AddGroup('Viseme Library');
+    item = layout.AddItem('LibraryPath', 'LibraryPath', siControlFolder);
+    item.setAttribute(siUINoLabel, true);
+    layout.AddSpacer(0, 10);
+    item = layout.AddButton('NewLibrary', 'Create New Library...');
+    item.SetAttribute('cx', 140);
+    layout.EndGroup();
+    layout.AddGroup('Viseme');
+    item = layout.AddEnumControl('Language', [], 'Language', siControlCombo);
+    layout.AddRow();
+    item = layout.AddEnumControl('Phoneme', [], 'Phoneme', siControlCombo);
+    item = layout.AddButton('ApplyViseme', 'Apply');
+    item.SetAttribute('cx', 60);
+    layout.EndRow();
+    layout.AddRow();
+    item = layout.AddEnumControl('Variation', [], 'Variation', siControlCombo);
+    item = layout.AddButton('NewVariation', 'New...');
+    item.SetAttribute('cx', 60);
+    layout.EndRow();
+    layout.AddSpacer(0, 10);
+    layout.AddRow();
+    item = layout.AddButton('StoreViseme', 'Save Viseme Pose');
+    item.SetAttribute('cx', 140);
+    item = layout.AddButton('EditVisemeShape', 'Create Corrective Shape');
+    item.SetAttribute('cx', 140);
+    layout.EndRow();
+    layout.EndGroup();
+    layout.AddSpacer(0, 10);
+    item = layout.AddButton('ImportVisemes', 'Import Visemes...');
+    item.SetAttribute('cx', 140);
+    layout.SetAttribute(siUIHelpFile, '<FactoryPath>/Doc/<DocLangPref>/xsidocs.chm::/propref_facebot_Visemes.htm');
+    UpdateVisemeState(PPG);
+}

@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?GetClassInfoW@CCListView@DirectUI@@UEAAPEAUIClassInfo@2@XZ

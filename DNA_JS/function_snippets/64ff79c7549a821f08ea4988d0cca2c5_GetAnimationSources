@@ -1,0 +1,6 @@
+function GetAnimationSources(Model) {
+    var Mixer = Model.Mixer;
+    if (!Mixer)
+        return new ActiveXObject('XSI.Collection');
+    return Mixer.NestedObjects('Sources').NestedObjects('Viseme').NestedObjects;
+}

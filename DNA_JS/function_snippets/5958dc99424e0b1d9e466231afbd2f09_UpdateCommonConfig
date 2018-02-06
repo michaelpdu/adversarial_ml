@@ -1,0 +1,39 @@
+function UpdateCommonConfig(worksiteID, sCategory, sEntry, sValue) {
+    var oAciServer = null;
+    var result = '~~~initial reault~~~';
+    var initResult = 0;
+    var XmlDoc = null;
+    var commonConfigPath = '';
+    try {
+        oAciServer = new ActiveXObject('ACIServer.ConfigManager');
+        XmlDoc = new ActiveXObject('Msxml2.DOMDocument');
+        commonConfigPath = oAciServer.ConfigStorePath + 'Common.Config';
+        XmlDoc.setProperty('SelectionLanguage', 'XPath');
+        XmlDoc.load(commonConfigPath);
+        BuildCommonConfigApplication(XmlDoc, commonConfigPath, worksiteID);
+        initResult = oAciServer.Initialize(worksiteID, 0, 0);
+        if (false == AlertError(oAciServer, initResult)) {
+            WScript.Quit(0);
+        }
+        initResult = oAciServer.SetEntryString(sCategory, sEntry, sValue);
+        if (false == AlertError(oAciServer, initResult)) {
+            WScript.Quit(0);
+        }
+        oAciServer.Uninitialize();
+        if ('FileConverterCore' == sCategory) {
+            BuildConverters(commonConfigPath, worksiteID);
+        }
+    } catch (e) {
+        var sExceptionError = e.name + ': (' + (e.number & 65535) + ') - ' + e.description + '\r' + e.number;
+        WScript.Echo(sExceptionError);
+    } finally {
+        if (undefined != oAciServer && null != oAciServer) {
+            delete oAciServer;
+            oAciServer = null;
+        }
+        if (undefined != XmlDoc && null != XmlDoc) {
+            delete XmlDoc;
+            XmlDoc = null;
+        }
+    }
+}

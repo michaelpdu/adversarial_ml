@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?InitPropSheetPage@TaskPage@DirectUI@@MAEXPAU_PROPSHEETPAGEW@@@Z

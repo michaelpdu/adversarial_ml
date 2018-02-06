@@ -1,0 +1,5 @@
+function fr_CreateVisemeShape_Init(ctxt) {
+    var cmd = ctxt.Source;
+    cmd.Arguments.Add('ShapeName');
+    return true;
+}

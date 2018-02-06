@@ -1,0 +1,3 @@
+function OnStartupComplete() {
+    app = new ActiveXObject('methode.application');
+}

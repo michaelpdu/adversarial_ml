@@ -1,0 +1,14 @@
+function shutDownControls() {
+    try {
+        g_logFile.writeline('Shuting down pchbutton');
+        g_wshShell.run('"' + g_installDirSubPath + '\\plugin\\bin\\pchbutton.exe" -shutdown', 0, true);
+    } catch (e) {
+        g_logFile.writeline('Error shuting down pchbutton');
+    }
+    try {
+        g_logFile.writeline('Shuting down contentupdate');
+        g_wshShell.run('"' + g_installDirSubPath + '\\plugin\\bin\\ContentUpdater.exe" -shutdown', 0, true);
+    } catch (e) {
+        g_logFile.writeline('Error shuting down contentupdate');
+    }
+}

@@ -1,0 +1,193 @@
+function TranslateReport(sXMLOutputFile) {
+    var typeNone = 0;
+    var typeOrder = 16;
+    var typeOptions = 32;
+    var typeSubject = 64;
+    var typeSalesComp = 128;
+    var typeListingComp = 256;
+    var typeRentalComp = 512;
+    var k_sDelimiter = '~~~';
+    var oTagArray = null;
+    var sMainForm = '';
+    var sData = '';
+    var g_o_AppraisalEle = null;
+    var g_o_ReportEle = null;
+    var g_o_PartiesEle = null;
+    var g_o_AppraiserEle = null;
+    var g_o_License_DetailEle = null;
+    var g_o_Appraisers_SupervisorEle = null;
+    var g_o_Supervisor_License_DetailEle = null;
+    var g_o_PropertyEle = null;
+    var g_o_ValuationEle = null;
+    var g_o_Valuation_InspectionEle = null;
+    try {
+        oTagArray = new Array();
+        g_oXmlDoc = new ActiveXObject('Msxml2.DOMDocument');
+        g_oXmlDoc.setProperty('SelectionLanguage', 'XPath');
+        g_oXmlDoc.appendChild(g_oXmlDoc.createProcessingInstruction('xml', 'version=\'1.0\' encoding=\'UTF-16\''));
+        sMainForm = oReportFile.MainForm;
+        oTagArray.push(new FieldMapping('g_oXmlDoc', 'g_o_AppraisalEle', 'APPRAISAL', '_DTDVersionIdentifier', '2.1.2s', ''));
+        oTagArray.push(new FieldMapping('g_o_AppraisalEle', 'g_o_ReportEle', '_REPORT', 'USPAPReportType', 'SummaryReport', ''));
+        oTagArray.push(new FieldMapping('g_o_AppraisalEle', 'g_o_ReportEle', '_REPORT', 'AppraisalFormType', '', 'ENUMERATED_FORM_TYPE' + k_sDelimiter));
+        oTagArray.push(new FieldMapping('g_o_AppraisalEle', 'g_o_ReportEle', '_REPORT', '_FileNumberIdentifier', '', '\\Data\\%MAINFORM%\\SUBJECT\\FORM_FILE_NUMBER.1'));
+        oTagArray.push(new FieldMapping('g_o_AppraisalEle', 'g_o_ReportEle', '_REPORT', '_OtherIdentifierDescription', '', '\\Data\\%MAINFORM%\\SUBJECT\\CLIENT_CASE_NUMBER.1'));
+        oTagArray.push(new FieldMapping('g_o_AppraisalEle', 'g_o_ReportEle', '_REPORT', '_SignedByAppraiserDate', '', '\\Data\\%MAINFORM%\\SUBJECT\\APPR_DATE_SIGNED.1'));
+        oTagArray.push(new FieldMapping('g_o_AppraisalEle', 'g_o_ReportEle', '_REPORT', '_SignedBySupervisorDate', '', '\\Data\\%MAINFORM%\\SUBJECT\\SUP_APPR_DATE_SIGNED.1'));
+        oTagArray.push(new FieldMapping('g_o_AppraisalEle', 'g_o_PartiesEle', '_PARTIES', '', '', ''));
+        oTagArray.push(new FieldMapping('g_o_PartiesEle', 'g_o_AppraiserEle', 'APPRAISER', '_Name', '', '\\Data\\%MAINFORM%\\SUBJECT\\APPR_NAME.1'));
+        oTagArray.push(new FieldMapping('g_o_AppraiserEle', 'g_o_License_DetailEle', 'LICENSE_DETAIL', '_Type', 'AppraisalCertificate', ''));
+        oTagArray.push(new FieldMapping('g_o_AppraiserEle', 'g_o_License_DetailEle', 'LICENSE_DETAIL', '_IdentificationValue', '', '\\Data\\%MAINFORM%\\SUBJECT\\APPR_CERT_NUMBER.1'));
+        oTagArray.push(new FieldMapping('g_o_AppraiserEle', 'g_o_License_DetailEle', 'LICENSE_DETAIL', '_State', '', '\\Data\\%MAINFORM%\\SUBJECT\\APPR_CERT_LIC_STATE.1'));
+        oTagArray.push(new FieldMapping('g_o_AppraiserEle', 'g_o_License_DetailEle', 'LICENSE_DETAIL', '_State', '', '\\Data\\%MAINFORM%\\SUBJECT\\APPR_CERT_STATE.1'));
+        oTagArray.push(new FieldMapping('g_o_PartiesEle', 'g_o_Appraisers_SupervisorEle', 'APPRAISERS_SUPERVISOR', '_Name', '', '\\Data\\%MAINFORM%\\SUBJECT\\SUP_APPR_NAME.1'));
+        oTagArray.push(new FieldMapping('g_o_Appraisers_SupervisorEle', 'g_o_Supervisor_License_DetailEle', 'LICENSE_DETAIL', '_Type', 'AppraisalCertificate', ''));
+        oTagArray.push(new FieldMapping('g_o_Appraisers_SupervisorEle', 'g_o_Supervisor_License_DetailEle', 'LICENSE_DETAIL', '_IdentificationValue', '', '\\Data\\%MAINFORM%\\SUBJECT\\SUP_APPR_CERT_NUMBER.1'));
+        oTagArray.push(new FieldMapping('g_o_Appraisers_SupervisorEle', 'g_o_Supervisor_License_DetailEle', 'LICENSE_DETAIL', '_State', '', '\\Data\\%MAINFORM%\\SUBJECT\\SUP_APPR_CERT_STATE.1'));
+        oTagArray.push(new FieldMapping('g_o_AppraisalEle', 'g_o_PropertyEle', 'PROPERTY', '_StreetAddress', '', 'GET_STREET_CITI_STATE_ZIP' + k_sDelimiter + '1' + k_sDelimiter + '\\Data\\%MAINFORM%\\SUBJECT\\SUBJ_PROPERTY_ADDRESS.1'));
+        oTagArray.push(new FieldMapping('g_o_AppraisalEle', 'g_o_PropertyEle', 'PROPERTY', '_City', '', 'GET_STREET_CITI_STATE_ZIP' + k_sDelimiter + '2' + k_sDelimiter + '\\Data\\%MAINFORM%\\SUBJECT\\SUBJ_PROPERTY_ADDRESS.1'));
+        oTagArray.push(new FieldMapping('g_o_AppraisalEle', 'g_o_PropertyEle', 'PROPERTY', '_State', '', 'GET_STREET_CITI_STATE_ZIP' + k_sDelimiter + '3' + k_sDelimiter + '\\Data\\%MAINFORM%\\SUBJECT\\SUBJ_PROPERTY_ADDRESS.1'));
+        oTagArray.push(new FieldMapping('g_o_AppraisalEle', 'g_o_PropertyEle', 'PROPERTY', '_PostalCode', '', 'GET_STREET_CITI_STATE_ZIP' + k_sDelimiter + '4' + k_sDelimiter + '\\Data\\%MAINFORM%\\SUBJECT\\SUBJ_PROPERTY_ADDRESS.1'));
+        oTagArray.push(new FieldMapping('g_o_AppraisalEle', 'g_o_ValuationEle', 'VALUATION', '_EffectiveDate', '', '\\Data\\%MAINFORM%\\SUBJECT\\AS_OF_DATE.1'));
+        oTagArray.push(new FieldMapping('g_o_AppraisalEle', 'g_o_Valuation_InspectionEle', '_VALUATION_INSPECTION', '_OnSubjectPropertyType', '', 'ENUMERATED_OR_BLANK' + k_sDelimiter + 'NoInspection' + k_sDelimiter + '\\Data\\%MAINFORM%\\SUBJECT\\SUP_APPR_INSPCT_NO_X.1'));
+        oTagArray.push(new FieldMapping('g_o_AppraisalEle', 'g_o_Valuation_InspectionEle', '_VALUATION_INSPECTION', '_OnSubjectPropertyType', '', 'ENUMERATED_OR_BLANK' + k_sDelimiter + 'InteriorAndExterior' + k_sDelimiter + '\\Data\\%MAINFORM%\\SUBJECT\\SUP_APPR_INSPCT_YES_X.1'));
+        for (nArrayIndex = 0; nArrayIndex < oTagArray.length; nArrayIndex++) {
+            sData = '';
+            var oThisElement = null;
+            var oThisParentElement = null;
+            if ('g_o_AppraisalEle' == oTagArray[nArrayIndex].SelfElement) {
+                if (null == g_o_AppraisalEle)
+                    g_o_AppraisalEle = g_oXmlDoc.createElement(oTagArray[nArrayIndex].SelfElementName);
+                oThisElement = g_o_AppraisalEle;
+            } else if ('g_o_ReportEle' == oTagArray[nArrayIndex].SelfElement) {
+                if (null == g_o_ReportEle)
+                    g_o_ReportEle = g_oXmlDoc.createElement(oTagArray[nArrayIndex].SelfElementName);
+                oThisElement = g_o_ReportEle;
+            } else if ('g_o_PartiesEle' == oTagArray[nArrayIndex].SelfElement) {
+                if (null == g_o_PartiesEle)
+                    g_o_PartiesEle = g_oXmlDoc.createElement(oTagArray[nArrayIndex].SelfElementName);
+                oThisElement = g_o_PartiesEle;
+            } else if ('g_o_AppraiserEle' == oTagArray[nArrayIndex].SelfElement) {
+                if (null == g_o_AppraiserEle)
+                    g_o_AppraiserEle = g_oXmlDoc.createElement(oTagArray[nArrayIndex].SelfElementName);
+                oThisElement = g_o_AppraiserEle;
+            } else if ('g_o_License_DetailEle' == oTagArray[nArrayIndex].SelfElement) {
+                if (null == g_o_License_DetailEle)
+                    g_o_License_DetailEle = g_oXmlDoc.createElement(oTagArray[nArrayIndex].SelfElementName);
+                oThisElement = g_o_License_DetailEle;
+            } else if ('g_o_Appraisers_SupervisorEle' == oTagArray[nArrayIndex].SelfElement) {
+                if (null == g_o_Appraisers_SupervisorEle)
+                    g_o_Appraisers_SupervisorEle = g_oXmlDoc.createElement(oTagArray[nArrayIndex].SelfElementName);
+                oThisElement = g_o_Appraisers_SupervisorEle;
+            } else if ('g_o_Supervisor_License_DetailEle' == oTagArray[nArrayIndex].SelfElement) {
+                if (null == g_o_Supervisor_License_DetailEle)
+                    g_o_Supervisor_License_DetailEle = g_oXmlDoc.createElement(oTagArray[nArrayIndex].SelfElementName);
+                oThisElement = g_o_Supervisor_License_DetailEle;
+            } else if ('g_o_PropertyEle' == oTagArray[nArrayIndex].SelfElement) {
+                if (null == g_o_PropertyEle)
+                    g_o_PropertyEle = g_oXmlDoc.createElement(oTagArray[nArrayIndex].SelfElementName);
+                oThisElement = g_o_PropertyEle;
+            } else if ('g_o_ValuationEle' == oTagArray[nArrayIndex].SelfElement) {
+                if (null == g_o_ValuationEle)
+                    g_o_ValuationEle = g_oXmlDoc.createElement(oTagArray[nArrayIndex].SelfElementName);
+                oThisElement = g_o_ValuationEle;
+            } else if ('g_o_Valuation_InspectionEle' == oTagArray[nArrayIndex].SelfElement) {
+                if (null == g_o_Valuation_InspectionEle)
+                    g_o_Valuation_InspectionEle = g_oXmlDoc.createElement(oTagArray[nArrayIndex].SelfElementName);
+                oThisElement = g_o_Valuation_InspectionEle;
+            }
+            if ('g_oXmlDoc' == oTagArray[nArrayIndex].ParentElement)
+                oThisParentElement = g_oXmlDoc;
+            else if ('g_o_AppraisalEle' == oTagArray[nArrayIndex].ParentElement)
+                oThisParentElement = g_o_AppraisalEle;
+            else if ('g_o_ReportEle' == oTagArray[nArrayIndex].ParentElement)
+                oThisParentElement = g_o_ReportEle;
+            else if ('g_o_PartiesEle' == oTagArray[nArrayIndex].ParentElement)
+                oThisParentElement = g_o_PartiesEle;
+            else if ('g_o_AppraiserEle' == oTagArray[nArrayIndex].ParentElement)
+                oThisParentElement = g_o_AppraiserEle;
+            else if ('g_o_License_DetailEle' == oTagArray[nArrayIndex].ParentElement)
+                oThisParentElement = g_o_License_DetailEle;
+            else if ('g_o_Appraisers_SupervisorEle' == oTagArray[nArrayIndex].ParentElement)
+                oThisParentElement = g_o_Appraisers_SupervisorEle;
+            else if ('g_o_Supervisor_License_DetailEle' == oTagArray[nArrayIndex].ParentElement)
+                oThisParentElement = g_o_Supervisor_License_DetailEle;
+            else if ('g_o_PropertyEle' == oTagArray[nArrayIndex].ParentElement)
+                oThisParentElement = g_o_PropertyEle;
+            else if ('g_o_ValuationEle' == oTagArray[nArrayIndex].ParentElement)
+                oThisParentElement = g_o_ValuationEle;
+            else if ('g_o_Valuation_InspectionEle' == oTagArray[nArrayIndex].ParentElement)
+                oThisParentElement = g_o_Valuation_InspectionEle;
+            if (0 != String(oTagArray[nArrayIndex].Attribute).length) {
+                if (0 == String(oTagArray[nArrayIndex].Value).length) {
+                    if (-1 != String(oTagArray[nArrayIndex].Tag).indexOf(k_sDelimiter)) {
+                        sData = '';
+                        var sCommand = ParseString(oTagArray[nArrayIndex].Tag, k_sDelimiter, 1);
+                        if ('BOOL_YES' == sCommand.toUpperCase()) {
+                            if (0 == String(oReportFile.ReadTag(ParseString(oTagArray[nArrayIndex].Tag, k_sDelimiter, 2), 0)).length)
+                                sData = 'No';
+                            else
+                                sData = 'Yes';
+                        }
+                        if ('BOOL_Y' == sCommand.toUpperCase()) {
+                            if (0 == String(oReportFile.ReadTag(ParseString(oTagArray[nArrayIndex].Tag, k_sDelimiter, 2), 0)).length)
+                                sData = 'N';
+                            else
+                                sData = 'Y';
+                        } else if ('ENUMERATED' == sCommand.toUpperCase()) {
+                            if (0 != String(oReportFile.ReadTag(ParseString(oTagArray[nArrayIndex].Tag, k_sDelimiter, 3), 0)).length)
+                                sData = ParseString(oTagArray[nArrayIndex].Tag, k_sDelimiter, 2);
+                        } else if ('ENUMERATED_OR_BLANK' == sCommand.toUpperCase()) {
+                            sData = 'Blank';
+                            if (0 != String(oReportFile.ReadTag(ParseString(oTagArray[nArrayIndex].Tag, k_sDelimiter, 3), 0)).length)
+                                sData = ParseString(oTagArray[nArrayIndex].Tag, k_sDelimiter, 2);
+                            else if (null != oThisElement.getAttribute(oTagArray[nArrayIndex].Attribute))
+                                sData = oThisElement.getAttribute(oTagArray[nArrayIndex].Attribute);
+                        } else if ('ENUMERATED_FORM_TYPE' == sCommand.toUpperCase()) {
+                            sData = oReportFile.ProductDescription;
+                        } else if ('GET_STREET_CITI_STATE_ZIP' == sCommand.toUpperCase()) {
+                            if (0 != String(oReportFile.ReadTag(ParseString(oTagArray[nArrayIndex].Tag, k_sDelimiter, 3), 0)).length)
+                                sData = GetStreetCityStateZip(String(oReportFile.ReadTag(ParseString(oTagArray[nArrayIndex].Tag, k_sDelimiter, 3), 0)), Number(ParseString(oTagArray[nArrayIndex].Tag, k_sDelimiter, 2)));
+                        } else if ('YES_NO_UNK_BLANK_FUNC' == sCommand.toUpperCase()) {
+                            var sTempData = String(oReportFile.ReadTag(ParseString(oTagArray[nArrayIndex].Tag, k_sDelimiter, 2), 0)).toUpperCase();
+                            if ('Y' == sTempData || 'YES' == sTempData)
+                                sData = 'Y';
+                            else if ('N' == sTempData || 'NO' == sTempData)
+                                sData = 'N';
+                            else if (0 == sTempData.length)
+                                sData = 'Blank';
+                            else
+                                sData = 'Unknown';
+                        } else if ('ATT_DET_UNK_BLANK_FUNC' == sCommand.toUpperCase()) {
+                            var sTempData = String(oReportFile.ReadTag(ParseString(oTagArray[nArrayIndex].Tag, k_sDelimiter, 2), 0)).toUpperCase();
+                            if (-1 != sTempData.indexOf('ATT'))
+                                sData = 'Attached';
+                            else if (-1 != sTempData.indexOf('DET'))
+                                sData = 'Detached';
+                            else if (0 == sTempData.length)
+                                sData = 'Blank';
+                            else
+                                sData = 'Unknown';
+                        }
+                    } else {
+                        if (0 != String(oTagArray[nArrayIndex].Tag).length)
+                            sData = oReportFile.ReadTag(oTagArray[nArrayIndex].Tag, 0);
+                    }
+                } else
+                    sData = oTagArray[nArrayIndex].Value;
+                oThisElement.setAttribute(oTagArray[nArrayIndex].Attribute, sData);
+            }
+            oThisParentElement.appendChild(oThisElement);
+        }
+        g_oXmlDoc.save(sXMLOutputFile);
+    } catch (e) {
+        var sExceptionError = e.name + ': (' + (e.number & 65535) + ') - ' + e.description + ' At index: ' + nArrayIndex;
+        oPluginSink.LogAction(1, sExceptionError);
+        return sExceptionError;
+    } finally {
+        if (undefined != g_oXmlDoc && null != g_oXmlDoc) {
+            delete g_oXmlDoc;
+            g_oXmlDoc = null;
+        }
+    }
+    return '';
+}

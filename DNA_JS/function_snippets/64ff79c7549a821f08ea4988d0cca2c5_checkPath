@@ -1,0 +1,6 @@
+function checkPath(Path) {
+    if (Path.charAt(Path.length - 1) != XSIUtils.Slash) {
+        Path = Path + XSIUtils.Slash;
+    }
+    return Path;
+}

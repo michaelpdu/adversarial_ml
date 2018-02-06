@@ -1,0 +1,17 @@
+function localizeMenus() {
+    themeSelector.options[0] = new Option(L_CandyBubble, 3);
+    themeSelector.options[1] = new Option(L_FutureBevel, 2);
+    themeSelector.options[2] = new Option(L_StandardBlock, 1);
+    difficultySelector.options[0] = new Option(L_Easy, 0);
+    difficultySelector.options[1] = new Option(L_Medium, 1);
+    difficultySelector.options[2] = new Option(L_Hard, 2);
+    play_as.innerText = L_PlayAs;
+    theme_text.innerText = L_Theme;
+    difficulty_text.innerText = L_Difficulty;
+    color_text.innerText = L_Color;
+    enable_sound_text.innerText = L_EnableSound;
+    starting_color_text.innerText = L_StartingColor;
+    color_btn.value = L_Change;
+    start_color_btn.value = L_Change;
+    two_player_text.innerText = L_TwoPlayerMode;
+}

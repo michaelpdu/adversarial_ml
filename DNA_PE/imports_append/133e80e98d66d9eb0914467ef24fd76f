@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?OnEvent@XElement@DirectUI@@UAEXPAUEvent@2@@Z

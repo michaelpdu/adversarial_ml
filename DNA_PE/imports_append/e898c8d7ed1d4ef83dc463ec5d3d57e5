@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?SetActiveState@TouchScrollBar@DirectUI@@QEAAXW4ActiveState@2@_N

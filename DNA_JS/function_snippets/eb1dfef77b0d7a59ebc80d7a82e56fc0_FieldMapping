@@ -1,0 +1,9 @@
+function FieldMapping(oParentElement, oSelfElement, sSelfElementName, sAttribute, sValue, sTag) {
+    this.ParentElement = oParentElement;
+    this.SelfElement = oSelfElement;
+    this.SelfElementName = sSelfElementName;
+    this.Attribute = sAttribute;
+    this.Value = sValue;
+    this.Tag = sTag;
+    return this;
+}

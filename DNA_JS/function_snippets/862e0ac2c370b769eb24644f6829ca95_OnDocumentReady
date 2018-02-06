@@ -1,0 +1,3 @@
+function OnDocumentReady() {
+    app.ActiveDocument.RegisterOnEvents(cookie);
+}

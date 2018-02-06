@@ -1,0 +1,32 @@
+function CreateGuids() {
+    strGuid = wizard.CreateGuid();
+    strVal = wizard.FormatGuid(strGuid, 0);
+    wizard.AddSymbol('LIBID_REGISTRY_FORMAT', strVal);
+    strGuid = wizard.CreateGuid();
+    strVal = wizard.FormatGuid(strGuid, 0);
+    wizard.AddSymbol('CLSID_REGISTRY_FORMAT', strVal);
+    strGuid = wizard.CreateGuid();
+    strVal = wizard.FormatGuid(strGuid, 0);
+    wizard.AddSymbol('APPID_REGISTRY_FORMAT', strVal);
+    strGuid = wizard.CreateGuid();
+    strVal = wizard.FormatGuid(strGuid, 0);
+    wizard.AddSymbol('CLSID_PREVIEW', strVal);
+    strGuid = wizard.CreateGuid();
+    strVal = wizard.FormatGuid(strGuid, 0);
+    wizard.AddSymbol('IID_PREVIEW', strVal);
+    strGuid = wizard.CreateGuid();
+    strVal = wizard.FormatGuid(strGuid, 0);
+    wizard.AddSymbol('CLSID_THUMBNAIL', strVal);
+    strGuid = wizard.CreateGuid();
+    strVal = wizard.FormatGuid(strGuid, 0);
+    wizard.AddSymbol('IID_THUMBNAIL', strVal);
+    strGuid = wizard.CreateGuid();
+    strVal = wizard.FormatGuid(strGuid, 0);
+    wizard.AddSymbol('CLSID_SEARCH', strVal);
+    strGuid = wizard.CreateGuid();
+    strVal = wizard.FormatGuid(strGuid, 0);
+    wizard.AddSymbol('IID_SEARCH', strVal);
+    strGuid = wizard.CreateGuid();
+    strVal = wizard.FormatGuid(strGuid, 0);
+    wizard.AddSymbol('CLSID_PERSISTENT_HANDLER', strVal);
+}

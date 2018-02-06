@@ -1,0 +1,21 @@
+function readSettings() {
+    difficulty = System.Gadget.Settings.read('reversi.difficulty');
+    difficultySelector.selectedIndex = difficulty;
+    playerColor = System.Gadget.Settings.read('PlayerColor');
+    startColor = System.Gadget.Settings.read('startColor');
+    themeIndex = System.Gadget.Settings.read('themeIndex') - 1;
+    colorIndex = System.Gadget.Settings.read('colorIndex') - 1;
+    if (themeIndex == -1)
+        themeIndex = 0;
+    if (colorIndex == -1)
+        colorIndex = 0;
+    themeSelector.selectedIndex = 2 - themeIndex;
+    colorSelector.selectedIndex = REVERSE_COLOR_MAP[themeIndex][colorIndex] - 1;
+    soundEnabled = System.Gadget.Settings.read('soundEnabled');
+    soundNormal();
+    twoPlayer = System.Gadget.Settings.read('twoPlayer');
+    two_player_box.checked = twoPlayer;
+    updatePreview();
+    flipPiece(piece_choice, -playerColor);
+    flipPiece(piece_start, -startColor);
+}

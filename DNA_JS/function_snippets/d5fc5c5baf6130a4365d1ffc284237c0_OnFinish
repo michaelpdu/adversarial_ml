@@ -1,0 +1,79 @@
+function OnFinish(selProj, selObj) {
+    var oCM = selProj.CodeModel;
+    try {
+        oCM.StartTransaction('Add WMI Instance provider');
+        var bDLL;
+        if (typeDynamicLibrary == selProj.Object.Configurations(1).ConfigurationType)
+            bDLL = true;
+        else
+            bDLL = false;
+        wizard.AddSymbol('DLL_APP', bDLL);
+        var strProjectName = wizard.FindSymbol('PROJECT_NAME');
+        wizard.AddSymbol('SAFE_IDL_NAME', CreateASCIIName(wizard.FindSymbol('PROJECT_NAME')));
+        var strProjectPath = wizard.FindSymbol('PROJECT_PATH');
+        var strTemplatePath = wizard.FindSymbol('TEMPLATES_PATH');
+        var strShortName = wizard.FindSymbol('SHORT_NAME');
+        var strUpperShortName = CreateASCIIName(strShortName.toUpperCase());
+        wizard.AddSymbol('UPPER_SHORT_NAME', strUpperShortName);
+        var strVIProgID = wizard.FindSymbol('VERSION_INDEPENDENT_PROGID');
+        wizard.AddSymbol('PROGID', strVIProgID.substr(0, 37) + '.1');
+        var strClassName = wizard.FindSymbol('CLASS_NAME');
+        var strHeaderFile = wizard.FindSymbol('HEADER_FILE');
+        var strImplFile = wizard.FindSymbol('IMPL_FILE');
+        var strCoClass = wizard.FindSymbol('COCLASS');
+        var bAttributed = wizard.FindSymbol('ATTRIBUTED');
+        var strProjectCPP = GetProjectFile(selProj, 'CPP', false, false);
+        var strProjectRC = GetProjectFile(selProj, 'RC', true, false);
+        var bClassSpecified = wizard.FindSymbol('WMICLASSNAME').toString() != '';
+        wizard.AddSymbol('CLASS_SPECIFIED', bClassSpecified);
+        if (bClassSpecified) {
+            var locator = new ActiveXObject('WbemScripting.SWbemLocator');
+            var services = locator.ConnectServer('', wizard.FindSymbol('NAMESPACE'));
+            var classObj = services.Get(wizard.FindSymbol('WMICLASSNAME'));
+            AddQualifier(classObj, 'provider', wizard.FindSymbol('SHORT_NAME'), false, true, true);
+            AddQualifier(classObj, 'dynamic', true, false, true, true);
+        }
+        CreateGUIDs();
+        if (!bAttributed) {
+            wizard.AddSymbol('LIB_NAME', oCM.IDLLibraries(1).Name);
+            wizard.AddSymbol('LIBID_REGISTRY_FORMAT', oCM.IDLLibraries(1).Attributes('uuid').Value);
+            var strAppID = wizard.GetAppID();
+            if (strAppID.length > 0) {
+                wizard.AddSymbol('APPID_EXIST', true);
+                wizard.AddSymbol('APPID_REGISTRY_FORMAT', strAppID);
+            }
+            var strRGSFile = GetUniqueFileName(strProjectPath, CreateASCIIName(strShortName) + '.rgs');
+            var strRGSID = 'IDR_' + strUpperShortName;
+            RenderAddTemplate(wizard, 'wmiprov.rgs', strRGSFile, false);
+            var oResHelper = wizard.ResourceHelper;
+            oResHelper.OpenResourceFile(strProjectRC);
+            oResHelper.AddResource(strRGSID, strProjectPath + strRGSFile, 'REGISTRY');
+            oResHelper.CloseResourceFile();
+            AddCoclassFromFile(oCM, 'wmiprovco.idl');
+            SetMergeProxySymbol(selProj);
+        }
+        SetQuerySupportLevels();
+        if (!DoesIncludeExist(selProj, '"' + strHeaderFile + '"', strProjectCPP))
+            oCM.AddInclude('"' + strHeaderFile + '"', strProjectCPP, vsCMAddPositionEnd);
+        RenderAddTemplate(wizard, 'wmiprov.h', strHeaderFile, selObj);
+        RenderAddTemplate(wizard, 'wmiprov.cpp', strImplFile, selObj);
+        AddMOFFromFile('wmiprov.mof', selProj);
+        var nTotal = selProj.Object.Configurations.Count;
+        var nCntr;
+        for (nCntr = 1; nCntr <= nTotal; nCntr++) {
+            var VCLinkTool = selProj.Object.Configurations(nCntr).Tools('VCLinkerTool');
+            if (-1 == VCLinkTool.AdditionalDependencies.toUpperCase().search('WBEMUUID.LIB')) {
+                VCLinkTool.AdditionalDependencies += ' wbemuuid.lib';
+            }
+            if (-1 == VCLinkTool.AdditionalDependencies.toUpperCase().search('WMIUTILS.LIB')) {
+                VCLinkTool.AdditionalDependencies += ' wmiutils.lib';
+            }
+        }
+        oCM.CommitTransaction();
+    } catch (e) {
+        oCM.AbortTransaction();
+        var L_alert1_ErrorMessage = 'OnFinish \uFFFDo\uFFFDͿ\uFFFD\uFFFD~: ';
+        wizard.ReportError(L_alert1_ErrorMessage + e.description);
+    }
+    return;
+}

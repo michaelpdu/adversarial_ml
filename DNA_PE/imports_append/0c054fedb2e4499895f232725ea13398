@@ -1,0 +1,3 @@
+imports_append
+MSVCR120.DLL
+??0scoped_lock@critical_section@Concurrency@@QEAA@AEAV12@@Z

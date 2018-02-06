@@ -1,0 +1,26 @@
+function fr_Visemes_ImportVisemes_OnClicked() {
+    var importVis = ActiveSceneRoot.AddProperty('CustomProperty', false, 'Import_Visemes');
+    importVis.AddParameter3('ImportAll', siInt4, 1, null, null, false, false);
+    importVis.AddParameter3('Overwrite', siBool, true, 0, false, false);
+    var item;
+    var layout = importVis.PPGLayout;
+    var variationpath = PPG.LibraryPath.Value + XSIUtils.Slash + PPG.Language.Value;
+    var radioitems = [
+        'All Variations',
+        1,
+        PPG.Variation.Value + ' Variation Only',
+        0
+    ];
+    item = layout.AddEnumControl('ImportAll', radioitems, 'Import', siControlRadio);
+    item = layout.AddItem('Overwrite', 'Overwrite Existing Visemes');
+    layout.SetAttribute(siUIHelpFile, '<FactoryPath>/Doc/<DocLangPref>/xsidocs.chm::/propref_facebot_ImportVisemes.htm');
+    try {
+        InspectObj(importVis, null, null, siModal);
+        var variation = null;
+        if (!importVis.ImportAll.Value)
+            variation = PPG.Variation.Value;
+        fr_ImportVisemes(variationpath, variation, importVis.Overwrite.Value);
+    } catch (e) {
+    }
+    Deleteobj(importVis);
+}

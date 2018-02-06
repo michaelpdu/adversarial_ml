@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?OnWindowStyleChanged@HWNDHost@DirectUI@@UEAAX_KPEBUtagSTYLESTRU

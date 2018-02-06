@@ -1,0 +1,30 @@
+function ParseLanguageFile(FileName) {
+    var FSO = XSIFactory.CreateActiveXObject('Scripting.FileSystemObject');
+    var text = ReadFile(FileName);
+    if (!text) {
+        logmessage('File <' + FileName + '> is invalid', siError);
+        return null;
+    }
+    var atext = text.split('\n');
+    var phonemelist = [];
+    for (var i = 0; i < atext.length; i++) {
+        if (atext[i].charAt(0) == ' ' || atext[i].charAt(0) == '\t' || atext[i].charAt(0) == '#')
+            continue;
+        var tjoin = atext[i].replace(/,/g, '-');
+        atext[i].replace(/[\t\v\n\r\f]/g, '');
+        var t = atext[i].split(',');
+        if (t.length < 2)
+            continue;
+        var ipa = t[0];
+        var pname = t[1];
+        var psound = t[2];
+        var ptype = t[3];
+        phonemelist.push([
+            ipa,
+            pname,
+            pname + '  ("' + psound + '")  ' + ipa.replace(/0x(0+)/g, '0x'),
+            ptype
+        ]);
+    }
+    return phonemelist;
+}

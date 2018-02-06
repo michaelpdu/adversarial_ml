@@ -1,0 +1,17 @@
+function CheckFolderExists(path, makeifnotfound) {
+    var FSO = XSIFactory.CreateActiveXObject('Scripting.FileSystemObject');
+    if (FSO.FolderExists(path))
+        return path;
+    if (makeifnotfound) {
+        try {
+            FSO.CreateFolder(path);
+            return path;
+        } catch (e) {
+            logmessage('\t' + path + ' could not be made', siError);
+            return '';
+        }
+    } else {
+        logmessage('\t' + path + ' Folder not found', siError);
+        return '';
+    }
+}

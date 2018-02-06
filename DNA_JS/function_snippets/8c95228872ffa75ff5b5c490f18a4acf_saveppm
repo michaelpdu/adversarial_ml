@@ -1,0 +1,18 @@
+function saveppm(image, fn) {
+    var tf = fso.CreateTextFile(fn, 2);
+    width = image[0].length;
+    height = image.length;
+    tf.write('P6\n' + width + ' ' + height + '\n255\n');
+    for (var y = 0; y < height; y++) {
+        for (var x = 0; x < width; x++) {
+            if (!image[y][x]) {
+                WScript.Echo([
+                    y,
+                    x
+                ]);
+            }
+            WriteHexBytes(tf, image[y][x]);
+        }
+    }
+    tf.close();
+}

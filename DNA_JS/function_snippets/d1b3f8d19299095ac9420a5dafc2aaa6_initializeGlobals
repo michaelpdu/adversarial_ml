@@ -1,0 +1,56 @@
+function initializeGlobals(vendorName) {
+    try {
+        if (g_initializeFlag)
+            return true;
+        g_fso = new ActiveXObject('Scripting.FileSystemObject');
+        g_wshShell = new ActiveXObject('WScript.Shell');
+        g_xmlDoc = new ActiveXObject('Microsoft.XMLDOM');
+        g_logFile = g_fso.OpenTextFile(g_fso.GetSpecialFolder(2) + '/upgradeclient.log', 8, true);
+        g_logFile.writeline('-------In Initialize Globals-------');
+        g_xmlDoc.async = false;
+        if (vendorName != null) {
+            g_vendorName = vendorName;
+            g_UpgradeType = 'UPGRADE';
+        } else {
+            try {
+                var objArgs = WScript.Arguments;
+                g_logFile.writeline('In Initialize Globals - ARGS : ' + objArgs.length);
+                if (objArgs.length > 0) {
+                    g_vendorName = objArgs.item(0);
+                } else {
+                    g_wshShell.PopUp('Error : VendorName not passed as parameter');
+                    g_logFile.writeline('Error : VendorName not passed as parameter');
+                    return false;
+                }
+                if (objArgs.length > 1) {
+                    g_UpgradeType = objArgs.item(1);
+                } else {
+                    g_wshShell.PopUp('Error : Upgrade type not passed as parameter');
+                    g_logFile.writeline('Error : Upgrade type not passed as parameter');
+                    g_UpgradeType = 'INSTALL';
+                }
+            } catch (e) {
+                return false;
+            }
+        }
+        try {
+            g_installDirSubPath = g_wshShell.RegRead('HKLM\\Software\\Motive\\' + g_vendorName + '\\plugin\\Vendor.InstallPath');
+            if (g_installDirSubPath.indexOf('XPXWWPP5') != -1) {
+                g_installDirMain = g_installDirSubPath.substring(0, g_installDirSubPath.lastIndexOf('\\'));
+                g_installDirMain = g_installDirMain.substring(0, g_installDirMain.lastIndexOf('\\'));
+            } else {
+                g_installDirMain = g_installDirSubPath;
+                g_installDirSubPath = g_installDirSubPath + '\\HPQ\\XPXWWPP5';
+            }
+            g_localcontentroot = g_wshShell.RegRead('HKLM\\Software\\Motive\\' + g_vendorName + '\\plugin\\Vendor.LocalContentRoot');
+        } catch (e) {
+            g_wshShell.PopUp('Error Reading from registry ' + e + ' VendorName ' + g_vendorName);
+            g_logFile.writeline('Error Reading from registry ' + e + ' VendorName ' + g_vendorName);
+            return false;
+        }
+        g_initializeFlag = true;
+        return true;
+    } catch (e) {
+        return false;
+    }
+}

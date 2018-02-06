@@ -1,0 +1,5 @@
+function fr_LipSync_DefineLayout(ctxt) {
+    var layout = ctxt.Source;
+    layout.Clear();
+    return true;
+}

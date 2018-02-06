@@ -1,0 +1,3 @@
+function StoreWarning(sMessage) {
+    aWarningMessages[aWarningMessages.length] = sMessage;
+}

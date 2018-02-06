@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?OnInput@TouchEdit2@DirectUI@@UEAAXPEAUInputEvent@2@@Z

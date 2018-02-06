@@ -1,0 +1,27 @@
+function Initialize() {
+    try {
+        if (g_pStatus == null) {
+            if (IsPatching()) {
+                g_bNeedRestore = true;
+                if (g_pInterval == null) {
+                    g_pInterval = setInterval('AttemptRestore()', 500);
+                }
+            } else {
+                try {
+                    g_pStatus = new ActiveXObject('Symantec.Norton.SystemStatus');
+                } catch (err) {
+                    g_bNeedRestore = true;
+                    if (g_pInterval == null) {
+                        g_pInterval = setInterval('AttemptRestore()', 5000);
+                    }
+                }
+                if (g_pStatus) {
+                    g_pStatus.OnUpdate(Update, true);
+                    g_pStatus.RegisterForUpdates(true);
+                    Update();
+                }
+            }
+        }
+    } catch (err) {
+    }
+}

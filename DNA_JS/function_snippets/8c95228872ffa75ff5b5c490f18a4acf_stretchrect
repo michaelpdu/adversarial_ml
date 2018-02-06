@@ -1,0 +1,17 @@
+function stretchrect(dstimage, dstx, dsty, srcimage, srcx, srcy, width, height) {
+    for (var y = 0; y < height; y++) {
+        for (var x = 0; x < width; x++) {
+            color = srcimage[srcy + y][srcx + x];
+            if (color[0] == 136 && color[1] == 144 && color[2] == 248)
+                color = [
+                    255,
+                    0,
+                    255
+                ];
+            dstimage[dsty + y * 2][dstx + x * 2] = color;
+            dstimage[dsty + y * 2 + 1][dstx + x * 2] = color;
+            dstimage[dsty + y * 2][dstx + x * 2 + 1] = color;
+            dstimage[dsty + y * 2 + 1][dstx + x * 2 + 1] = color;
+        }
+    }
+}

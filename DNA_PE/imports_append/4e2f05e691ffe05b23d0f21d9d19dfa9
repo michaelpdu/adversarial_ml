@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?GetHWNDParent@HWNDHost@DirectUI@@QEAAPEAUHWND__@@XZ

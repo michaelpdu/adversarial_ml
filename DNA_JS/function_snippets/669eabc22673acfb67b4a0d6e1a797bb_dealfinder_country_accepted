@@ -1,0 +1,14 @@
+function dealfinder_country_accepted() {
+    var country = get_country();
+    var country_list = [
+        'US',
+        'UK',
+        'GB',
+        'AU',
+        'FR',
+        'DE'
+    ];
+    if (country != '' && country != 'undefined' && searchStringInArray(country, country_list) > -1)
+        return true;
+    return false;
+}

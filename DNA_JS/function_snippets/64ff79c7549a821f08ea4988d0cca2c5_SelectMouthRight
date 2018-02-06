@@ -1,0 +1,7 @@
+function SelectMouthRight(in_ctxt) {
+    SelectWithKey(GetKeyed([
+        'Mouth',
+        'Control',
+        'Right'
+    ]));
+}

@@ -1,0 +1,6 @@
+function SetUserKeywordsFromNamesOnChildren(Obj) {
+    var Kids = Obj.FindChildren();
+    for (var i = 0; i < Kids.count; i++) {
+        SetUserKeywordFromName(Kids(i));
+    }
+}

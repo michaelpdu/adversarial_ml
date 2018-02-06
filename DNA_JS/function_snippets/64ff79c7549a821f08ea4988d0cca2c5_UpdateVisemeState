@@ -1,0 +1,104 @@
+function UpdateVisemeState(PPG) {
+    var foundlang = false;
+    var langfiles = GetLanguageFiles(PPG.LibraryPath.Value, 'csv');
+    var languagecombo = new Array(langfiles.length * 2);
+    for (var i = 0; i < langfiles.length; ++i) {
+        var languagename = StripExt(langfiles[i]);
+        languagecombo[i * 2] = languagename;
+        languagecombo[i * 2 + 1] = languagename;
+        if (!foundlang && languagename == PPG.Language.Value) {
+            foundlang = true;
+        }
+    }
+    if (!foundlang) {
+        PPG.Language.Value = 'USEnglish';
+        for (var i = 0; i < langfiles.length; ++i) {
+            var languagename = StripExt(langfiles[i]);
+            if (languagename == PPG.Language.Value) {
+                foundlang = true;
+                break;
+            }
+        }
+        if (!foundlang && langfiles.length > 0) {
+            PPG.Language.Value = langfiles[0];
+        }
+    }
+    var variationarray = [];
+    var variationcombo = [];
+    if (langfiles.length > 0) {
+        var foundvariation = false;
+        variationarray = GetVariations(PPG.LibraryPath.Value + XSIUtils.Slash + PPG.Language.Value);
+        variationcombo = new Array(variationarray.length * 2);
+        for (var i = 0; i < variationarray.length; ++i) {
+            variationcombo[2 * i] = variationarray[i];
+            variationcombo[2 * i + 1] = variationarray[i];
+            if (variationarray[i] == PPG.Variation.Value) {
+                foundvariation = true;
+            }
+        }
+        if (!foundvariation) {
+            PPG.Variation.Value = 'Normal';
+            for (var i = 0; i < variationarray.length; ++i) {
+                if (variationarray[i] == PPG.Variation.Value) {
+                    foundvariation = true;
+                    break;
+                }
+            }
+            if (!foundvariation && variationarray.length > 0) {
+                PPG.Variation.Value = variationarray[0];
+            }
+        }
+    }
+    var phonemearray = [];
+    var phonemecombo = [];
+    if (langfiles.length > 0) {
+        var foundphoneme = false;
+        phonemearray = ParseLanguageFile(PPG.LibraryPath.Value + XSIUtils.Slash + PPG.Language.Value + '.csv');
+        phonemecombo = new Array(phonemearray.length * 2);
+        for (var i = 0; i < phonemearray.length; ++i) {
+            if (FileExists(GetPoseFileName(PPG, phonemearray[i][0], phonemearray[i][1]))) {
+                phonemecombo[2 * i] = phonemearray[i][2];
+            } else {
+                phonemecombo[2 * i] = phonemearray[i][2] + '      <not defined>';
+            }
+            phonemecombo[2 * i + 1] = phonemearray[i][0];
+            if (phonemearray[i][0] == PPG.Phoneme.Value) {
+                PPG.PhonemeName.Value = phonemearray[i][1];
+                foundphoneme = true;
+            }
+        }
+        if (!foundphoneme && phonemearray.length > 0) {
+            PPG.Phoneme.Value = phonemearray[0][0];
+            PPG.PhonemeName.Value = phonemearray[0][1];
+        }
+    }
+    var foundviseme = false;
+    var FSO = XSIFactory.CreateActiveXObject('Scripting.FileSystemObject');
+    var visemepath = PPG.LibraryPath.Value + XSIUtils.Slash + PPG.Language.Value + XSIUtils.Slash + PPG.Variation.Value;
+    if (FSO.FolderExists(visemepath)) {
+        var folder = FSO.GetFolder(visemepath);
+        var files = new Enumerator(folder.Files);
+        for (; !files.atEnd(); files.moveNext()) {
+            var a = files.item().Name.split('.');
+            if (a.length > 1 && a[a.length - 1] == 'frpre') {
+                foundviseme = true;
+                break;
+            }
+        }
+    }
+    var ShapeName = '_' + PPG.Phoneme.Value + '_' + PPG.PhonemeName.Value + '_' + PPG.Variation.Value + '_Shape';
+    var layout = PPG.PPGLayout;
+    layout.Item('Language').UIItems = languagecombo;
+    layout.Item('Phoneme').UIItems = phonemecombo;
+    layout.Item('Variation').UIItems = variationcombo;
+    layout.Item('ApplyViseme').SetAttribute(siUIButtonDisable, !FileExists(GetPoseFileName(PPG, PPG.Phoneme.Value, PPG.PhonemeName.Value)));
+    layout.Item('NewVariation').SetAttribute(siUIButtonDisable, variationarray.length == 0);
+    layout.Item('StoreViseme').SetAttribute(siUIButtonDisable, phonemearray.length == 0);
+    layout.Item('EditVisemeShape').SetAttribute(siUIButtonDisable, phonemearray.length == 0);
+    layout.Item('EditVisemeShape').SetAttribute(siUILabel, phonemearray.length > 0 && CorrectiveShapeExists(ShapeName) ? 'Edit Corrective Shape' : 'Create Corrective Shape');
+    layout.Item('ImportVisemes').SetAttribute(siUIButtonDisable, !foundviseme);
+    PPG.Language.Enable(languagecombo.length != 0);
+    PPG.Phoneme.Enable(phonemearray.length != 0);
+    PPG.Variation.Enable(variationcombo.length != 0);
+    PPG.Refresh();
+}

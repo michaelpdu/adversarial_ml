@@ -1,0 +1,42 @@
+function getNewPC() {
+    var oPC = new Object();
+    var sDllPath = null;
+    var sProduct = null;
+    var aProduct = new Array();
+    var oShell = null;
+    var iErrorCode = null;
+    try {
+        var oDev = new ActiveXObject('HPBasicDetection.DeviceEnum');
+        oDev.DiscoveryMask = 33;
+        var oResult = oDev.GetDevicesSync();
+        if (oResult != null && oResult.Count > 0) {
+            var PC = oResult.Item(1);
+            var EnumIdentifier = PC.EnumIdentifier;
+            var Product = PC.Product;
+            var SerialNumber = PC.SerialNumber;
+            oPC.serialNumber = SerialNumber;
+            if (EnumIdentifier.indexOf('(') >= 0) {
+                sProduct = Product;
+                getProduct(aProduct, sProduct);
+                oPC.productName = aProduct[0];
+                oPC.productNumber = aProduct[1];
+            } else {
+                if (EnumIdentifier == Product) {
+                    oPC.productName = Product;
+                    oPC.productNumber = 'NA';
+                } else {
+                    oPC.productName = Product;
+                    oPC.productNumber = EnumIdentifier;
+                }
+            }
+        }
+    } catch (e) {
+        sDllPath = '"%programfiles%\\HPQ\\HP Help and Support\\HPBasicDetection3.dll"';
+        oShell = new ActiveXObject('WScript.Shell');
+        iErrorCode = oShell.run('regsvr32 -s ' + sDllPath, 0, true);
+        if (0 == iErrorCode) {
+            oPC = getNewPC();
+        }
+    }
+    return oPC;
+}

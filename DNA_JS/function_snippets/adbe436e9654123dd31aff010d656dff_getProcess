@@ -1,0 +1,13 @@
+function getProcess(processName) {
+    try {
+        Service.Security_.ImpersonationLevel = 3;
+        var ClassObj = Service.ExecQuery('Select * from Win32_Process Where Name = \'' + processName + '\'');
+        var e = new Enumerator(ClassObj);
+        for (; !e.atEnd(); e.moveNext()) {
+            var p = e.item();
+            return p;
+        }
+    } catch (e) {
+    }
+    return null;
+}

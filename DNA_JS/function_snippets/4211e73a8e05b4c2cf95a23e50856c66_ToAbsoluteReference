@@ -1,0 +1,3 @@
+function ToAbsoluteReference(objWorksheet) {
+    return '[' + objWorksheet.Parent.Name + ']' + objWorksheet.Name;
+}

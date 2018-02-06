@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?GetLayoutIndexFromChild@Layout@DirectUI@@QEAAHPEAVElement@2@0@Z

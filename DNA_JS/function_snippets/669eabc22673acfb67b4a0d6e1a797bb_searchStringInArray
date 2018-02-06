@@ -1,0 +1,7 @@
+function searchStringInArray(matchString, stringArray) {
+    for (var j = 0; j < stringArray.length; j++) {
+        if (stringArray[j].match(matchString))
+            return j;
+    }
+    return -1;
+}

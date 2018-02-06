@@ -1,0 +1,9 @@
+function UTIL_XML_Load(XML_File) {
+    try {
+        XML_Doc.async = 'false';
+        XML_Doc.onreadystatechange = UTIL_XML_Verify;
+        XML_Doc.load(XML_File);
+        XML_Obj = XML_Doc.documentElement;
+    } catch (err) {
+    }
+}

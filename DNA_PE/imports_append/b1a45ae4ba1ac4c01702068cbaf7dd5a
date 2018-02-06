@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?AddBehavior@Element@DirectUI@@UAEJPAUIDuiBehavior@@@Z

@@ -1,0 +1,7 @@
+function AddStaticKine(Obj, SetNeutral, Transform, silent, sName) {
+    if (Transform == null)
+        Transform = Obj.Kinematics.Global.Transform;
+    var KineProperty = AddStaticKineProperty(Obj, SetNeutral, silent, sName);
+    KineProperty.Transform = Transform;
+    return KineProperty;
+}

@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?SetHandleEnterKey@XProvider@DirectUI@@IAEX_N@Z

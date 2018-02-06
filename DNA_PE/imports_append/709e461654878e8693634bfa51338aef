@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?DoMethod@HWNDElementProxy@DirectUI@@UAEJHPAD@Z

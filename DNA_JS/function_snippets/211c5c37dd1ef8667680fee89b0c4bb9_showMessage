@@ -1,0 +1,10 @@
+function showMessage(string) {
+    try {
+        WScript.Echo(string);
+    } catch (e) {
+        try {
+            WBScript.Out(string, true, string);
+        } catch (e) {
+        }
+    }
+}

@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?GetModule@ClassInfoBase@DirectUI@@UEBAPEAUHINSTANCE__@@XZ

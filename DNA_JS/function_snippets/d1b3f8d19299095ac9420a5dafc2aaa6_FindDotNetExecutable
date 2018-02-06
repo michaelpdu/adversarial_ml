@@ -1,0 +1,12 @@
+function FindDotNetExecutable(dotnetexec) {
+    var windir = g_wshShell.ExpandEnvironmentStrings('%WinDir%');
+    var dotnetdir = windir + '\\Microsoft.NET\\Framework';
+    folder = g_fso.GetFolder(dotnetdir);
+    fc = new Enumerator(folder.SubFolders);
+    for (; !fc.atEnd(); fc.moveNext()) {
+        ftest = fc.item() + '\\' + dotnetexec;
+        if (g_fso.FileExists(ftest)) {
+            return ftest;
+        }
+    }
+}

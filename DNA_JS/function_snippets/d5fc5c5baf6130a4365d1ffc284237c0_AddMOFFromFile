@@ -1,0 +1,46 @@
+function AddMOFFromFile(strTemplateName, selProj) {
+    try {
+        var ForReading = 1, ForWriting = 2, ForAppending = 8;
+        var TristateUseDefault = -2, TristateUnicode = -1, TristateAnsi = 0;
+        var fso = new ActiveXObject('Scripting.FileSystemObject');
+        var strMOFName = wizard.FindSymbol('PROJECT_NAME') + '.mof';
+        var strMOFPath = wizard.FindSymbol('PROJECT_PATH') + strMOFName;
+        var bFirstRun = !fso.FileExists(strMOFPath);
+        if (bFirstRun) {
+            var folder;
+            for (var n = 1; n <= selProj.Object.Filters.Count; n++) {
+                folder = selProj.Object.Filters.Item(n);
+                if (folder.Filter.match('cpp') != null) {
+                    folder.Filter = folder.Filter + ';mof';
+                    break;
+                }
+            }
+            RenderAddTemplate(wizard, 'header.mof', strMOFName, false);
+            CloseProjFile(strMOFName, selProj);
+        }
+        if (wizard.FindSymbol('CLASS_SPECIFIED') == true) {
+            var strEscapedNS = BuildEscapedNS();
+            wizard.AddSymbol('ESCAPED_NAMESPACE', strEscapedNS);
+        }
+        RenderAddTemplate(wizard, strTemplateName, strMOFName, false);
+        if (bFirstRun) {
+            AddFileToProject(strMOFName, selProj.ProjectItems, true);
+            var files = selProj.Object.Files;
+            var Moffile = files(strMOFName);
+            var nTotal = Moffile.FileConfigurations.Count;
+            var nCntr;
+            for (nCntr = 1; nCntr <= nTotal; nCntr++) {
+                var customBuildTool = Moffile.FileConfigurations(nCntr).Tool;
+                customBuildTool.CommandLine = 'mofcomp "%(RootDir)%(Directory)\\%(Filename)".mof\n\recho mofcomptrace > "$(OutDir)\\%(FileName)".trace';
+                customBuildTool.Outputs = '"$(OutDir)\\%(Filename)".trace';
+                var L_alert10_ErrorMessage = '\uFFFD\uFFFD\uFFFDb\uFFFDsĶ MOF \uFFFDɮ\uFFFD';
+                customBuildTool.Description = L_alert10_ErrorMessage;
+            }
+        }
+        CloseProjFile(strMOFName, selProj);
+    } catch (e) {
+        var L_alert2_ErrorMessage = 'AddMOFFile \uFFFDo\uFFFDͿ\uFFFD\uFFFD~: ';
+        wizard.ReportError(L_alert2_ErrorMessage + e.description);
+    }
+    return;
+}

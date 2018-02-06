@@ -1,0 +1,14 @@
+function OnCommand(CommandID) {
+    switch (CommandID) {
+    case CmdChainDoc: {
+            try {
+                w = app.ActiveWindow;
+                w.OpenWebPanel(panelWebPageUrl);
+            } catch (ex) {
+                alert('exception-->' + ex.message);
+            }
+        }
+        ;
+        break;
+    }
+}

@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?get_accValue@DuiAccessible@DirectUI@@UAGJUtagVARIANT@@PAPAG@Z

@@ -1,0 +1,7 @@
+function SetATLConfigsType(oProj, typeConfig) {
+    var oConfigs = oProj.Object.Configurations;
+    for (var nCntr = 1; nCntr <= oConfigs.Count; nCntr++) {
+        var config = oConfigs(nCntr);
+        config.ConfigurationType = typeConfig;
+    }
+}

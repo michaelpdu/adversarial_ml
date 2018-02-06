@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?GetClassInfoPtr@RichText@DirectUI@@SGPAUIClassInfo@2@XZ

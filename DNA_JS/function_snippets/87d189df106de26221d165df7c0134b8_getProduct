@@ -1,0 +1,16 @@
+function getProduct(aProduct, sInput) {
+    if (sInput == null) {
+        aProduct[0] = 'NA';
+        aProduct[1] = 'NA';
+        return;
+    }
+    var rPattern = /(.+)\((.+)\)/;
+    var aResult = sInput.match(rPattern);
+    if (aResult != null) {
+        aProduct[0] = aResult[1];
+        aProduct[1] = aResult[2];
+    } else {
+        aProduct[0] = sInput;
+        aProduct[1] = 'NA';
+    }
+}

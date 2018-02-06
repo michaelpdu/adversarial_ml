@@ -1,0 +1,28 @@
+function loadwindowskin(infile, outfile) {
+    image = loadimage(infile);
+    windowskin = newimage(192, 128);
+    fillrect(windowskin, 128, 64, 32, 32, [
+        255,
+        0,
+        255
+    ]);
+    fillrect(windowskin, 160, 64, 32, 32, [
+        255,
+        0,
+        255
+    ]);
+    fillrect(windowskin, 144, 16, 32, 32, [
+        255,
+        0,
+        255
+    ]);
+    stretchrect(windowskin, 128, 0, image, 8, 32, 8, 8);
+    stretchrect(windowskin, 128, 48, image, 8, 152, 8, 8);
+    stretchrect(windowskin, 176, 0, image, 224, 32, 8, 8);
+    stretchrect(windowskin, 176, 48, image, 224, 152, 8, 8);
+    stretchrect(windowskin, 144, 0, image, 16, 32, 16, 8);
+    stretchrect(windowskin, 144, 48, image, 16, 152, 16, 8);
+    stretchrect(windowskin, 128, 16, image, 8, 40, 8, 16);
+    stretchrect(windowskin, 176, 16, image, 224, 40, 8, 16);
+    saveppm(windowskin, outfile);
+}

@@ -1,0 +1,27 @@
+function ValidateCollectionInput(InputCollection) {
+    var to = typeof InputCollection;
+    var K = new ActiveXObject('XSI.Collection');
+    if (to != 'object') {
+        if (to == 'string') {
+            try {
+                K.SetAsText(InputCollection);
+                return K;
+            } catch (e) {
+                logmessage('String input <' + InputCollection + '> is not a valid collection ', siError);
+                return null;
+            }
+        }
+        logmessage('Input typeof ' + to + ' not a valid collection input', siError);
+        return null;
+    }
+    var t = InputCollection.type;
+    if (t == 'XSICollection')
+        return t;
+    try {
+        K.Add(InputCollection);
+        return K;
+    } catch (e) {
+        logmessage('Input Type of ' + InputCollection + ' not recognized', siError);
+    }
+    return null;
+}

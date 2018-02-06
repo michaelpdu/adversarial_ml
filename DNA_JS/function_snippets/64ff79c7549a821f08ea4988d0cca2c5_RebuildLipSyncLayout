@@ -1,0 +1,66 @@
+function RebuildLipSyncLayout(PPG) {
+    if (!phonemeimportpath)
+        phonemeimportpath = GetFaceRobotPath('Audio', true, 1, false);
+    var item;
+    var layout = PPG.PPGLayout;
+    var pset = PPG.Inspected(0);
+    var params = pset.Parameters;
+    layout.Clear();
+    var aLanguageItems = [
+        'English',
+        0,
+        'Japanese',
+        1
+    ];
+    item = layout.AddEnumControl('Language', aLanguageItems, 'Language', siControlRadio);
+    layout.AddGroup('Audio');
+    item = layout.AddItem('Audio', 'Audio', 'FilePath');
+    item.SetAttribute(siUISubFolder, true);
+    item.SetAttribute(siUIOpenFile, true);
+    item.SetAttribute(siUIFileMustExist, true);
+    item.SetAttribute(siUIInitialDir, phonemeimportpath);
+    item.setAttribute(siUINoLabel, true);
+    item.setAttribute(siUIAudioFile, true);
+    item = layout.AddItem('TrailingSilenceDuration', 'Silence Duration');
+    item.setAttribute(siUILabelMinPixels, 110);
+    layout.EndGroup();
+    layout.AddGroup('Text');
+    item = layout.AddItem('Text', 'Text', 'FilePath');
+    item.SetAttribute(siUISubFolder, true);
+    item.SetAttribute(siUIOpenFile, true);
+    item.SetAttribute(siUIFileMustExist, true);
+    item.SetAttribute(siUIInitialDir, phonemeimportpath);
+    item.setAttribute(siUINoLabel, true);
+    item.setAttribute(siUIFileFilter, 'Text files (*.txt *.text)|*.txt:*.text|All Files (*.*)|*.*||');
+    layout.AddSpacer(0, 12);
+    if (PPG.Text.Value && FileExists(PPG.Text.Value)) {
+        PPG.TextText.Value = ReadFile(PPG.Text.Value);
+    } else {
+        PPG.TextText.Value = '';
+    }
+    item = layout.AddItem('TextText', 'TextText', siControlTextEditor);
+    item.SetAttribute(siUINoLabel, true);
+    item.SetAttribute(siUIHeight, 150);
+    item.SetAttribute(siUIVerticalScroll, true);
+    item.SetAttribute(siUILineWrap, true);
+    item.SetAttribute(siUIFont, 'Tahoma');
+    item.SetAttribute(siUIFontSize, 12);
+    item.SetAttribute(siUICommentFont, 'Comic Sans MS');
+    item.SetAttribute(siUIKeywords, 'highlighted word');
+    item = layout.AddButton('SaveText', 'Save');
+    item.SetAttribute(siUIContinue, true);
+    item = layout.AddButton('ReloadText', 'Reload');
+    layout.EndGroup();
+    layout.AddGroup('Clip');
+    layout.AddRow();
+    item = layout.AddItem('Offset', 'Clip Offset');
+    item = layout.AddButton('SetToCurrent', 'Current');
+    item.SetAttribute('cx', 80);
+    layout.EndRow();
+    layout.EndGroup();
+    layout.AddSpacer(0, 12);
+    item = layout.AddButton('ImportSpeech', 'Create LipSync');
+    item.SetAttribute('cx', 100);
+    layout.SetAttribute(siUIHelpFile, '<FactoryPath>/Doc/<DocLangPref>/xsidocs.chm::/propref_facebot_LipSync.htm');
+    PPG.Refresh();
+}

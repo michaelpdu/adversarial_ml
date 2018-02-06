@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?GetTrimmedLineCount@RichText@DirectUI@@QAEKXZ

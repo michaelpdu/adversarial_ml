@@ -1,0 +1,17 @@
+function GetLanguageFiles(folder, extension) {
+    var FSO = XSIFactory.CreateActiveXObject('Scripting.FileSystemObject');
+    var localefiles = [];
+    if (!folder || !FSO.FolderExists(folder)) {
+        return localefiles;
+    }
+    var PF = FSO.GetFolder(folder);
+    var f = PF.Files;
+    var fc = new Enumerator(f);
+    for (; !fc.atEnd(); fc.moveNext()) {
+        var a = fc.item().name.split('.');
+        if (a.length > 1 && a[a.length - 1] == extension)
+            localefiles.push(fc.item().Name);
+    }
+    localefiles.sort();
+    return localefiles;
+}

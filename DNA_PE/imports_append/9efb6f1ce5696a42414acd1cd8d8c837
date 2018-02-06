@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?Initialize@HWNDHost@DirectUI@@QAEJIIPAVElement@2@PAK@Z

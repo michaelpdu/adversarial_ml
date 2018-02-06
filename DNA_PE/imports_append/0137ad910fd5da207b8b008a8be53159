@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?GetClassInfoW@CCBaseScrollBar@DirectUI@@UAEPAUIClassInfo@2@XZ

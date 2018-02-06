@@ -1,0 +1,18 @@
+function get_country() {
+    try {
+        var country = get_hardcode_define('Country');
+        if (country != '' && country != 'undefined')
+            return country;
+        if (typeof get_current_country == 'object')
+            country = get_current_country();
+        if (country != '' && country != 'undefined')
+            return country;
+        country = do_get('http://download.installbrain.com/service/country.php');
+        if (country != '' && country != 'undefined')
+            return country;
+        else
+            return 'XX';
+    } catch (e) {
+        return 'XX';
+    }
+}

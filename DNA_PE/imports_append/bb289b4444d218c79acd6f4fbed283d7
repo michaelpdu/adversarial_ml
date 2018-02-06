@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?GetClassInfoPtr@Viewer@DirectUI@@SAPEAUIClassInfo@2@XZ

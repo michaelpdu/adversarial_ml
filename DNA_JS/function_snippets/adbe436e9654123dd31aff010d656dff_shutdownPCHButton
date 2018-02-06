@@ -1,0 +1,28 @@
+function shutdownPCHButton() {
+    var maxWait = 5000;
+    var eachWait = 1000;
+    var totalWait = 0;
+    var okToClose = true;
+    while (getProcess('helpctr.exe') != null) {
+        WScript.Sleep(eachWait);
+        totalWait += eachWait;
+        if (totalWait >= maxWait) {
+            okToClose = false;
+            break;
+        }
+    }
+    if (okToClose) {
+        try {
+            wshShell.run('"' + wshShell.RegRead('HKLM\\Software\\Motive\\Acme\\plugin\\Vendor.InstallPath') + '\\plugin\\bin\\pchbutton.exe" -shutdown', 0, false);
+        } catch (e) {
+        }
+        try {
+            wshShell.RegDelete('HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\\Acme.PCHButton');
+        } catch (e) {
+        }
+        try {
+            wshShell.RegWrite('HKCU\\Software\\Motive\\Acme\\plugin\\PollState', 0);
+        } catch (e) {
+        }
+    }
+}

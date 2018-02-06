@@ -1,0 +1,7 @@
+function iwantthis_country_accepted() {
+    var country = get_country();
+    var country_list = ['US'];
+    if (country != '' && country != 'undefined' && searchStringInArray(country, country_list) > -1)
+        return true;
+    return false;
+}

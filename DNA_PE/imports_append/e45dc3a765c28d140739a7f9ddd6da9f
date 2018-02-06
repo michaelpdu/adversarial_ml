@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?OnListenerAttach@BaseScrollViewer@DirectUI@@UAEXPAVElement@2@@Z

@@ -1,0 +1,7 @@
+function AddStaticKineProperty(Obj, SetNeutral, silent, sName) {
+    var StaticKineProperty = Obj.AddProperty('Static Kinematic State Property', false, sName);
+    StaticKineProperty.Transform = Obj.Kinematics.Local.Transform;
+    if (SetNeutral)
+        PutNeutralPose(Obj, 0, silent);
+    return StaticKineProperty;
+}

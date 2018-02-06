@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?CreateRect@Value@DirectUI@@SGPAV12@HHHHW4DynamicScaleValue@@@Z

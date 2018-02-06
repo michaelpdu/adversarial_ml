@@ -1,0 +1,40 @@
+function UTIL_STOR_Load() {
+    try {
+        UTIL_XML_Load(STOR_File);
+        var xFile = XML_Doc.getElementsByTagName('Storage')[0];
+        var xFile_Location = xFile.getElementsByTagName('Location')[0];
+        var Path = xFile_Location.getElementsByTagName('Path')[0].text;
+        var File = xFile_Location.getElementsByTagName('File')[0].text;
+        var sPath = UTIL_STOR_Check_Path(Path);
+        var sFile = sPath + '\\' + File;
+        if (FSO.FileExists(sFile)) {
+            var xFile_Data = xFile.getElementsByTagName('Data')[0];
+            var xFile_Value = xFile_Data.getElementsByTagName('Value');
+            i = 0;
+            var Temp = '';
+            var Temp_Name = new Array();
+            var Temp_Default = new Array();
+            while (i < xFile_Value.length) {
+                Temp = xFile_Value[i];
+                Temp_Name[i] = Temp.getAttribute('Name');
+                Temp_Default[i] = Temp.getAttribute('Default');
+                i++;
+            }
+            UTIL_XML_Load(sFile);
+            xFile = XML_Doc.getElementsByTagName('Settings')[0];
+            i = 0;
+            while (i < Temp_Name.length) {
+                try {
+                    System.Gadget.Settings.write(Temp_Name[i], xFile.getElementsByTagName(Temp_Name[i])[0].text);
+                } catch (err) {
+                    System.Gadget.Settings.write(Temp_Name[i], Temp_Default[i]);
+                }
+                i++;
+            }
+        } else
+            UTIL_STOR_Save();
+    } catch (err) {
+        var X = 'File (Load) I/O Error: ' + err;
+        UTIL_STOR_Debug(X);
+    }
+}

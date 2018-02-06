@@ -1,0 +1,7 @@
+function HasTransform(Obj) {
+    var node = Obj.NestedObjects('nodecurrent');
+    if (node && node.NestedObjects('Kinematics')) {
+        return true;
+    }
+    return false;
+}

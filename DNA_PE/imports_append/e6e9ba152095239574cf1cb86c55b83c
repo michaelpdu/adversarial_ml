@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?SetVisible@Element@DirectUI@@QEAAJ_N@Z

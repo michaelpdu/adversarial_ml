@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?GetClassInfoPtr@TouchSelectItem@DirectUI@@SAPEAUIClassInfo@2@XZ

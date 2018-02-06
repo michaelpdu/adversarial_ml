@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?CancelClick@TouchButton@DirectUI@@QAE_NW4ClickDevice@12@@Z

@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?GetTrackElement@TouchSlider@DirectUI@@QAEPAVElement@2@XZ

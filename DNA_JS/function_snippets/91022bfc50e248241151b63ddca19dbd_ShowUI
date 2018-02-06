@@ -1,0 +1,19 @@
+function ShowUI() {
+    if (g_pStatus != null) {
+        switch (g_nOverallStatus) {
+        case STATE_GOOD:
+        case STATE_EXPIRED:
+            g_pStatus.ShowUI(g_MainUI);
+            break;
+        case STATE_NONE:
+        case STATE_BOOTING:
+        case STATE_WARNING_NO_BUTTON:
+        case STATE_BAD_NO_BUTTON:
+        case STATE_UNRESPONSIVE:
+            break;
+        default:
+            g_pStatus.ShowUI(g_FixUI);
+            break;
+        }
+    }
+}

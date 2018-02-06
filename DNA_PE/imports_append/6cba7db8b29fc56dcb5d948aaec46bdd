@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?LoadFromFile@DUIFactory@DirectUI@@QAEJPBG0PAVElement@2@PAKPAPAV

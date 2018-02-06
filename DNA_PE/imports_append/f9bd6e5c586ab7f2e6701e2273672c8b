@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?ActiveStateChanged@TouchScrollBar@DirectUI@@SG?AVUID@@XZ

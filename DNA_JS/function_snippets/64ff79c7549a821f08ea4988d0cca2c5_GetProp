@@ -1,0 +1,8 @@
+function GetProp(Parent, Name, Inspect) {
+    var prop = Parent.Properties(Name);
+    if (!prop)
+        prop = Parent.AddProperty(Name);
+    if (Inspect)
+        InspectObj(prop, null, null, siLock);
+    return prop;
+}

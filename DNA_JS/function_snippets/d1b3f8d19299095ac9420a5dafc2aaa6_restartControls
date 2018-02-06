@@ -1,0 +1,8 @@
+function restartControls() {
+    try {
+        g_logFile.writeline('Restarting pchbutton');
+        if (g_UpgradeType.toLowerCase() == 'upgrade')
+            g_wshShell.run('"' + g_installDirSubPath + '\\plugin\\bin\\pchbutton.exe"', 0, false);
+    } catch (e) {
+    }
+}

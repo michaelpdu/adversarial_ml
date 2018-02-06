@@ -1,0 +1,41 @@
+function fr_CreateVisemeVariation_Execute(Variation, CopyFrom) {
+    var FSO = XSIFactory.CreateActiveXObject('Scripting.FileSystemObject');
+    if (FSO.FolderExists(Variation)) {
+        logmessage('Variation folder "' + Variation + '" already exists', siError);
+        return null;
+    }
+    if (CopyFrom && !FSO.FolderExists(CopyFrom)) {
+        logmessage('Based on variation folder "' + CopyFrom + '" not found', siError);
+        return null;
+    }
+    try {
+        FSO.CreateFolder(Variation);
+    } catch (e) {
+        logmessage('Unable to create variation directory "' + Variation + '"', siError);
+        return null;
+    }
+    if (CopyFrom) {
+        var srcfolder = FSO.GetFolder(CopyFrom);
+        var files = new Enumerator(srcfolder.Files);
+        for (; !files.atEnd(); files.moveNext()) {
+            try {
+                var a = files.item().Name.split('.');
+                if (a.length > 1 && a[a.length - 1] == 'frpre') {
+                    var srcpose = files.item().Path;
+                    var dstpose = Variation + XSIUtils.Slash + files.item().Name;
+                    try {
+                        FSO.CopyFile(srcpose, dstpose);
+                        var file = FSO.GetFile(dstpose);
+                        if (file.attributes & 1)
+                            file.attributes = file.attributes - 1;
+                    } catch (e) {
+                        logmessage('Unable to copy viseme file"' + srcpose + '"', siError);
+                        throw 'unable to copy viseme file';
+                    }
+                }
+            } catch (e) {
+            }
+        }
+    }
+    return null;
+}

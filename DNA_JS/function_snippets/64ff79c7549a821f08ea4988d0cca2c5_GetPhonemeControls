@@ -1,0 +1,13 @@
+function GetPhonemeControls(Model) {
+    var Controls = {};
+    Controls.Mouth = GetKeyed(['Mouth'], Model);
+    Controls.JawEnd = GetKeyed([
+        'Jaw',
+        'End'
+    ], Model);
+    Controls.Tongue = GetKeyed([
+        'Tongue',
+        'Control'
+    ], Model);
+    return Controls;
+}

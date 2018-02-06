@@ -1,0 +1,5 @@
+function CreateClassName(strPrefix, strPostfix) {
+    var strCandidate;
+    strCandidate = 'C' + strPrefix + strPostfix;
+    return strCandidate;
+}

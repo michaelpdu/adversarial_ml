@@ -1,0 +1,7 @@
+function soundPressed() {
+    if (soundEnabled) {
+        soundButton.src = 'images/basic/sound_on_pressed.png';
+    } else {
+        soundButton.src = 'images/basic/sound_off_pressed.png';
+    }
+}

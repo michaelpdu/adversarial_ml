@@ -1,0 +1,3 @@
+imports_append
+MSVCRT.DLL
+?_set_se_translator@@YAP6AXIPEAU_EXCEPTION_POINTERS@@@ZP6AXI0@Z@

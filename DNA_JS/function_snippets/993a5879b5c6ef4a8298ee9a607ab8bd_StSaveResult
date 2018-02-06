@@ -1,0 +1,25 @@
+function StSaveResult(insFileName, innStatus, innResult, insCommand, insOutput) {
+    var oDoc, oRoot, oIntro, oTaskNode, oAttribute, oOutput, oStatus, oResultCode, oCommand;
+    oDoc = new ActiveXObject('Microsoft.XMLDOM');
+    oDoc.async = false;
+    oIntro = oDoc.createProcessingInstruction('xml', 'version=\'1.0\'');
+    oDoc.insertBefore(oIntro, oDoc.childNodes(0));
+    oRoot = oDoc.createElement('scheduledtask');
+    oDoc.appendChild(oRoot);
+    oAttribute = oDoc.createAttribute('writeTime');
+    oAttribute.text = '' + Math.round(new Date().getTime() / 1000);
+    oRoot.setAttributeNode(oAttribute);
+    oOutput = oDoc.createElement('output');
+    oStatus = oDoc.createElement('status');
+    oResultCode = oDoc.createElement('returncode');
+    oCommand = oDoc.createElement('command');
+    oOutput.text = insOutput;
+    oStatus.text = innStatus;
+    oResultCode.text = innResult;
+    oCommand.text = insCommand;
+    oRoot.appendChild(oStatus);
+    oRoot.appendChild(oResultCode);
+    oRoot.appendChild(oOutput);
+    oRoot.appendChild(oCommand);
+    oDoc.save(insFileName);
+}

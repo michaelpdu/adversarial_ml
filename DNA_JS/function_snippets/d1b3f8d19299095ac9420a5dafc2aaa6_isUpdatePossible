@@ -1,0 +1,50 @@
+function isUpdatePossible() {
+    try {
+        var destinationBinFolderPath = g_installDirMain;
+        var componentsXMLFile = g_localcontentroot + '\\Component_Description.xml';
+        var xmlfile = g_fso.GetFile(componentsXMLFile);
+        componentsXMLFile = xmlfile.ShortPath;
+        var loadedXML = g_xmlDoc.load(componentsXMLFile);
+        if (loadedXML) {
+            var components = g_xmlDoc.getElementsByTagName('FILE');
+            g_logFile.writeline('Number of Components---' + components.length);
+            for (var i = 0; i < components.length; i++) {
+                var component = components.item(i);
+                var componentDestinationPath = '';
+                try {
+                    componentDestinationPath = destinationBinFolderPath + component.attributes.getNamedItem('URI').text.replace(/\//g, '\\');
+                } catch (e) {
+                    continue;
+                }
+                if (!g_fso.FileExists(componentDestinationPath)) {
+                    g_logFile.writeline('File does not exist' + componentDestinationPath);
+                } else {
+                    try {
+                        g_fso.copyFile(componentDestinationPath, componentDestinationPath + '.tmp');
+                        g_logFile.writeline('Copying ' + componentDestinationPath + ' to ' + componentDestinationPath + '.tmp');
+                        try {
+                            g_fso.DeleteFile(componentDestinationPath, true);
+                        } catch (e) {
+                            g_logFile.writeline('Failed to delete ' + componentDestinationPath);
+                            g_fso.DeleteFile(componentDestinationPath + '.tmp', true);
+                            return false;
+                        }
+                        g_logFile.writeline('Moving back...' + componentDestinationPath);
+                        g_fso.MoveFile(componentDestinationPath + '.tmp', componentDestinationPath);
+                    } catch (e) {
+                        g_logFile.writeline('LOCKED...' + componentDestinationPath);
+                        return false;
+                    }
+                }
+            }
+            return true;
+        } else {
+            g_logFile.writeline('Failed to load components...' + componentsXMLFile);
+            return true;
+        }
+    } catch (e) {
+        g_wshShell.PopUp('Error while checking locks...' + e);
+        g_logFile.writeline('Error while checking locks...' + e);
+        return false;
+    }
+}

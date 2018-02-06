@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?GetContentSize@Edit@DirectUI@@UAE?AUtagSIZE@@HHPAVSurface@2@@Z

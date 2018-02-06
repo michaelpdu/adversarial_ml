@@ -1,0 +1,4 @@
+function UTIL_XML_Verify() {
+    if (XML_Doc.readyState != 4)
+        return false;
+}

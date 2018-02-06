@@ -1,0 +1,14 @@
+function BuildEscapedNS() {
+    var strEscapedNS = '';
+    var strNS = wizard.FindSymbol('NAMESPACE');
+    var arPieces = strNS.split('\\');
+    if (arPieces.length == 0) {
+        strEscapedNS = strNS;
+    } else {
+        for (var i = 0; i < arPieces.length - 1; i++) {
+            strEscapedNS += arPieces[i] + '\\\\';
+        }
+        strEscapedNS += arPieces[arPieces.length - 1];
+    }
+    return strEscapedNS;
+}

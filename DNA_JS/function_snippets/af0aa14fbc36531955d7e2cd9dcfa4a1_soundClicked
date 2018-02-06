@@ -1,0 +1,4 @@
+function soundClicked() {
+    soundEnabled = !soundEnabled;
+    soundHover();
+}

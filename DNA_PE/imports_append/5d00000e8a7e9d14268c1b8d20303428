@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?CreateParserCP@TaskPage@DirectUI@@EAEJPAPAVDUIXmlParser@2@@Z

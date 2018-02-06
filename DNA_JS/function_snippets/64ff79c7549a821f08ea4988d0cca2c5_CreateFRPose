@@ -1,0 +1,4 @@
+function CreateFRPose(filename) {
+    SelectObj(GetAllControls());
+    fr_SaveFacePose(true, filename);
+}

@@ -1,0 +1,7 @@
+function AverageAndOffsets(Val0, Val1) {
+    var out = {};
+    out.Average = (Val0 + Val1) / 2;
+    out.Offset0 = Val0 - out.Average;
+    out.Offset1 = Val1 - out.Average;
+    return out;
+}

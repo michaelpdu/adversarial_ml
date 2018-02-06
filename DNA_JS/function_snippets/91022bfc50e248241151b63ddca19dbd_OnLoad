@@ -1,0 +1,15 @@
+function OnLoad() {
+    tmap_icon.style.display = 'none';
+    nolf_icon.style.display = 'none';
+    sweb_icon.style.display = 'none';
+    nvip_icon.style.display = 'none';
+    mobi_icon.style.display = 'none';
+    none_icon.style.display = 'none';
+    g_tmapIconTooltip = tmap_icon.title;
+    g_nolfIconTooltip = nolf_icon.title;
+    g_swebIconTooltip = sweb_icon.title;
+    g_nvipIconTooltip = nvip_icon.title;
+    g_mobiIconTooltip = mobi_icon.title;
+    g_noneIconTooltip = none_icon.title;
+    setTimeout('Initialize()', 0);
+}

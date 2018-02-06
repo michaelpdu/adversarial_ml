@@ -1,0 +1,4 @@
+function fr_EditVisemes_Execute() {
+    var Model = GetFRFaceModel();
+    return GetProp(Model, 'fr_Visemes', true);
+}

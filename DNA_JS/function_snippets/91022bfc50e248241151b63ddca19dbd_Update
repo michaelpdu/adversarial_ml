@@ -1,0 +1,123 @@
+function Update() {
+    try {
+        if (g_pStatus != null) {
+            g_bNeedRestore = false;
+            var nOldStatus = g_nOverallStatus;
+            g_nOverallStatus = g_pStatus.GetOverallHealth();
+            g_nFlags = g_pStatus.GetSymWidgetFlags();
+            if (0 == g_nFlags) {
+                if (STATE_WARNING == g_nOverallStatus)
+                    g_nOverallStatus = STATE_WARNING_NO_BUTTON;
+                if (STATE_BAD == g_nOverallStatus)
+                    g_nOverallStatus = STATE_BAD_NO_BUTTON;
+            }
+            if (nOldStatus != g_nOverallStatus) {
+                if (g_nOverallStatus != STATE_NONE && g_nOverallStatus != STATE_BOOTING) {
+                    action_button_text.style.display = '';
+                    action_button_text.className = 'active';
+                }
+                if (g_bTooltipsDisabled) {
+                    tmap_icon.title = g_tmapIconTooltip;
+                    nolf_icon.title = g_nolfIconTooltip;
+                    sweb_icon.title = g_swebIconTooltip;
+                    nvip_icon.title = g_nvipIconTooltip;
+                    mobi_icon.title = g_mobiIconTooltip;
+                    none_icon.title = g_noneIconTooltip;
+                    g_bTooltipsDisabled = false;
+                }
+                switch (g_nOverallStatus) {
+                case STATE_GOOD:
+                    action_button.src = 'images/green/normal.png';
+                    action_button.style.cursor = action_button_text.style.cursor = 'pointer';
+                    action_button_text.innerText = secure_text.innerText;
+                    break;
+                case STATE_WARNING:
+                case STATE_WARNING_NO_BUTTON:
+                    action_button.src = 'images/orange/normal.png';
+                    action_button.style.cursor = action_button_text.style.cursor = STATE_WARNING_NO_BUTTON == g_nOverallStatus ? 'auto' : 'pointer';
+                    action_button_text.innerText = attention_text.innerText;
+                    break;
+                case STATE_BAD:
+                case STATE_BAD_NO_BUTTON:
+                case STATE_EXPIRED:
+                    action_button.src = 'images/red/normal.png';
+                    action_button.style.cursor = action_button_text.style.cursor = STATE_BAD_NO_BUTTON == g_nOverallStatus ? 'auto' : 'pointer';
+                    action_button_text.innerText = at_risk_text.innerText;
+                    break;
+                case STATE_FIXING:
+                    action_button.src = 'images/progress.gif';
+                    action_button.style.cursor = 'pointer';
+                    action_button_text.style.display = 'none';
+                    break;
+                case STATE_NONE:
+                case STATE_BOOTING:
+                    break;
+                case STATE_UNRESPONSIVE:
+                default:
+                    g_bNeedRestore = true;
+                    if (g_pInterval == null) {
+                        g_pInterval = setInterval('AttemptRestore()', 2000);
+                    }
+                    action_button.src = 'images/grey.png';
+                    action_button.style.cursor = action_button_text.style.cursor = 'auto';
+                    action_button_text.className = 'disabled';
+                    action_button_text.innerText = disabled_text.innerText;
+                    break;
+                }
+                switch (g_nOverallStatus) {
+                case STATE_GOOD:
+                case STATE_WARNING:
+                case STATE_WARNING_NO_BUTTON:
+                case STATE_BAD:
+                case STATE_BAD_NO_BUTTON:
+                case STATE_FIXING:
+                case STATE_NONE:
+                case STATE_BOOTING:
+                    break;
+                case STATE_EXPIRED:
+                case STATE_UNRESPONSIVE:
+                default:
+                    tmap_icon.title = '';
+                    nolf_icon.title = '';
+                    sweb_icon.title = '';
+                    nvip_icon.title = '';
+                    mobi_icon.title = '';
+                    none_icon.title = '';
+                    g_bTooltipsDisabled = true;
+                    break;
+                }
+            }
+            g_tmapIconVisible = g_nFlags & 33554432;
+            g_tmapIconEnabled = g_nFlags & 16777216;
+            g_nolfIconVisible = g_nFlags & 2097152;
+            g_nolfIconEnabled = g_nFlags & 1048576;
+            g_swebIconVisible = g_nFlags & 131072;
+            g_swebIconEnabled = g_nFlags & 65536;
+            g_nvipIconVisible = g_nFlags & 8192;
+            g_nvipIconEnabled = g_nFlags & 4096;
+            g_mobiIconVisible = g_nFlags & 512;
+            g_mobiIconEnabled = g_nFlags & 256;
+            g_noneIconVisible = g_nFlags & 32768;
+            g_noneIconEnabled = g_nFlags & 16384;
+            tmap_icon.style.display = g_tmapIconVisible ? '' : 'none';
+            nolf_icon.style.display = g_nolfIconVisible ? '' : 'none';
+            sweb_icon.style.display = g_swebIconVisible ? '' : 'none';
+            nvip_icon.style.display = g_nvipIconVisible ? '' : 'none';
+            mobi_icon.style.display = g_mobiIconVisible ? '' : 'none';
+            none_icon.style.display = g_noneIconVisible ? '' : 'none';
+            if (g_tmapIconVisible)
+                OnMouseActionEx(2, 'normal');
+            if (g_nolfIconVisible)
+                OnMouseActionEx(3, 'normal');
+            if (g_swebIconVisible)
+                OnMouseActionEx(4, 'normal');
+            if (g_nvipIconVisible)
+                OnMouseActionEx(5, 'normal');
+            if (g_mobiIconVisible)
+                OnMouseActionEx(6, 'normal');
+            if (g_noneIconVisible)
+                OnMouseActionEx(8, 'normal');
+        }
+    } catch (err) {
+    }
+}

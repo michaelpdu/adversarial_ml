@@ -1,0 +1,7 @@
+function fr_Visemes_StoreViseme_OnClicked() {
+    var posefilename = GetPoseFileName(PPG, PPG.Phoneme.Value, PPG.PhonemeName.Value);
+    if (!IsFactoryVisemeFolder(PPG.LibraryPath.Value) || !FileExists(posefilename) || XSIUIToolkit.Msgbox(XSIUtils.Translate('Warning, you are about to overwrite a factory installed visemes.  Continue?', 'XSISPDLFILE'), siMsgYesNo | siMsgExclamation, XSIUtils.Translate('Overwrite Factory Viseme', 'XSISPDLFILE')) == siMsgYes) {
+        fr_SaveVisemePose(posefilename);
+        UpdateVisemeState(PPG);
+    }
+}

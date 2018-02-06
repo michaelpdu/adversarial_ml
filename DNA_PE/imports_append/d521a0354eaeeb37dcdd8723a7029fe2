@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?SetPromptWithCaret@TouchEdit2@DirectUI@@QAEJ_N@Z

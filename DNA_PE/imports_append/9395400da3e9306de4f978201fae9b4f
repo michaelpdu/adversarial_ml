@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?GetFrameIndex@AnimationStrip@DirectUI@@QAEHXZ

@@ -1,0 +1,13 @@
+function ProjFileOpen(strFileName, selProj) {
+    var bFileOpened = false;
+    var activeDoc;
+    var nDocs;
+    for (nDocs = 1; nDocs <= selProj.DTE.Documents.Count; nDocs++) {
+        activeDoc = selProj.DTE.Documents.Item(nDocs);
+        if (activeDoc.Name == strFileName) {
+            bFileOpened = true;
+            break;
+        }
+    }
+    return bFileOpened;
+}

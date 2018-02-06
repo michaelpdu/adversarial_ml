@@ -1,0 +1,15 @@
+function enable_globalLogging(isEnable) {
+    if (isEnable) {
+        try {
+            WshShell.RegWrite(logging_reg + logging_reg_key, 2, 'REG_DWORD');
+            WshShell.RegWrite(cfb_reg + cfb_logs_reg_key, 2, 'REG_DWORD');
+        } catch (exception) {
+        }
+    } else {
+        try {
+            WshShell.RegDelete(logging_reg + logging_reg_key);
+            WshShell.RegDelete(cfb_reg + cfb_logs_reg_key);
+        } catch (exception) {
+        }
+    }
+}

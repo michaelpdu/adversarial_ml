@@ -1,0 +1,9 @@
+function fr_ImportSpeech_Init(ctxt) {
+    var cmd = ctxt.Source;
+    cmd.Arguments.Add('AudioFileName');
+    cmd.Arguments.Add('TextFileName');
+    cmd.Arguments.Add('Offset');
+    cmd.Arguments.Add('Language');
+    cmd.Arguments.Add('SilenceDuration', siInt4, 10);
+    return true;
+}

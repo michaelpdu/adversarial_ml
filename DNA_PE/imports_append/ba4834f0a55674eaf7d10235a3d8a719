@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?OnPropertyChanging@Viewer@DirectUI@@UEAA_NPEBUPropertyInfo@2@HP

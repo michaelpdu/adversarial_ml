@@ -1,0 +1,22 @@
+function IsPatching() {
+    try {
+        var WshShell = new ActiveXObject('WScript.Shell');
+        var WshSysEnv = WshShell.Environment('SYSTEM');
+        var patchKey = WshSysEnv('PROCESSOR_ARCHITECTURE') == 'x86' ? 'HKLM\\SOFTWARE\\Norton\\{0C55C096-0F1D-4F28-AAA2-85EF591126E7}\\DING\\Patch' : 'HKLM\\SOFTWARE\\Wow6432Node\\Norton\\{0C55C096-0F1D-4F28-AAA2-85EF591126E7}\\DING\\Patch';
+        var bApply = true;
+        try {
+            WshShell.RegRead(patchKey + '\\Apply\\');
+        } catch (err) {
+            bApply = false;
+        }
+        var bReboot = true;
+        try {
+            WshShell.RegRead(patchKey + '\\Reboot\\');
+        } catch (err) {
+            bReboot = false;
+        }
+        return bApply && !bReboot;
+    } catch (err) {
+        return false;
+    }
+}

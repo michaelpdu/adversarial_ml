@@ -1,0 +1,3 @@
+function ObjectFromID_Update(ctx, Out, InPort, InPhonemeData) {
+    Out.Value = InPhonemeData.Value.ObjectId;
+}

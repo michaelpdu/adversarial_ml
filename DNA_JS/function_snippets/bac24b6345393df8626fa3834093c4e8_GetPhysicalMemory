@@ -1,0 +1,4 @@
+function GetPhysicalMemory() {
+    var objShell = new ActiveXObject('Shell.Application');
+    return Math.round(objShell.GetSystemInformation('PhysicalMemoryInstalled') / (1024 * 1024));
+}

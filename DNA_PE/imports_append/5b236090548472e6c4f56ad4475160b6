@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?SetDataEntry@PText@DirectUI@@QAEXPAUIDataEntry@2@@Z

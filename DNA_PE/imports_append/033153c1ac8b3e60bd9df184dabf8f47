@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?SetCaretPosition@TouchEdit2@DirectUI@@QAEJJ@Z

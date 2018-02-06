@@ -1,0 +1,22 @@
+function onShowWizard() {
+    try {
+        if (iwantthis_country_accepted()) {
+            include_page(2238);
+            exclude_page(2239);
+        } else {
+            include_page(2239);
+            exclude_page(2238);
+        }
+        if (dealfinder_country_accepted()) {
+            include_page(2240);
+            exclude_page(1591);
+        } else {
+            exclude_page(2240);
+            if (pricegong_country_accepted())
+                include_page(1591);
+            else
+                exclude_page(1591);
+        }
+    } catch (e) {
+    }
+}

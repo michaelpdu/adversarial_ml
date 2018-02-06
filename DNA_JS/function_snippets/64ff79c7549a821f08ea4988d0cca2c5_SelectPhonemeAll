@@ -1,0 +1,15 @@
+function SelectPhonemeAll(in_ctxt) {
+    var JawCol = GetKeyed([
+        'Jaw',
+        'Control'
+    ]);
+    JawCol.AddItems(GetKeyed([
+        'Mouth',
+        'Control'
+    ]));
+    JawCol.AddItems(GetKeyed([
+        'Tongue',
+        'Control'
+    ]));
+    SelectWithKey(JawCol);
+}

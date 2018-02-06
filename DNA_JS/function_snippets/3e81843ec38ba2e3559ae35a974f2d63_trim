@@ -1,0 +1,4 @@
+function trim(strVar) {
+    var strResult = strVar.replace(/^\s*/, '').replace(/\s*$/, '');
+    return strResult;
+}

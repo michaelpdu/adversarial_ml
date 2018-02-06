@@ -1,0 +1,81 @@
+function fr_ImportSpeech_Execute(AudioFileName, TextFileName, Offset, Language, SilenceDuration) {
+    var Model = GetFRFaceModel();
+    var Files = [
+        AudioFileName,
+        TextFileName
+    ];
+    if (!ValidatePhonemeInputs(Model, Files)) {
+        logmessage('ImportSpeech: invalid audio/text files', siError);
+        return null;
+    }
+    var FaceMesh;
+    var FaceMeshes = GetKeyed([
+        'Face',
+        'Mesh'
+    ], Model);
+    if (FaceMeshes.count > 0) {
+        FaceMesh = FaceMeshes(0);
+    } else {
+        FaceMesh = GetFaceMesh(Model);
+        if (FaceMesh) {
+            AddUserKeyword(FaceMesh, 'Face,Mesh');
+        } else {
+            logmessage('ImportSpeech: no face mesh found', siError);
+            return null;
+        }
+    }
+    var pbar = XSIUIToolkit.ProgressBar;
+    pbar.Maximum = 4;
+    pbar.Step = 1;
+    pbar.Visible = true;
+    pbar.CancelEnabled = false;
+    pbar.Caption = 'Create Speech Clip';
+    incrementpbar(pbar, 'Import Audio');
+    var AudioSource = ImportAudio(Model, Files[0], null);
+    if (!AudioSource) {
+        logmessage('ImportSpeech: import audio file failed', siError);
+        pbar.Visible = false;
+        return null;
+    }
+    var TrackSet = BuildTrackset(Model);
+    var AudioClip = AddAudioClip(Model, AudioSource, null, TrackSet(1), Offset, null);
+    var startoffset = Math.round(AudioClip.TimeControl.parameters('startoffset').value);
+    var clipin = Math.round(AudioClip.TimeControl.parameters('clipin').value) + startoffset;
+    var clipout = Math.round(AudioClip.TimeControl.parameters('clipout').value) + startoffset;
+    SetValue('PlayControl.Out', clipout, null);
+    SetValue('PlayControl.In', clipin - 1, null);
+    incrementpbar(pbar, 'Add Speech Clip');
+    var SpeechAction = CreateSpeechAction(FaceMesh, null);
+    if (!SpeechAction) {
+        logmessage('ImportSpeech: unable to create speech action', siError);
+        DeleteObj(TrackSet);
+        DeleteObj(AudioSource);
+        pbar.Visible = false;
+        return null;
+    }
+    var SpeechClip = AddClip(Model, SpeechAction, null, TrackSet(0), Offset, null, null, null, null);
+    SetValue(SpeechClip + '.actionclip.timectrl.clipin', clipin, null);
+    SetValue(SpeechClip + '.actionclip.timectrl.clipout', clipout, null);
+    try {
+        var Text = ReadFile(Files[1]);
+        Text = Text.replace(/;/g, ' ');
+        incrementpbar(pbar, 'Recognizing Phonemes');
+        if (Language > 0)
+            ExtractPhonemesToSpeechOpJapanese(SpeechClip, Files[0], Text, Offset, SilenceDuration);
+        else
+            ExtractPhonemesToSpeechOp(SpeechClip, Files[0], Text, Offset, SilenceDuration);
+        var Clips = new ActiveXObject('XSI.Collection');
+        Clips.Add(SpeechClip);
+        Clips.Add(AudioClip);
+        AddClipRelation(Clips, Clips, null);
+    } catch (e) {
+        logmessage('ImportSpeech: phoneme recognition failed', siError);
+        DeleteObj(TrackSet);
+        DeleteObj(SpeechAction);
+        DeleteObj(AudioSource);
+        pbar.Visible = false;
+        return null;
+    }
+    pbar.Visible = false;
+    return SpeechAction;
+}

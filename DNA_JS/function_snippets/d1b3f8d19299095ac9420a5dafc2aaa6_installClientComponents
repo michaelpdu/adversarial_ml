@@ -1,0 +1,113 @@
+function installClientComponents() {
+    g_logFile.writeline('In Install Client Components.');
+    try {
+        var destinationBinFolderPath = g_installDirMain;
+        var srcBinFolderPath = g_localcontentroot;
+        var componentsXMLFile = g_localcontentroot + '\\Component_Description.xml';
+        var xmlfile = g_fso.GetFile(componentsXMLFile);
+        componentsXMLFile = xmlfile.ShortPath;
+        var loadedXML = g_xmlDoc.load(componentsXMLFile);
+        if (loadedXML) {
+            var components = g_xmlDoc.getElementsByTagName('FILE');
+            g_logFile.writeline('Number of Components------' + components.length);
+            for (var i = components.length - 1; i >= 0; i--) {
+                var component = components.item(i);
+                var componentSourcePath = '';
+                var componentDestinationPath = '';
+                var componentRegister = 'false';
+                var action = '';
+                try {
+                    componentSourcePath = srcBinFolderPath + component.attributes.getNamedItem('SOURCE').text.replace(/\//g, '\\');
+                } catch (e) {
+                    continue;
+                }
+                try {
+                    componentDestinationPath = destinationBinFolderPath + component.attributes.getNamedItem('URI').text.replace(/\//g, '\\');
+                } catch (e) {
+                    continue;
+                }
+                try {
+                    componentRegister = component.attributes.getNamedItem('REGISTER').text;
+                } catch (e) {
+                }
+                try {
+                    action = component.attributes.getNamedItem('ACTION').text;
+                } catch (e) {
+                    continue;
+                }
+                g_logFile.writeline('SRC  ' + componentSourcePath);
+                g_logFile.writeline('DEST ' + componentDestinationPath);
+                g_logFile.writeline('REG  ' + componentRegister);
+                g_logFile.writeline('Action  ' + action);
+                if (action.toLowerCase() == 'add') {
+                    if (!g_fso.FileExists(componentSourcePath)) {
+                        g_wshShell.PopUp('SRC  ' + componentSourcePath + ' is being skipped');
+                        g_logFile.writeline('SRC  ' + componentSourcePath + ' is being skipped');
+                        continue;
+                    }
+                    try {
+                        createFolderPath(g_fso.GetParentFolderName(componentDestinationPath));
+                        g_logFile.writeline('Copying ' + componentSourcePath + ' to ' + componentDestinationPath);
+                        g_fso.copyFile(componentSourcePath, componentDestinationPath, true);
+                        var componentType1 = g_fso.GetExtensionName(componentDestinationPath);
+                        g_logFile.writeline('TYPE : ' + componentType1);
+                        if (componentType1.toLowerCase() == 'cab') {
+                            g_logFile.writeline('Applying ' + componentSourcePath);
+                            try {
+                                g_extracter = new ActiveXObject('hcu.PCHUpdate');
+                                g_extracter.UpdatePkg(componentSourcePath, true);
+                            } catch (e) {
+                                g_logFile.writeline('Error applying cab file ' + componentSourcePath + e.message);
+                            }
+                        }
+                        if (componentRegister.toLowerCase() == 'true') {
+                            g_logFile.writeline('Registering component ' + componentDestinationPath);
+                            var componentType = g_fso.GetExtensionName(componentDestinationPath);
+                            g_logFile.writeline('TYPE : ' + componentType);
+                            if (componentType.toLowerCase() == 'exe') {
+                                g_logFile.writeline('Registering EXE component');
+                                g_wshShell.run('"' + componentDestinationPath + '" -regserver', 0, true);
+                            } else if (componentType.toLowerCase() == 'dll') {
+                                g_logFile.writeline('Registering DLL component');
+                                var regsvrCmd = 'regsvr32 -s "' + componentDestinationPath + '"';
+                                g_logFile.writeline('Running ' + regsvrCmd);
+                                retval = g_wshShell.run(regsvrCmd, 0, true);
+                                if (retval != 0) {
+                                    g_logFile.writeline('trying to register using regasm.exe since return value from regsvr32=' + retval);
+                                    regasm = FindDotNetExecutable('RegAsm.exe');
+                                    regdotnet = '"' + regasm + '" ' + '/codebase /nologo /silent ' + componentDestinationPath;
+                                    g_logFile.writeline('Running ' + regdotnet);
+                                    retval = g_wshShell.run(regdotnet, 0, true);
+                                    if (retval != 0) {
+                                        g_logFile.writeline('Not Registering component, return value from regasm=' + retval);
+                                    }
+                                }
+                            }
+                        } else {
+                            g_logFile.writeline('Not Registering component');
+                        }
+                    } catch (e) {
+                        g_logFile.writeline('Caught exception while copying : ' + componentDestinationPath + ' ' + e.message);
+                        g_wshShell.PopUp('Caught exception while copying : ' + componentDestinationPath + ' ' + e.message);
+                    }
+                } else if (action.toLowerCase() == 'del') {
+                    try {
+                        g_fso.DeleteFile(componentDestinationPath, true);
+                    } catch (e) {
+                        g_logFile.writeline('Caught exception while deleting : ' + componentDestinationPath + ' ' + e);
+                        g_wshShell.PopUp('Caught exception while deleting : ' + componentDestinationPath + ' ' + e);
+                    }
+                }
+            }
+            g_logFile.writeline('--- PROCESSED COMPONENTS ----');
+            return true;
+        } else {
+            g_logFile.writeline('Failed to load components.xml');
+            return true;
+        }
+    } catch (e) {
+        g_wshShell.PopUp('Error Installing components ' + e);
+        g_logFile.writeline('Error Installing components ' + e);
+        return false;
+    }
+}

@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?GetEdgeHighlightThickness@Element@DirectUI@@QEAAPEBUtagRECT@@PE

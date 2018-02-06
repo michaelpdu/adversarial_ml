@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?SetScrollControlHost@TouchScrollViewer@DirectUI@@QAEJPAVElement

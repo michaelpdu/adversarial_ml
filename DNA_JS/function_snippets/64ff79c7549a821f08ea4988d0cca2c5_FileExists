@@ -1,0 +1,4 @@
+function FileExists(Filename) {
+    var FSO = XSIFactory.CreateActiveXObject('Scripting.FileSystemObject');
+    return FSO.FileExists(Filename);
+}

@@ -1,0 +1,21 @@
+function PutNeutralPose(Obj, Mode, silent) {
+    if (Obj.IsEqualTo(ActiveSceneRoot)) {
+        if (!silent)
+            logmessage('Cannot Set a neutral pose on the Scene Root!', siError);
+        return false;
+    }
+    if (!Mode) {
+        try {
+            SetNeutralPose(Obj, siSRT, false);
+        } catch (e) {
+            var T = XSIMath.CreateTransform();
+            Obj.Kinematics.Local.Transform = T;
+            SetNeutralPose(Obj, siSRT, false);
+        }
+        return true;
+    }
+    var n = Obj.Parent.AddNull(Obj.name + '_NeutralPose');
+    n.Kinematics.Global.Transform = Obj.Kinematics.Global.Transform;
+    n.AddChild(Obj);
+    return n;
+}

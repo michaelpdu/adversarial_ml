@@ -1,0 +1,5 @@
+function fr_SaveVisemePose_Init(ctxt) {
+    var cmd = ctxt.Source;
+    cmd.Arguments.Add('FileName');
+    return true;
+}

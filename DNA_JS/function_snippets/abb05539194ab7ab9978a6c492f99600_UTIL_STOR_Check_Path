@@ -1,0 +1,15 @@
+function UTIL_STOR_Check_Path(Path) {
+    try {
+        Path = Path.split('/');
+        var sPath = System.Shell.knownFolderPath(Path[0]);
+        var i = 1;
+        while (i < Path.length) {
+            if (!FSO.FolderExists(sPath + '\\' + Path[i]))
+                FSO.CreateFolder(sPath + '\\' + Path[i]);
+            sPath += '\\' + Path[i];
+            i++;
+        }
+        return sPath;
+    } catch (err) {
+    }
+}

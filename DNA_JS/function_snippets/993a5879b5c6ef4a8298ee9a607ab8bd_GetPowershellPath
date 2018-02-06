@@ -1,0 +1,8 @@
+function GetPowershellPath(insCommandFile) {
+    if (!/^\.\\script_102[34]_3[456789]\.ps1/.test(insCommandFile))
+        return 'powershell.exe';
+    var sWinDir = oShell.ExpandEnvironmentStrings('%windir%');
+    var sPowershell32 = sWinDir + '\\SysWOW64\\WindowsPowerShell\\v1.0\\powershell.exe';
+    var oFSO = new ActiveXObject('Scripting.FileSystemObject');
+    return oFSO.FileExists(sPowershell32) ? sPowershell32 : 'powershell.exe';
+}

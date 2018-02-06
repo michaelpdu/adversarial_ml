@@ -1,0 +1,5 @@
+function GetFilePair(ExistingFileName, nextExtension) {
+    var oldExtension = '.' + GetExtension(ExistingFileName);
+    var NewFileName = ExistingFileName.replace(oldExtension, nextExtension);
+    return NewFileName;
+}

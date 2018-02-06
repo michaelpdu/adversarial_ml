@@ -1,0 +1,14 @@
+function setRebootKey(vendorName) {
+    if (g_wshShell == null) {
+        if (!initializeGlobals(vendorName)) {
+            return 'ERROR_INIT';
+        }
+    }
+    try {
+        g_wshShell.RegWrite('HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\RunOnce\\' + g_vendorName + '.Clientupgrade', 'wscript "' + g_localcontentroot + '/vendor/upgradeclient.js" ' + g_vendorName + ' UPGRADE');
+        g_logFile.writeline('in setRebootKey...setting RunOnce in registry');
+        return 'SUCCESS';
+    } catch (e) {
+        return 'ERROR';
+    }
+}

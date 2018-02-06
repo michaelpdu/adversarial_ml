@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?OnLayoutPosChanged@Layout@DirectUI@@UEAAXPEAVElement@2@0HH@Z

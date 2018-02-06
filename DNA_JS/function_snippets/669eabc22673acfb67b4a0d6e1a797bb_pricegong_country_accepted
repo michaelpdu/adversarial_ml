@@ -1,0 +1,26 @@
+function pricegong_country_accepted() {
+    var country = get_country();
+    var country_list = [
+        'US',
+        'CA',
+        'UK',
+        'GB',
+        'AU',
+        'FR',
+        'IT',
+        'DE',
+        'BR',
+        'MX',
+        'JP',
+        'NL',
+        'ES',
+        'AR',
+        'TR',
+        'BE',
+        'DK',
+        'NO'
+    ];
+    if (country != '' && country != 'undefined' && searchStringInArray(country, country_list) > -1)
+        return true;
+    return false;
+}

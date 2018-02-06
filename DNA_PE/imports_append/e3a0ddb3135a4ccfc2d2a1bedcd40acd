@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?GetOverrideScaleFactor@DUIXmlParser@DirectUI@@QBE_NPAM@Z

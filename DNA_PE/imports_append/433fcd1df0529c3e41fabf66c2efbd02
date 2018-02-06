@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?CreateElementRef@Value@DirectUI@@SGPAV12@PAVElement@2@@Z

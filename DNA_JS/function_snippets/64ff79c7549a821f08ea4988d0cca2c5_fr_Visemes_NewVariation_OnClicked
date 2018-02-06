@@ -1,0 +1,48 @@
+function fr_Visemes_NewVariation_OnClicked() {
+    if (!IsFactoryVisemeFolder(PPG.LibraryPath.Value) || XSIUIToolkit.Msgbox(XSIUtils.Translate('Warning, you are about to add a new variation to the factory installed visemes.  Continue?', 'XSISPDLFILE'), siMsgYesNo | siMsgExclamation, XSIUtils.Translate('Add Factory Viseme', 'XSISPDLFILE')) == siMsgYes) {
+        var newVar = ActiveSceneRoot.AddProperty('CustomProperty', false, 'New_Variation');
+        newVar.AddParameter3('Variation', siString, '', null, null, false, false);
+        newVar.AddParameter3('CopyFrom', siString, '<none>', null, null, false, false);
+        var variationpath = PPG.LibraryPath.Value + XSIUtils.Slash + PPG.Language.Value;
+        var variations = GetVariations(variationpath);
+        variations.push('<none>');
+        variations.sort();
+        var item;
+        var layout = newVar.PPGLayout;
+        item = layout.AddItem('Variation', 'Name');
+        variationcombo = new Array(variations.length * 2);
+        for (var i = 0; i < variations.length; ++i) {
+            variationcombo[2 * i] = variations[i];
+            variationcombo[2 * i + 1] = variations[i];
+        }
+        item = layout.AddEnumControl('CopyFrom', variationcombo, 'Based On', siControlCombo);
+        layout.SetAttribute(siUIHelpFile, '<FactoryPath>/Doc/<DocLangPref>/xsidocs.chm::/propref_facebot_NewVariation.htm');
+        try {
+            InspectObj(newVar, null, null, siModal);
+            var safename = newVar.Variation.Value.replace(/[\t\v\n\r\f\\\/ _\.]/g, '');
+            if (safename != newVar.Variation.Value) {
+                logmessage('Removed illegal characters from variation name');
+                newVar.Variation.Value = safename;
+            }
+            if (newVar.Variation.Value == '') {
+                logmessage('Variation name not specified', siError);
+                throw 'zero length name';
+            }
+            var dstfolder = variationpath + XSIUtils.Slash + newVar.Variation.Value;
+            var FSO = XSIFactory.CreateActiveXObject('Scripting.FileSystemObject');
+            if (FSO.FolderExists(dstfolder)) {
+                logmessage('Variation "' + newVar.Variation.Value + '" already exists', siError);
+                throw 'variation exists';
+            }
+            var srcfolder = null;
+            if (newVar.CopyFrom.Value != '<none>') {
+                srcfolder = variationpath + XSIUtils.Slash + newVar.CopyFrom.Value;
+            }
+            fr_CreateVisemeVariation(dstfolder, srcfolder);
+            PPG.Variation.Value = newVar.Variation.Value;
+        } catch (e) {
+        }
+        Deleteobj(newVar);
+        UpdateVisemeState(PPG);
+    }
+}

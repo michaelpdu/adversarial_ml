@@ -1,0 +1,7 @@
+function SelectMouthCorners(in_ctxt) {
+    SelectWithKey(GetKeyed([
+        'Mouth',
+        'Control',
+        'Corner'
+    ]));
+}

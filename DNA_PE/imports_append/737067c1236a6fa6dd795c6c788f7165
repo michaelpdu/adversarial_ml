@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?OnKeyFocusMoved@DialogElement@DirectUI@@UAEXPAVElement@2@0@Z

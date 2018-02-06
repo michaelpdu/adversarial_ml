@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?GetRenderMargin@Element@DirectUI@@QAEXPAUtagRECT@@@Z

@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?SetButtonClassAcceptsEnterKey@XProvider@DirectUI@@UEAAJ_N@Z

@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?GetClassInfoPtr@TouchEdit2@DirectUI@@SGPAUIClassInfo@2@XZ

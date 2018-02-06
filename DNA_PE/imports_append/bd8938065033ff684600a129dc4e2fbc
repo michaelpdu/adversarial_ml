@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?QueryInterface@DuiAccessible@DirectUI@@UAGJABU_GUID@@PAPAX@Z

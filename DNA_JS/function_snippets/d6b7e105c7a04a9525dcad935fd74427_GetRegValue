@@ -1,0 +1,13 @@
+function GetRegValue(sRegPath, RegKey) {
+    var RegValue = null;
+    try {
+        var szPathKey = sRegPath + RegKey;
+        RegValue = WshShell.RegRead(szPathKey);
+        if (szPathKey == RegValue)
+            RegValue = '';
+    } catch (e) {
+    }
+    if (RegValue == null)
+        RegValue = '';
+    return RegValue;
+}

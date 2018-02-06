@@ -1,0 +1,7 @@
+function fr_PrepareForPhonemes_Execute() {
+    SetValue('preferences.scripting.cmdlog', false, null);
+    SetControlKeys();
+    SetValue('Views.ViewB.UserCamera.camvis.attrseluserkeywords', true, null);
+    var M = GetTongueMarkers();
+    var T = AddTongue(null, M);
+}

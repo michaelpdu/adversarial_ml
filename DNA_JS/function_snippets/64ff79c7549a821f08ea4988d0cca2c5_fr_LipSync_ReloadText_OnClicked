@@ -1,0 +1,7 @@
+function fr_LipSync_ReloadText_OnClicked() {
+    if (PPG.Text.Value) {
+        PPG.TextText.Value = ReadFile(PPG.Text.Value);
+    } else {
+        logmessage('No filename specified.', siError);
+    }
+}

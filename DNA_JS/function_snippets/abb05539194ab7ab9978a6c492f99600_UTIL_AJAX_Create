@@ -1,0 +1,9 @@
+function UTIL_AJAX_Create(Handler) {
+    try {
+        var AJAX_Obj = null;
+        AJAX_Obj = new XMLHttpRequest();
+        AJAX_Obj.onreadystatechange = Handler;
+        return AJAX_Obj;
+    } catch (err) {
+    }
+}

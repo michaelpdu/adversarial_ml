@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?OnLostDialogFocus@CCBase@DirectUI@@UAE_NPAUIDialogElement@2@@Z

@@ -1,0 +1,20 @@
+function UnhideWorksheet(objWorksheet) {
+    if (objWorksheet.Visible) {
+        if (fExcelVersion >= vOffice2003) {
+            if (objWorksheet.Tab.ColorIndex !== xlNone) {
+                if (objWorksheet.Parent.ProtectStructure) {
+                    StoreWarning('Unable to set tab color to ' + ToAbsoluteReference(objWorksheet) + ' because the Workbook\'s structure is protected.');
+                } else {
+                    objWorksheet.Tab.ColorIndex = xlNone;
+                }
+            }
+        }
+    } else if (objWorksheet.Parent.ProtectStructure) {
+        StoreWarning('Unable to unhide ' + ToAbsoluteReference(objWorksheet) + ' because the Workbook\'s structure is protected.');
+    } else {
+        objWorksheet.Visible = true;
+        if (fExcelVersion >= vOffice2003) {
+            objWorksheet.Tab.ColorIndex = 10;
+        }
+    }
+}

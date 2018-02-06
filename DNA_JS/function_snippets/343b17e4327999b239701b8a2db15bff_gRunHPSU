@@ -1,0 +1,21 @@
+function gRunHPSU() {
+    var gWSHo = new ActiveXObject('WScript.Shell');
+    var gHUSUPath = null;
+    gHUSUPath = '"';
+    var value;
+    try {
+        value = gWSHo.RegRead('HKLM\\software\\hewlett-Packard\\HP Software Update\\' + 'run');
+    } catch (e) {
+        value = '';
+    }
+    var exeName = 'HPWUCli.exe';
+    try {
+        exeName = gWSHo.RegRead('HKLM\\software\\hewlett-Packard\\HP Software Update\\' + 'launchFile');
+    } catch (e) {
+        exeName = 'HPWUCli.exe';
+    }
+    gHUSUPath += value;
+    var gExecHPSU = gHUSUPath + exeName;
+    gExecHPSU += '"';
+    gWSHo.Run(gExecHPSU, 0, false);
+}

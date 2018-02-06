@@ -1,0 +1,14 @@
+function ParseString(sString, sDelimiter, iParam) {
+    var iIndex = 0;
+    var iCount = 0;
+    if (0 == iParam)
+        return sString;
+    for (iCount = 0; iCount < iParam - 1; iCount++) {
+        iIndex = sString.indexOf(sDelimiter);
+        sString = sString.substr(iIndex + sDelimiter.length);
+    }
+    iIndex = sString.indexOf(sDelimiter);
+    if (-1 != iIndex)
+        sString = sString.substr(0, iIndex);
+    return sString;
+}

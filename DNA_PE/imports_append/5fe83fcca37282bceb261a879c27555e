@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?OnGetDlgCode@HWNDElement@DirectUI@@UAEXPAUtagMSG@@PAJ@Z

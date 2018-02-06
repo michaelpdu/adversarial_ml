@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?SetXMLFromResource@DUIXmlParser@DirectUI@@QAEJPBG0PAUHINSTANCE_

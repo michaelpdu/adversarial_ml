@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?WndProc@NativeHWNDHost@DirectUI@@SGJPAUHWND__@@IIJ@Z

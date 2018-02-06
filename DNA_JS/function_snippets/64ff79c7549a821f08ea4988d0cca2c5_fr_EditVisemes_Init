@@ -1,0 +1,3 @@
+function fr_EditVisemes_Init(ctxt) {
+    return true;
+}

@@ -1,0 +1,6 @@
+function check_file_exists(filePath) {
+    if (fso.FileExists(filePath))
+        return true;
+    else
+        return false;
+}

@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?GetClassInfoW@Thumb@DirectUI@@UAEPAUIClassInfo@2@XZ

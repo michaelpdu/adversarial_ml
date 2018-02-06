@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?GetImmersiveFocusRectOffsets@TouchButton@DirectUI@@UAEXPAUtagRE

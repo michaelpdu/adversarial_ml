@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?UiaRaiseAutomationPropertyChangedEvent@Schema@DirectUI@@2P6GJPA

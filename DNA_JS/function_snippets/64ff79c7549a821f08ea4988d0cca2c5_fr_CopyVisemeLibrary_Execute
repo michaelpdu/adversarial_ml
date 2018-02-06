@@ -1,0 +1,111 @@
+function fr_CopyVisemeLibrary_Execute(From, To, Overwrite, CopyVisemes) {
+    var FSO = XSIFactory.CreateActiveXObject('Scripting.FileSystemObject');
+    if (!FSO.FolderExists(From)) {
+        logmessage('Source library "' + From + '" does not exist', siError);
+        return null;
+    }
+    if (To == null) {
+        logmessage('No destination library specified.', siError);
+        return null;
+    }
+    if (!FSO.FolderExists(To)) {
+        try {
+            FSO.CreateFolder(To);
+        } catch (e) {
+            logmessage('Unable to create destination library "' + To + '"', siError);
+            return null;
+        }
+    }
+    if (From == To) {
+        logmessage('Source and destination is the same directory', siError);
+        return null;
+    }
+    var langfiles = GetLanguageFiles(From, 'csv');
+    if (langfiles.length == 0) {
+        logmessage('No language files found under "' + From + '"', siError);
+        return null;
+    }
+    for (var i = 0; i < langfiles.length; ++i) {
+        try {
+            var srcfile = From + XSIUtils.Slash + langfiles[i];
+            var dstfile = To + XSIUtils.Slash + langfiles[i];
+            try {
+                if (Overwrite || !FSO.FileExists(dstfile)) {
+                    FSO.CopyFile(srcfile, dstfile);
+                    var file = FSO.GetFile(dstfile);
+                    if (file.attributes & 1)
+                        file.attributes = file.attributes - 1;
+                }
+            } catch (e) {
+                logmessage('Unable to copy language file"' + langfiles[i] + '"', siError);
+                throw 'no language file';
+            }
+            var srcdir = StripExt(srcfile);
+            var dstdir = StripExt(dstfile);
+            if (!FSO.FolderExists(srcdir)) {
+                logmessage('Missing source language directory "' + srcdir + '"', siError);
+                throw 'no language directory';
+            }
+            if (!FSO.FolderExists(dstdir)) {
+                try {
+                    FSO.CreateFolder(dstdir);
+                } catch (e) {
+                    logmessage('Unable to create destination language directory "' + dstdir + '"', siError);
+                    throw 'unable to create destination library';
+                }
+            }
+            if (!CopyVisemes) {
+                var folder = dstdir + XSIUtils.Slash + 'Normal';
+                if (!FSO.FolderExists(folder)) {
+                    try {
+                        FSO.CreateFolder(folder);
+                    } catch (e) {
+                        logmessage('Unable to create variation folder "' + folder + '"', siError);
+                        throw 'unable to create variation folder';
+                    }
+                }
+            } else {
+                var srcfolder = FSO.GetFolder(srcdir);
+                var subfolders = new Enumerator(srcfolder.SubFolders);
+                for (; !subfolders.atEnd(); subfolders.moveNext()) {
+                    try {
+                        var folder = dstdir + XSIUtils.Slash + subfolders.item().Name;
+                        if (!FSO.FolderExists(folder)) {
+                            try {
+                                FSO.CreateFolder(folder);
+                            } catch (e) {
+                                logmessage('Unable to create variation folder "' + folder + '"', siError);
+                                throw 'unable to create variation folder';
+                            }
+                        }
+                        var files = new Enumerator(subfolders.item().Files);
+                        for (; !files.atEnd(); files.moveNext()) {
+                            try {
+                                var a = files.item().Name.split('.');
+                                if (a.length > 1 && a[a.length - 1] == 'frpre') {
+                                    var srcpose = files.item().Path;
+                                    var dstpose = folder + XSIUtils.Slash + files.item().Name;
+                                    try {
+                                        if (Overwrite || !FSO.FileExists(dstpose)) {
+                                            FSO.CopyFile(srcpose, dstpose);
+                                            var file = FSO.GetFile(dstpose);
+                                            if (file.attributes & 1)
+                                                file.attributes = file.attributes - 1;
+                                        }
+                                    } catch (e) {
+                                        logmessage('Unable to copy viseme file"' + srcpose + '"', siError);
+                                        throw 'unable to copy viseme file';
+                                    }
+                                }
+                            } catch (e) {
+                            }
+                        }
+                    } catch (e) {
+                    }
+                }
+            }
+        } catch (e) {
+        }
+    }
+    return null;
+}

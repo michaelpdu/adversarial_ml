@@ -1,0 +1,9 @@
+function GetPhonemeType(IPA, phonemearray) {
+    len = phonemearray ? phonemearray.length : 0;
+    for (var i = 0; i < len; ++i) {
+        if (IPA == phonemearray[i][0]) {
+            return parseInt(phonemearray[i][3]);
+        }
+    }
+    return -1;
+}

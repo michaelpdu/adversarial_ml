@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?FireEvent@Element@DirectUI@@QEAAXPEAUEvent@2@_N1@Z

@@ -1,0 +1,11 @@
+function SetOrgAutoLaunch() {
+    var pcintroPath = 'HKLM\\Software\\Hewlett-Packard\\cpc\\pcintro\\';
+    var OrgOptionsPath = 'HKLM\\Software\\Hewlett-Packard\\cpc\\pcintro\\OrgOptions\\';
+    var OrgAutoLaunchUncheck = GetRegValue(pcintroPath, 'OrgAutolaunchLimitUncheck');
+    var OrgAutolaunchHide = GetRegValue(pcintroPath, 'OrgAutolaunchLimitHide');
+    var OrgAutolaunchLimit = GetRegValue(pcintroPath, 'OrgAutolaunchLimit');
+    var physMem = GetPhysicalMemory();
+    if (physMem <= OrgAutolaunchLimit) {
+        WriteRegValue(OrgOptionsPath, 'ORGAutoLaunch', '0');
+    }
+}

@@ -1,0 +1,15 @@
+function fr_LipSync_Audio_OnChanged() {
+    var audio = PPG.Audio.Value;
+    var text = PPG.Text.Value;
+    NewFileName = GetFilePair(audio, '.txt');
+    if (NewFileName != audio) {
+        PPG.Text.Value = NewFileName;
+    } else {
+        PPG.Text.Value = '';
+    }
+    if (FileExists(NewFileName)) {
+        PPG.TextText.Value = ReadFile(NewFileName);
+    } else {
+        PPG.TextText.Value = '';
+    }
+}

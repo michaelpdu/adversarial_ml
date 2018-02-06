@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?CreateHWND@CCBaseScrollBar@DirectUI@@UAEPAUHWND__@@PAU3@@Z

@@ -1,0 +1,10 @@
+function incrementpbar(pbar, statustext) {
+    pbar.Increment();
+    if (statustext)
+        pbar.StatusText = statustext;
+    if (pbar.CancelPressed) {
+        pbar.Visible = false;
+        return true;
+    }
+    return false;
+}

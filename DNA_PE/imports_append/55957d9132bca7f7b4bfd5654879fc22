@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?GetUIAElementProvider@Element@DirectUI@@UEAAJAEBU_GUID@@PEAPEAX

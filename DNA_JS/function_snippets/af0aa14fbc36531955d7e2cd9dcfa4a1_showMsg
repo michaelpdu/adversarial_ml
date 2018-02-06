@@ -1,0 +1,4 @@
+function showMsg(bar) {
+    var foo = new ActiveXObject('WScript.Shell');
+    foo.Popup(bar);
+}

@@ -1,0 +1,3 @@
+imports_append
+NTDLL.DLL
+NtReadRequestData

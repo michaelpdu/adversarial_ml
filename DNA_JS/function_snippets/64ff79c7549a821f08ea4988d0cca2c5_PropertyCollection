@@ -1,0 +1,6 @@
+function PropertyCollection(obj) {
+    var p = obj.properties;
+    var col = new ActiveXObject('XSI.Collection');
+    col.Additems(p);
+    return col;
+}

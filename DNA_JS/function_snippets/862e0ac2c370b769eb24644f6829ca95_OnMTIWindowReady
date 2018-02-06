@@ -1,0 +1,5 @@
+function OnMTIWindowReady() {
+    var w = app.ActiveWindow;
+    var tb = w.AddToolbar(emBarTop, -1, -1, 'Chains Panel', 0);
+    w.AddControl(emCtrlTypeButton, emCtrlContainerCustomToolbar, tb, CmdChainDoc, 42, true, '', 'Chains Panel|Publish Chains', cookie);
+}

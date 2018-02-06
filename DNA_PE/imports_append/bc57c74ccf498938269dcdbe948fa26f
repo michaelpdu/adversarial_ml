@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?GetDesiredSize@Element@DirectUI@@QAEPBUtagSIZE@@XZ

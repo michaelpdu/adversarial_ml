@@ -1,0 +1,8 @@
+function AlertError(oAciServer, tagErrorCodes) {
+    var result = false;
+    if (0 == Number(tagErrorCodes))
+        result = true;
+    if (undefined != oAciServer && null != oAciServer && 0 != tagErrorCodes)
+        WScript.Echo(oAciServer.GetErrorCodeAsString(tagErrorCodes));
+    return result;
+}

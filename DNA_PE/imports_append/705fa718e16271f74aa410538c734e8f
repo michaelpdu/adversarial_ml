@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?EraseBkgnd@HWNDHost@DirectUI@@MEAA_NPEAUHDC__@@PEA_J@Z

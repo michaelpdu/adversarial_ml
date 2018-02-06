@@ -1,0 +1,3 @@
+imports_append
+DUI70.DLL
+?SetFocus@XProvider@DirectUI@@UAGJPAVElement@2@@Z

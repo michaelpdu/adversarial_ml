@@ -1,0 +1,52 @@
+function PostSonyData() {
+    var fso, tf;
+    var iniFile = g_OOBEDir + 'oobeinfo.ini';
+    var queryString;
+    fso = new ActiveXObject('Scripting.FileSystemObject');
+    tf = fso.CreateTextFile('c:\\sonysys\\sonyfile.dat', true);
+    var SonyURL = ApiObj.get_RegValue(HKEY_LOCAL_MACHINE, OOBE_MAIN_REG_KEY + '\\Sony', 'SONY_URL');
+    var sendSonyDirectValue = ApiObj.get_RegValue(HKEY_LOCAL_MACHINE, OOBE_MAIN_REG_KEY + '\\Sony', 'SEND_SONY_DIRECT');
+    queryString = SonyURL;
+    queryString = queryString + 'FName=' + g_FirstName + '&';
+    queryString = queryString + 'MName=' + g_MiddleName + '&';
+    queryString = queryString + 'LName=' + g_LastName + '&';
+    queryString = queryString + 'Addr1=' + g_Address1 + '&';
+    queryString = queryString + 'Addr2=' + g_Address2 + '&';
+    queryString = queryString + 'City=' + g_City + '&';
+    queryString = queryString + 'ZipCode=' + g_ZipCode + '&';
+    queryString = queryString + 'EmailAddr=' + g_EmailAddr + '&';
+    queryString = queryString + 'Country=' + g_Country + '&';
+    queryString = queryString + 'State=' + g_State + '&';
+    queryString = queryString + 'PhoneNumber=' + g_PhoneNumber + '&';
+    queryString = queryString + 'SourceofFunds=' + g_SourceofFunds + '&';
+    queryString = queryString + 'NumberofKids=' + g_NumKids + '&';
+    queryString = queryString + 'NumberofTeens=' + g_NumTeens + '&';
+    queryString = queryString + 'NumberofAdults=' + g_NumAdults + '&';
+    queryString = queryString + 'DecisionMakingPersonAge=' + g_DMPersonAge + '&';
+    queryString = queryString + 'PreferredISP=' + g_ISP + '&';
+    queryString = queryString + 'HouseholdIncome=' + g_HHIncome + '&';
+    queryString = queryString + 'JobFunction=' + g_JobFunction + '&';
+    queryString = queryString + 'NumberofEmployees=' + g_NumEmployees + '&';
+    queryString = queryString + 'NetworkMethod=' + g_CompNetworkConnectionMethod + '&';
+    queryString = queryString + 'OperatingSystem=' + g_OperatingSystem + '&';
+    queryString = queryString + 'Monitor=' + g_Monitor + '&';
+    queryString = queryString + 'DockingStation=' + g_DockingStation + '&';
+    queryString = queryString + 'DigitalStillCamera=' + g_DigitalStillCamera + '&';
+    queryString = queryString + 'CDReadWrite=' + g_CDRWCDR + '&';
+    queryString = queryString + 'CellularPhone=' + g_CellularPhone + '&';
+    queryString = queryString + 'JoyStick=' + g_Joystick + '&';
+    queryString = queryString + 'ExternalStorage=' + g_ExternalStorage + '&';
+    queryString = queryString + 'ExternalSpeakers=' + g_ExternalSpeakers + '&';
+    queryString = queryString + 'CamcorderDigitalVideo=' + g_CamcorderDigitalVideo + '&';
+    queryString = queryString + 'DVDROM=' + g_DVDROM + '&';
+    queryString = queryString + 'WirelessModem=' + g_WirelessModem + '&';
+    queryString = queryString + 'Scanner=' + g_Scanner + '&';
+    queryString = queryString + 'JukeBox=' + g_JukeBox + '&';
+    queryString = queryString + 'SonyInformation=' + g_SonyInformation + '&';
+    queryString = queryString + 'MonitorSerialNumber=' + g_SerialNumber;
+    tf.WriteLine(queryString);
+    tf.Close();
+    if (sendSonyDirectValue == '1') {
+        g.navigate(queryString);
+    }
+}

@@ -1,0 +1,7 @@
+function ApplyFRPose(filename) {
+    if (!FileExists(filename)) {
+        logmessage('Pose "' + filename + '" not found', siError);
+        return null;
+    }
+    return fr_ApplyFacePose(filename);
+}

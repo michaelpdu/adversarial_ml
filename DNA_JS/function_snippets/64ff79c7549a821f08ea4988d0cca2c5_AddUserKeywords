@@ -1,0 +1,5 @@
+function AddUserKeywords(Objs, KeyWord) {
+    for (var i = 0; i < Objs.length; i++) {
+        AddUserKeyword(Objs[i], KeyWord);
+    }
+}

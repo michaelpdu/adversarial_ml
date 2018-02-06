@@ -1,0 +1,3 @@
+function GetExtension(FileName) {
+    return FileName.split('.').reverse()[0];
+}

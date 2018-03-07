@@ -32,4 +32,3 @@ This function will analyze target(folder or file), and generate many function fi
 
 
 
-

@@ -30,7 +30,7 @@ For more details, please refer to Cuckoo Sandbox: https://cuckoo.sh/docs/index.h
 
 ## Utility Tools
 
-### function analyzer
+### generate JS function DNA files
 
 This tool could analyze JavaScript files and dump all of function snippets.
 
@@ -41,7 +41,7 @@ Usage:
 
 This function will analyze target(folder or file), and generate many function files.
 
-### create PE section DNA files
+### generate PE section DNA files
 
 In pe_modifier folder, there is a script to generate PE section DNA files.
 

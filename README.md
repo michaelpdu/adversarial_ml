@@ -24,6 +24,9 @@ Before PE adversarial process, it's necessary to startup cuckoo sandbox. Please 
 - startup VirtualBox and VMs
 - startup Cuckoo Sandbox (use command 'cuckoo community' to load Cuckoo Signatures)
 
+For more details, please refer to Cuckoo Sandbox: https://cuckoo.sh/docs/index.html
+
+
 
 ## Utility Tools
 

@@ -18,17 +18,35 @@ Usage:
         e.g.
         >> python3 startup.py --file-type PE --file-path samples/mal_pe/6d3e5e56984a7e91c7a8c434224b73886d413d1d1f435358f40bf78c71c1932d --dna DNA_PE/section_add --start 64 --step 32 --tool housecallx
 ```
-### function analyzer
+
+Before PE adversarial process, it's necessary to startup cuckoo sandbox. Please refer to following instructions:
+
+- startup VirtualBox and VMs
+- startup Cuckoo Sandbox (use command 'cuckoo community' to load Cuckoo Signatures)
+
+For more details, please refer to Cuckoo Sandbox: https://cuckoo.sh/docs/index.html
+
+
+
+## Utility Tools
+
+### generate JS function DNA files
 
 This tool could analyze JavaScript files and dump all of function snippets.
 
-#### Usage
-
 ``` python
-python function_analyzer.py target dest_dir
+Usage:
+    python function_analyzer.py target dest_dir
 ```
 
 This function will analyze target(folder or file), and generate many function files.
 
+### generate PE section DNA files
 
+In pe_modifier folder, there is a script to generate PE section DNA files.
+
+```
+Usage:
+    python create_sections_dna.py PE_target_path dest_path
+```
 

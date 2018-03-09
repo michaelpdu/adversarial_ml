@@ -1,14 +1,15 @@
 import os, sys, shutil
-sys.path.append(os.path.dirname(__file__))
-from trendx_tool.run import *
-
 import numpy as np
 import hashlib
-from pe_modifier.pe_modifier import *
-from housecallx_wrapper import *
 from datetime import datetime
 import random
 from logging import *
+
+sys.path.append(os.path.join(os.path.dirname(__file__), 'tools'))
+from trendx_tool.run import *
+from pe_modifier.pe_modifier import *
+from housecallx_wrapper import *
+
 
 class TrendxAdversary:
     """"""
@@ -37,6 +38,9 @@ class TrendxAdversary:
     def set_malicious_file(self, file_path):
         info('Set file path: {}'.format(file_path))
         self.mal_file_path = file_path
+        dir_path, file_name = os.path.split(file_path)
+        name_wo_ext, ext = os.path.splitext(file_name)
+        self.mal_file_name_wo_ext = name_wo_ext
 
     def set_generated_file_name(self, name):
         self.new_generated_file = os.path.join(self.tmp_file_dir, name)
@@ -146,7 +150,7 @@ class TrendxAdversary:
             pass
         # save new generated file into hcx_target_dir
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
-        tmp_file = 'new_generated_file_{}.tmp'.format(timestamp)
+        tmp_file = '{}_new_generated_file_{}.tmp'.format(self.mal_file_name_wo_ext, timestamp)
         new_pe_path = os.path.join(self.hcx_target_dir, tmp_file)
         modifier.save_pe(new_pe_path)
         return new_pe_path
@@ -236,7 +240,7 @@ class TrendxAdversary:
             
         # save new generated file into hcx_target_dir
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
-        tmp_file = 'new_generated_file_{}_{}.tmp'.format(action,timestamp)
+        tmp_file = '{}_new_generated_file_{}_{}.tmp'.format(self.mal_file_name_wo_ext, action, timestamp)
         new_pe_path = os.path.join(self.hcx_target_dir, tmp_file)
         modifier.save_pe(new_pe_path)
         return new_pe_path

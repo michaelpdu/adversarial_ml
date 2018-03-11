@@ -8,12 +8,12 @@ from calc_trendx_prediction import *
 
 class GeneticAlgorithmHelper:
 
-    def __init__(self, adv):
-        self.DNA_SIZE = 32            # DNA length
+    def __init__(self, adv, dna_size):
+        self.DNA_SIZE = dna_size      # DNA length
         self.POP_SIZE = 100           # population size
         self.CROSS_RATE = 0.8         # mating probability (DNA crossover)
         self.MUTATION_RATE = 0.003    # mutation probability
-        self.N_GENERATIONS = 100
+        self.N_GENERATIONS = 200
 
         self.adv = adv
 

@@ -150,7 +150,7 @@ class TrendxAdversary:
             pass
         # save new generated file into hcx_target_dir
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
-        tmp_file = '{}_new_generated_file_{}.tmp'.format(self.mal_file_name_wo_ext, timestamp)
+        tmp_file = '{}_{}.tmp'.format(self.mal_file_name_wo_ext, timestamp)
         new_pe_path = os.path.join(self.hcx_target_dir, tmp_file)
         modifier.save_pe(new_pe_path)
         return new_pe_path
@@ -211,7 +211,8 @@ class TrendxAdversary:
                 cmd = 'cuckoo submit --timeout 60 {}'.format(os.path.join(self.new_generated_dir, file_name))
                 info('Find non-normal sample, score is {}, cmd: {}'.format(score, cmd))
                 os.system(cmd)
-                
+            else:
+                os.remove(os.path.join(self.new_generated_dir, file_name))
 
         ret_array = np.array(prob_list)
         # return type is ndarray, and shape is (dna_size,)
@@ -240,7 +241,7 @@ class TrendxAdversary:
             
         # save new generated file into hcx_target_dir
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
-        tmp_file = '{}_new_generated_file_{}_{}.tmp'.format(self.mal_file_name_wo_ext, action, timestamp)
+        tmp_file = '{}_{}_{}.tmp'.format(self.mal_file_name_wo_ext, action, timestamp)
         new_pe_path = os.path.join(self.hcx_target_dir, tmp_file)
         modifier.save_pe(new_pe_path)
         return new_pe_path

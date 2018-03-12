@@ -20,12 +20,20 @@ class HouseCallXReport:
                     conf_level = int(data[1].strip())
                     file_name = os.path.split(data[3].replace('\\', '/'))[-1]
 
+                    # if decision == DECISION_MALICIOUS:
+                    #     score = 100 - conf_level
+                    # elif decision == DECISION_FEEDBACK:
+                    #     score = 100 + conf_level
+                    # else:
+                    #     score = 200 + conf_level
+
                     if decision == DECISION_MALICIOUS:
-                        score = 100 - conf_level
+                        score = 0
                     elif decision == DECISION_FEEDBACK:
-                        score = 100 + conf_level
+                        score = 100
                     else:
-                        score = 200 + conf_level
+                        score = 200
+
                     self.scores[file_name] = score
                     msg = 'Score: {}, Decision: {}, Confidence Level: {}, File Name: {}'.format(score, decision, conf_level, file_name)
                     info(msg)

@@ -188,7 +188,6 @@ class MalwareManipulator(object):
                                #lief.PE.SECTION_TYPES.TLS_,
                                lief.PE.SECTION_TYPES.UNKNOWN,
                            ]) )
-                           # lief.PE.SECTION_TYPES.TLS_)
 
         self.bytez = self.__binary_to_bytez(binary)
         return self.bytez

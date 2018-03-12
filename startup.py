@@ -70,7 +70,7 @@ def get_dna_count(dna_dir):
 
 def process_one_round(type, mal_sample_file, dna_dir, new_dna_dir, dna_size, housecallx_root_dir):
     # proc_count = multiprocessing.cpu_count()
-    proc_count = 4
+    proc_count = 6
     # 
     print('-------------- DNA Group Information --------------')
     dna_count = get_dna_count(dna_dir)

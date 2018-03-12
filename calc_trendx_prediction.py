@@ -121,50 +121,55 @@ class TrendxAdversary:
         return ret_val
 
     def generate_new_pe(self, index_list):
-        modifier = PEModifier()
-        modifier.load_pe(self.mal_file_path)
-        section_add_list = []
-        imports_append_list = []
+        try:
+            modifier = PEModifier()
+            modifier.load_pe(self.mal_file_path)
+            section_add_list = []
+            imports_append_list = []
 
-        for i in index_list:
-            lines = self.dna_code_list[i].strip().split('\n')
-            cmd = lines[0]
-            if cmd == 'section_add':
-                # section content
-                str_list = lines[1].split(' ')
-                int_list = []
-                for s in str_list:
-                    int_list.append(int(s))
-                section_add_list.append(int_list)
-            elif cmd == 'imports_append':
-                dllname = lines[1]
-                funcname = lines[2]
-                imports_append_list.append((dllname, funcname))
+            for i in index_list:
+                lines = self.dna_code_list[i].strip().split('\n')
+                cmd = lines[0]
+                if cmd == 'section_add':
+                    # section content
+                    str_list = lines[1].split(' ')
+                    int_list = []
+                    for s in str_list:
+                        int_list.append(int(s))
+                    section_add_list.append(int_list)
+                elif cmd == 'imports_append':
+                    dllname = lines[1]
+                    funcname = lines[2]
+                    imports_append_list.append((dllname, funcname))
+                else:
+                    pass
+            if len(section_add_list) > 0:
+                modifier.modify({'section_add_list': section_add_list})
+            elif len(imports_append_list) > 0:
+                modifier.modify({'imports_append_list': imports_append_list})
             else:
                 pass
-        if len(section_add_list) > 0:
-            modifier.modify({'section_add_list': section_add_list})
-        elif len(imports_append_list) > 0:
-            modifier.modify({'imports_append_list': imports_append_list})
-        else:
-            pass
-        # save new generated file into hcx_target_dir
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
-        tmp_file = '{}_{}.tmp'.format(self.mal_file_name_wo_ext, timestamp)
-        new_pe_path = os.path.join(self.hcx_target_dir, tmp_file)
-        modifier.save_pe(new_pe_path)
-        return new_pe_path
+            # save new generated file into hcx_target_dir
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
+            tmp_file = '{}_{}_{}'.format(self.mal_file_name_wo_ext, timestamp, modifier.get_hash_sha1())
+            new_pe_path = os.path.join(self.hcx_target_dir, tmp_file)
+            modifier.save_pe(new_pe_path)
+            return new_pe_path
+        except Exception as e:
+            print(e)
 
     def calc_binary_prediction(self, dna_array):
         dna_list = dna_array.tolist()
         prob_list = []
         dna_pe_map = {}
+        pe_dna_map = {}
 
         # empty hcx_target_dir
         if os.path.exists(self.hcx_target_dir):
             shutil.rmtree(self.hcx_target_dir)
         os.makedirs(self.hcx_target_dir)
 
+        
         print('Generate new PE files ....')
         for dna in dna_list:
             # print item
@@ -177,15 +182,42 @@ class TrendxAdversary:
 
             # print '>> '+str(indexes)
             new_pe_path = self.generate_new_pe(indexes)
-            dna_pe_map[sha1_str] = os.path.split(new_pe_path)[1]
+            pe_name = os.path.split(new_pe_path)[1]
+            dna_pe_map[sha1_str] = pe_name
+            pe_dna_map[pe_name] = dna
 
         # use housecallx to scan new pe
-        scores = scan_by_housecallx(self.housecallx_path, os.path.abspath(self.hcx_target_dir))
+        # scores is a map object
+        # {file_name: score}
+        scores = scan_by_housecallx(self.housecallx_path, os.path.abspath(self.hcx_target_dir), pe_dna_map)
 
-        # for file_name, score in scores.items():
-        #     print('File Name: {}, Score: {}'.format(file_name, score))
+        for file_name, score in scores.items():
+            info('File Name: {}, Score: {}'.format(file_name, score))
+
+        # move all of files in hc_target_dir to new_generated_dir
+        for file in os.listdir(self.hcx_target_dir):
+            if not os.path.exists(os.path.join(self.new_generated_dir,file)):
+                shutil.move(os.path.join(self.hcx_target_dir, file), self.new_generated_dir)
+
+        # scan in cuckoo sandbox
+        for file_name, score in scores.items():
+            file_path = os.path.join(self.new_generated_dir, file_name)
+            # print('File: {}, Score: {}'.format(file_name, score))
+            if int(score) >= 100:
+                info('Find non-normal sample, score is {}, cmd: {}'.format(score, cmd))
+                cmd = 'cuckoo submit --timeout 60 {}'.format(file_path)
+                os.system(cmd)
+            else:
+                os.remove(file_path)
+
+        # remove temp dir
+        if os.path.exists(self.hcx_target_dir):
+            shutil.rmtree(self.hcx_target_dir)
+
+
 
         # build dna_hash --> score
+        # {dna_hash: score}
         dna_hash_scores = {}
         for dna_hash, file_name in dna_pe_map.items():
             dna_hash_scores[dna_hash] = scores[file_name]
@@ -200,19 +232,6 @@ class TrendxAdversary:
                 sha1_value.update(str(i).encode('utf-8'))
             sha1_str = sha1_value.hexdigest()
             prob_list.append(dna_hash_scores[sha1_str])
-
-        # move all of files in hc_target_dir to 
-        for file in os.listdir(self.hcx_target_dir):
-            if not os.path.exists(os.path.join(self.new_generated_dir,file)):
-                shutil.move(os.path.join(self.hcx_target_dir, file), self.new_generated_dir)
-        for file_name, score in scores.items():
-            # print('File: {}, Score: {}'.format(file_name, score))
-            if int(score) > 100:
-                cmd = 'cuckoo submit --timeout 60 {}'.format(os.path.join(self.new_generated_dir, file_name))
-                info('Find non-normal sample, score is {}, cmd: {}'.format(score, cmd))
-                os.system(cmd)
-            else:
-                os.remove(os.path.join(self.new_generated_dir, file_name))
 
         ret_array = np.array(prob_list)
         # return type is ndarray, and shape is (dna_size,)
@@ -241,7 +260,7 @@ class TrendxAdversary:
             
         # save new generated file into hcx_target_dir
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
-        tmp_file = '{}_{}_{}.tmp'.format(self.mal_file_name_wo_ext, action, timestamp)
+        tmp_file = '{}_random_{}_{}.tmp'.format(self.mal_file_name_wo_ext, action, timestamp)
         new_pe_path = os.path.join(self.hcx_target_dir, tmp_file)
         modifier.save_pe(new_pe_path)
         return new_pe_path

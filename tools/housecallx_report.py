@@ -8,7 +8,7 @@ DECISION_MALICIOUS = 2
 class HouseCallXReport:
     """"""
 
-    def __init__(self, file_path):
+    def __init__(self, file_path, pe_dna_map):
         self.scores = {}
         with open(file_path, 'r') as fh:
             for line in fh.readlines():
@@ -20,14 +20,32 @@ class HouseCallXReport:
                     conf_level = int(data[1].strip())
                     file_name = os.path.split(data[3].replace('\\', '/'))[-1]
 
+                    # if decision == DECISION_MALICIOUS:
+                    #     score = 100 - conf_level
+                    # elif decision == DECISION_FEEDBACK:
+                    #     score = 100 + conf_level
+                    # else:
+                    #     score = 200 + conf_level
+
                     if decision == DECISION_MALICIOUS:
-                        score = 100 - conf_level
+                        score = 0
                     elif decision == DECISION_FEEDBACK:
-                        score = 100 + conf_level
+                        score = 100
                     else:
-                        score = 200 + conf_level
+                        score = 200
+
                     self.scores[file_name] = score
-                    msg = 'Score: {}, Decision: {}, Confidence Level: {}, File Name: {}'.format(score, decision, conf_level, file_name)
+
+                    # formate DNA
+                    dna = pe_dna_map[file_name]
+                    dna_formated = '['
+                    for i in dna:
+                        dna_formated += str(i)
+                        dna_formated += ' '
+                    dna_formated = dna_formated.strip()
+                    dna_formated += ']'
+
+                    msg = 'Score: {}, Decision: {}, Confidence Level: {}, File Name: {}, DNA: {}'.format(score, decision, conf_level, file_name, dna_formated)
                     info(msg)
                     print(msg)
 

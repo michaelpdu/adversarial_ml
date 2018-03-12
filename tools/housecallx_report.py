@@ -34,20 +34,21 @@ class HouseCallXReport:
                     else:
                         score = 200
 
-                    self.scores[file_name] = score
+                    if file_name not in self.scores.keys() or (file_name in self.scores.keys() and score > self.scores[file_name]):
+                        self.scores[file_name] = score
 
-                    # formate DNA
-                    dna = pe_dna_map[file_name]
-                    dna_formated = '['
-                    for i in dna:
-                        dna_formated += str(i)
-                        dna_formated += ' '
-                    dna_formated = dna_formated.strip()
-                    dna_formated += ']'
+                        # formate DNA
+                        dna = pe_dna_map[file_name]
+                        dna_formated = '['
+                        for i in dna:
+                            dna_formated += str(i)
+                            dna_formated += ' '
+                        dna_formated = dna_formated.strip()
+                        dna_formated += ']'
 
-                    msg = 'Score: {}, Decision: {}, Confidence Level: {}, File Name: {}, DNA: {}'.format(score, decision, conf_level, file_name, dna_formated)
-                    info(msg)
-                    print(msg)
+                        msg = 'Score: {}, Decision: {}, Confidence Level: {}, File Name: {}, DNA: {}'.format(score, decision, conf_level, file_name, dna_formated)
+                        info(msg)
+                        print(msg)
 
     def get_scores(self):
         return self.scores

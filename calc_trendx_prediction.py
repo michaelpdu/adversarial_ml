@@ -191,24 +191,22 @@ class TrendxAdversary:
         # {file_name: score}
         scores = scan_by_housecallx(self.housecallx_path, os.path.abspath(self.hcx_target_dir), pe_dna_map)
 
-        for file_name, score in scores.items():
-            info('File Name: {}, Score: {}'.format(file_name, score))
+        # for file_name, score in scores.items():
+        #     info('File Name: {}, Score: {}'.format(file_name, score))
 
-        # move all of files in hc_target_dir to new_generated_dir
-        for file in os.listdir(self.hcx_target_dir):
-            if not os.path.exists(os.path.join(self.new_generated_dir,file)):
-                shutil.move(os.path.join(self.hcx_target_dir, file), self.new_generated_dir)
-
-        # scan in cuckoo sandbox
+        # backup all of non-malicious samples and scan in cuckoo sandbox
         for file_name, score in scores.items():
+            ori_file_path = os.path.join(self.hcx_target_dir, file_name)
             file_path = os.path.join(self.new_generated_dir, file_name)
             # print('File: {}, Score: {}'.format(file_name, score))
             if int(score) >= 100:
-                info('Find non-normal sample, score is {}, cmd: {}'.format(score, cmd))
+                if os.path.exists(file_path):
+                    os.remove(file_path)
+                shutil.move(ori_file_path, self.new_generated_dir)
+                
+                info('Find non-malicious sample, score is {}, submit to cuckoo sandbox: {}'.format(score, cmd))
                 cmd = 'cuckoo submit --timeout 60 {}'.format(file_path)
                 os.system(cmd)
-            else:
-                os.remove(file_path)
 
         # remove temp dir
         if os.path.exists(self.hcx_target_dir):
@@ -282,6 +280,10 @@ class TrendxAdversary:
         for file in os.listdir(self.hcx_target_dir):
             if not os.path.exists(os.path.join(self.hcx_target_dir,file)):
                 shutil.move(os.path.join(self.hcx_target_dir, file), self.new_generated_dir)
+
+        # remove temp dir
+        if os.path.exists(self.hcx_target_dir):
+            shutil.rmtree(self.hcx_target_dir)
 
     def calc_trendx_prediction(self, dna_array):
         # 

@@ -126,8 +126,12 @@ class TrendxAdversary:
             modifier.load_pe(self.mal_file_path)
             section_add_list = []
             imports_append_list = []
-
+            cur_len = len(self.dna_code_list)
+            # print("Length of DNA code list: {}".format(cur_len))
+            # print(index_list)
             for i in index_list:
+                if i >= cur_len:
+                    continue
                 lines = self.dna_code_list[i].strip().split('\n')
                 cmd = lines[0]
                 if cmd == 'section_add':
@@ -156,7 +160,7 @@ class TrendxAdversary:
             modifier.save_pe(new_pe_path)
             return new_pe_path
         except Exception as e:
-            print(e)
+            print('[generate_new_pe] {}'.format(e))
 
     def calc_binary_prediction(self, dna_array):
         dna_list = dna_array.tolist()

@@ -16,7 +16,7 @@ class NoDaemonProcess(multiprocessing.Process):
 
 # We sub-class multiprocessing.pool.Pool instead of multiprocessing.Pool
 # because the latter is only a wrapper function, not a proper class.
-class NoDaemonPool(multiprocessing.Pool):
+class NoDaemonPool(multiprocessing.pool.Pool):
     Process = NoDaemonProcess
 
 

@@ -2,7 +2,7 @@ import os
 import sys
 from housecallx_report import *
 
-def scan_by_housecallx(housecallx_path, path):
+def scan_by_housecallx(housecallx_path, path, pe_dna_map):
     owd = os.getcwd()
     os.chdir(housecallx_path)
     print('Change Working Dir to: {}'.format(os.getcwd()))
@@ -21,7 +21,7 @@ def scan_by_housecallx(housecallx_path, path):
     if not os.path.exists(new_report_file):
         print('>> Cannot find HouseCallX report file, ' + new_report_file)
         exit(-1)
-    report = HouseCallXReport(new_report_file)
+    report = HouseCallXReport(new_report_file, pe_dna_map)
 
     os.chdir(owd)
     print('Change Working Dir to: {}'.format(os.getcwd()))

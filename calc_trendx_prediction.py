@@ -159,12 +159,14 @@ class TrendxAdversary:
         dna_list = dna_array.tolist()
         prob_list = []
         dna_pe_map = {}
+        pe_dna_map = {}
 
         # empty hcx_target_dir
         if os.path.exists(self.hcx_target_dir):
             shutil.rmtree(self.hcx_target_dir)
         os.makedirs(self.hcx_target_dir)
 
+        
         print('Generate new PE files ....')
         for dna in dna_list:
             # print item
@@ -177,15 +179,20 @@ class TrendxAdversary:
 
             # print '>> '+str(indexes)
             new_pe_path = self.generate_new_pe(indexes)
-            dna_pe_map[sha1_str] = os.path.split(new_pe_path)[1]
+            pe_name = os.path.split(new_pe_path)[1]
+            dna_pe_map[sha1_str] = pe_name
+            pe_dna_map[pe_name] = dna
 
         # use housecallx to scan new pe
-        scores = scan_by_housecallx(self.housecallx_path, os.path.abspath(self.hcx_target_dir))
+        # scores is a map object
+        # {file_name: score}
+        scores = scan_by_housecallx(self.housecallx_path, os.path.abspath(self.hcx_target_dir), pe_dna_map)
 
         # for file_name, score in scores.items():
         #     print('File Name: {}, Score: {}'.format(file_name, score))
 
         # build dna_hash --> score
+        # {dna_hash: score}
         dna_hash_scores = {}
         for dna_hash, file_name in dna_pe_map.items():
             dna_hash_scores[dna_hash] = scores[file_name]
@@ -241,7 +248,7 @@ class TrendxAdversary:
             
         # save new generated file into hcx_target_dir
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
-        tmp_file = '{}_{}_{}.tmp'.format(self.mal_file_name_wo_ext, action, timestamp)
+        tmp_file = '{}_random_{}_{}.tmp'.format(self.mal_file_name_wo_ext, action, timestamp)
         new_pe_path = os.path.join(self.hcx_target_dir, tmp_file)
         modifier.save_pe(new_pe_path)
         return new_pe_path

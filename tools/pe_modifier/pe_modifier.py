@@ -4,6 +4,7 @@ else:
     from .manipulate2 import *
 
 import sys
+import hashlib
 
 class PEModifier:
     """"""
@@ -18,6 +19,9 @@ class PEModifier:
     def save_pe(self, file_path):
         with open(file_path, 'wb') as fh:
             fh.write(self.bytez)
+    
+    def get_hash_sha1(self):
+        return hashlib.sha1(self.bytez).hexdigest()
 
     def modify(self, dna):
         self.bytez = bytes(modify(self.bytez, dna))

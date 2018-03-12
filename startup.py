@@ -4,7 +4,7 @@ from calc_trendx_prediction import *
 from genetic_algorithm_basic import *
 from optparse import OptionParser
 from logging import *
-from multiprocessing import Process, Pool
+from multiprocessing import Process, pool
 
 class NoDaemonProcess(multiprocessing.Process):
     # make 'daemon' attribute always return False

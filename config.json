@@ -1,5 +1,14 @@
 {
     "common": {
-        "depth": 3 
+        "depth": 3,
+        "samples": "samples/Adversarial_baseline_samples",
+        "generated_dir": "new_generated_pe"
+    }, 
+    "dna_manager": {
+        "random_count": 100
+    },
+    "trendx": {
+        "scan_type": 2,
+        "housecallx": "tools/housecallx"
     }
 }

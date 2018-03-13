@@ -69,18 +69,20 @@ def get_dna_count(dna_dir):
     return count
 
 def process_one_round(type, mal_sample_file, dna_dir, new_dna_dir, dna_size, housecallx_root_dir):
-    proc_count = multiprocessing.cpu_count()
-    # proc_count = 6
-    # 
     print('-------------- DNA Group Information --------------')
     dna_count = get_dna_count(dna_dir)
     group_count = int(dna_count / dna_size)
     for i in range(group_count):
-        print('Group {}: {}'.format(i, dna_size))
+        print('Group {}: {}'.format(i+1, dna_size))
     rest_num = dna_count % dna_size
     if rest_num != 0:
         group_count += 1
         print('Group {}: {}'.format(group_count, rest_num))
+    
+    cpu_count = multiprocessing.cpu_count()
+    proc_count = min(cpu_count, group_count)
+    # proc_count = 6
+    # 
     # check housecallx dir
     for i in range(proc_count):
         hcx_path = os.path.join(housecallx_root_dir, 'hcx{}'.format(i+1))

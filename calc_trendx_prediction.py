@@ -213,8 +213,8 @@ class TrendxAdversary:
                 os.system(cmd)
 
         # remove temp dir
-        if os.path.exists(self.hcx_target_dir):
-            shutil.rmtree(self.hcx_target_dir)
+        # if os.path.exists(self.hcx_target_dir):
+        #     shutil.rmtree(self.hcx_target_dir)
 
 
 

@@ -12,8 +12,8 @@ class GeneticAlgorithmHelper:
         self.DNA_SIZE = dna_size      # DNA length
         self.POP_SIZE = 100           # population size
         self.CROSS_RATE = 0.8         # mating probability (DNA crossover)
-        self.MUTATION_RATE = 0.003    # mutation probability
-        self.N_GENERATIONS = 200
+        self.MUTATION_RATE = 0.03    # mutation probability
+        self.N_GENERATIONS = 500
 
         self.adv = adv
 

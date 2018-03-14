@@ -7,6 +7,9 @@
     "dna_manager": {
         "random_count": 100
     },
+    "pe_generator_random": {
+        "count": 100
+    },
     "trendx": {
         "scan_type": 2,
         "housecallx": "tools/housecallx"

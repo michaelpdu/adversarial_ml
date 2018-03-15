@@ -2,13 +2,14 @@
     "common": {
         "depth": 3,
         "samples": "samples/Adversarial_baseline_samples",
-        "generated_dir": "new_generated_pe"
+        "generated_dir": "new_generated_samples"
     }, 
     "dna_manager": {
-        "random_count": 100
+        "random_count": 20
     },
     "pe_generator_random": {
-        "count": 100
+        "count": 100,
+        "round": 50
     },
     "trendx": {
         "scan_type": 2,

@@ -12,8 +12,8 @@ class PEGeneratorRandomTestCase(unittest.TestCase):
         pass
     
     def test_generate(self):
-        generator = PEGeneratorRandom({"dna_manager": {"random_count": 50}})
-        generator.load_sample(os.path.join('UT', 'staff', 'pe', 'malicious_pe.ex_'))
+        generator = PEGeneratorRandom({"dna_manager": {"random_count": 10}})
+        generator.load_sample(os.path.join('UT', 'staff', 'pe', 'malicious', 'malicious_pe.ex_'))
         generator.load_dna()
         generator.set_dest_dir(os.path.join('new_generated_samples', 'UT', 'pe'))
         generator.generate(5)

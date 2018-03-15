@@ -15,7 +15,7 @@ class TrendXWrapperTestCase(unittest.TestCase):
         hcx_path = os.path.join('tools', 'housecallx', 'hcx1')
         trendx.set_hcx(hcx_path)
         try:
-            decision, prob = trendx.scan_pe_file(os.path.join('UT', 'staff', 'pe', 'malicious_pe.ex_'))
+            decision, prob = trendx.scan_pe_file(os.path.join('UT', 'staff', 'pe', 'malicious', 'malicious_pe.ex_'))
         except Exception as e:
             assert(str(e) == "TrendXWrapper.scan_pe_file does not implemented!")
 
@@ -23,7 +23,7 @@ class TrendXWrapperTestCase(unittest.TestCase):
         trendx = TrendXWrapper({})
         hcx_path = os.path.join('tools', 'housecallx', 'hcx1')
         trendx.set_hcx(hcx_path)
-        sample_dir = os.path.abspath(os.path.join('UT', 'staff', 'pe'))
+        sample_dir = os.path.abspath(os.path.join('UT', 'staff', 'pe', "malicious"))
         # print(sample_dir)
         scores = trendx.scan_pe_dir(sample_dir)
         print(scores)
@@ -40,7 +40,7 @@ class TrendXWrapperTestCase(unittest.TestCase):
         hcx_path = os.path.join('tools', 'housecallx', 'hcx1')
         trendx.set_hcx(hcx_path)
         try:
-            sample_list = [os.path.join('UT', 'staff', 'pe', 'malicious_pe.ex_'), os.path.join('UT', 'staff', 'pe', 'normal_pe.ex_')]
+            sample_list = [os.path.join('UT', 'staff', 'pe', 'malicious', 'malicious_pe.ex_'), os.path.join('UT', 'staff', 'pe', 'normal', 'normal_pe.ex_')]
             scores = trendx.scan_pe_list(sample_list)
         except Exception as e:
             assert(str(e) == "TrendXWrapper.scan_pe_list does not implemented!")

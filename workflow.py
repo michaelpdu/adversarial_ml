@@ -23,6 +23,10 @@ class AdversaryWorkflow:
     """"""
     def __init__(self, config):
         self.config_ = config
+        self.index_ = 1
+
+    def set_index(self, index):
+        self.index_ = index
 
     def process_file(self, file_path):
         # 
@@ -36,24 +40,32 @@ class AdversaryWorkflow:
         generator.generate(self.config_['pe_generator_random']['count'])
         # 
         trendx = TrendXWrapper(self.config_)
-        hcx_path = os.path.join('tools', 'housecallx', 'hcx1')
+        hcx_path = os.path.join('tools', 'housecallx', 'hcx{}'.format(self.index_))
         trendx.set_hcx(hcx_path)
         scores = trendx.scan_pe_dir(dest_dir)
         for sample_path, value in scores.items():
             if value[0] < 2:
-                print("> Sample: {}, Decision: {}".format(sample_path,value[0]))
-                info('Find non-malicious sample, decision is {}, submit to cuckoo sandbox: {}'.format(value[0], sample_path))
-                cmd = 'cuckoo submit --timeout 60 {}'.format(sample_path)
-                os.system(cmd)
+                try:
+                    print("> Sample: {}, Decision: {}".format(sample_path,value[0]))
+                    info('Find non-malicious sample, decision is {}, submit to cuckoo sandbox: {}'.format(value[0], sample_path))
+                    cmd = 'cuckoo submit --timeout 60 {}'.format(sample_path)
+                    info('> ' + cmd)
+                    print('> ' + cmd)
+                    os.system(cmd)
+                except Exception as e:
+                    print(e)
             else:
                 os.remove(sample_path)
     
     def process_dir(self, dir_path):
         for root, dirs, files in os.walk(dir_path):
             for name in files:
-                self.process_file(os.path.join(root, name))
+                for i in range(self.config_['pe_generator_random']['round']):
+                    self.process_file(os.path.join(root, name))
 
-    def attack(self):
+    def attack(self, index):
+        print('> Begin to attack, index = {}'.format(index))
+        self.set_index(index)
         #
         sample_path = self.config_['common']['samples']
         if not os.path.exists(sample_path):
@@ -66,14 +78,16 @@ class AdversaryWorkflow:
             pass
 
     def start(self):
-        cpu_count = multiprocessing.cpu_count()
-        # 
-        p = NoDaemonPool(cpu_count)
-        for i in range(cpu_count):
-            p.apply_async(self.attack, args=())
-        p.close()
-        p.join()
-
+        try:
+            cpu_count = multiprocessing.cpu_count()
+            # 
+            p = NoDaemonPool(cpu_count)
+            for i in range(cpu_count):
+                p.apply_async(self.attack, args=(i,))
+            p.close()
+            p.join()
+        except Exception as e:
+            print(e)
 
 if __name__ == '__main__':
     basicConfig(filename='adversary_ml_{}.log'.format(os.getpid()), format='[%(asctime)s][%(levelname)s] - %(message)s', level=INFO)

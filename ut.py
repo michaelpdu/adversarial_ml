@@ -6,6 +6,7 @@ from ut_dna_manager import DNAManagerTestCase
 from ut_housecallx_report import HouseCallXReportTestCase
 from ut_trendx_wrapper import TrendXWrapperTestCase
 from ut_pe_generator_random import PEGeneratorRandomTestCase
+from ut_workflow import AdversaryWorkflowTestCase
 
 def suite():  
     suite = unittest.TestSuite()
@@ -33,6 +34,17 @@ def suite():
     # PEGeneratorRandom Test Cases
     if sys.version_info.major >= 3:
         suite.addTest(PEGeneratorRandomTestCase("test_generate"))
+    else:
+        pass
+
+    # AdversaryWorkflow Test Case
+    if sys.version_info.major >= 3:
+        suite.addTest(AdversaryWorkflowTestCase("test_process_file"))
+        suite.addTest(AdversaryWorkflowTestCase("test_process_dir"))
+        suite.addTest(AdversaryWorkflowTestCase("test_attack"))
+        suite.addTest(AdversaryWorkflowTestCase("test_start"))
+    else:
+        pass
 
     return suite
   

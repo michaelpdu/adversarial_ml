@@ -24,6 +24,7 @@ class AdversaryWorkflow:
     def __init__(self, config):
         self.config_ = config
         self.index_ = 1
+        self.generate_count_ = 0
 
     def set_index(self, index):
         self.index_ = index
@@ -37,7 +38,9 @@ class AdversaryWorkflow:
         generator.load_sample(file_path)
         generator.load_dna()
         generator.set_dest_dir(dest_dir)
-        generator.generate(self.config_['pe_generator_random']['count'])
+        cur_count = self.config_['pe_generator_random']['count']
+        generator.generate(cur_count)
+        self.generate_count_ += cur_count
         # 
         trendx = TrendXWrapper(self.config_)
         hcx_path = os.path.join('tools', 'housecallx', 'hcx{}'.format(self.index_))
@@ -46,7 +49,7 @@ class AdversaryWorkflow:
         for sample_path, value in scores.items():
             if value[0] < 2:
                 try:
-                    print("> Sample: {}, Decision: {}".format(sample_path,value[0]))
+                    print("> Sample: {}, Decision: {}, Current Generated Sample Count: {}".format(sample_path,value[0],self.generate_count_))
                     info('Find non-malicious sample, decision is {}, submit to cuckoo sandbox: {}'.format(value[0], sample_path))
                     cmd = 'cuckoo submit --timeout 60 {}'.format(sample_path)
                     info('> ' + cmd)

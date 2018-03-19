@@ -142,9 +142,9 @@ Usage:
     
     (a) from DNA to PE
         
-        >> python3  dna_to_pe.py --file-type PE --file-path malicious_pe --dna DNA_dir --step DNA_size --pe-num new_pe_number
+        >> python3  dna_to_pe.py --file-type PE --file-path malicious_pe --dna DNA_dir --start start_index --step DNA_size --pe-num new_pe_number
         e.g.
-        >> python3 dna_to_pe.py --file-type PE --file-path samples/mal_pe/6d3e5e56984a7e91c7a8c434224b73886d413d1d1f435358f40bf78c71c1932d --dna DNA/DNA_PE/section_add --step 32 --pe-num 100
+        >> python3 dna_to_pe.py --file-type PE --file-path samples/Adversarial_baseline_samples/Adversarial_baseline_samples/Baseline-23 --dna DNA/DNA_PE/section_add --start 64 --step 32 --pe-num 3
 """
 
 

@@ -27,5 +27,14 @@ def scan_by_housecallx(housecallx_path, sample_path):
     print('Change Working Dir to: {}'.format(os.getcwd()))
     return scores
 
+help_msg = """
+Usage:
+    python housecallx.py housecallx_path sample_dir
+"""
 
-
+if __name__ == '__main__':
+    try:
+        scan_by_housecallx(sys.argv[1], sys.argv[2])
+    except Exception as e:
+        print(e)
+        print(help_msg)

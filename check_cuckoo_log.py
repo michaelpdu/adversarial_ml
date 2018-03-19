@@ -39,6 +39,7 @@ if __name__ == '__main__':
     with open('bypassed_file_list.txt', 'w') as fh:
         for file_path in file_list:
             if file_path:
+                print(file_path)
                 fh.write('{}\n'.format(file_path))
 
 

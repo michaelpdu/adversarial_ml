@@ -5,11 +5,11 @@
         "generated_dir": "new_generated_samples"
     }, 
     "dna_manager": {
-        "random_count": 20
+        "random_count": 10
     },
     "pe_generator_random": {
-        "count": 100,
-        "round": 50
+        "count": 10,
+        "round": 5
     },
     "trendx": {
         "scan_type": 2,

@@ -1,4 +1,4 @@
-import os, sys
+import os, sys, time
 from dna_manager import *
 from pe_generator import *
 
@@ -14,6 +14,7 @@ class PEGeneratorRandom(PEGenerator):
 
     def add_section_random(self):
         dna_list = self.dna_mgr_.get_dna_random(self.config_['dna_manager']['random_count'])
+        
         section_add_list = []
         for dna in dna_list:
             lines = dna.strip().split('\n')
@@ -26,6 +27,7 @@ class PEGeneratorRandom(PEGenerator):
                 section_add_list.append(int_list)
             else:
                 pass
+
         if len(section_add_list) > 0:
             self.modifier_.modify({'section_add_list': section_add_list})
 
@@ -39,5 +41,5 @@ class PEGeneratorRandom(PEGenerator):
             print("Generate {} sample randomly".format(i+1))
             begin = time.time()
             self.add_section_random()
-            delta = time.time() - begin()
+            delta = time.time() - begin
             print('- time delta: {}'.format(delta))

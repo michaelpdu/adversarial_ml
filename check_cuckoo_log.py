@@ -1,9 +1,23 @@
-import os, sys, json
+import os, sys, json, shutil
 
 class CuckooLogChecker:
     """"""
-    def __init__(self, timeout):
-        self.timeout_ = timeout
+    def __init__(self):
+        self.delete_mode = False
+        self.threshold_score = 4.0
+        self.total_count = 0
+        self.count_lt = 0
+        self.count_ge = 0
+
+    def enable_delete_mode(self):
+        self.delete_mode = True
+
+    def show_statistics(self):
+        print('******************************************')
+        print('Total Count: {}'.format(self.total_count))
+        print('Count of `less than`: {}'.format(self.count_lt))
+        print('Count of `great equal`: {}'.format(self.count_ge))
+        print('******************************************')
 
     def check_file(self, file_path):
         try:
@@ -22,6 +36,17 @@ class CuckooLogChecker:
             with open(task_path, 'r') as fh_task:
                 task = json.load(fh_task)
                 target = task['target']
+            if score < self.threshold_score:
+                if self.delete_mode:
+                    if os.path.exists(target):
+                        os.remove(target)
+                    if os.path.exists(task_dir):
+                        shutil.rmtree(task_dir)
+                else:
+                    self.count_lt += 1
+            else:
+                self.count_ge += 1
+            self.total_count += 1
             return (score, duration, task_path, target)
         except Exception as e:
             print(e)
@@ -45,12 +70,28 @@ class CuckooLogChecker:
         else:
             return []
 
+help_msg = """
+Usage:
+    python check_cuckoo_log.py [-s|-d] target_path
+
+    Options:
+        -s : print summary information
+        -d : delete all of failed samples
+"""
+
+
 if __name__ == '__main__':
-    checker = CuckooLogChecker(60)
-    info_list = checker.check(sys.argv[1])
-    with open('bypassed_file_list.txt', 'w') as fh:
-        for info in info_list:
-            fh.write('{} {} {} {}\n'.format(info[0], info[1], info[2], info[3]))
-
-
+    checker = CuckooLogChecker()
+    
+    if sys.argv[1] == '-s':
+        info_list = checker.check(sys.argv[2])
+        with open('bypassed_file_list.txt', 'w') as fh:
+            for info in info_list:
+                fh.write('{} {} {} {}\n'.format(info[0], info[1], info[2], info[3]))
+        checker.show_statistics()
+    elif sys.argv[1] == '-d':
+        checker.enable_delete_mode()
+        info_list = checker.check(sys.argv[1])
+    else:
+        print(help_msg)
 

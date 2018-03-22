@@ -32,11 +32,11 @@ class AdversaryWorkflow:
         self.index_ = 1
         self.generate_count_ = 0
 
-    def process_file(self, cpu_index, file_path):
+    def process_file(self, cpu_index, round, file_path):
         try:
             print('>> Attack {}'.format(file_path))
             # 
-            dest_dir = os.path.abspath(os.path.join(self.config_['common']['generated_dir'], str(os.getpid())))
+            dest_dir = os.path.abspath(os.path.join(self.config_['common']['generated_dir'], str(os.getpid()), str(round)))
             if not os.path.exists(dest_dir):
                 os.makedirs(dest_dir)
             generator = PEGeneratorRandom(self.config_)
@@ -75,7 +75,7 @@ class AdversaryWorkflow:
                 print('CPU index: {}, Total round is {}'.format(cpu_index, round))
                 for i in range(round):
                     print('CPU index: {}, Current round is {}'.format(cpu_index, i+1))
-                    self.process_file(cpu_index, mal_sample_path)
+                    self.process_file(cpu_index, i, mal_sample_path)
                     # check free disk in root disk
                     free = check_free_disk('/')
                     if free < 1024:
@@ -91,7 +91,7 @@ class AdversaryWorkflow:
         if os.path.isdir(sample_path):
             self.process_dir(cpu_index, sample_path)
         elif os.path.isfile(sample_path):
-            self.process_file(cpu_index, sample_path)
+            self.process_file(cpu_index, 0,  sample_path)
         else:
             pass
 
@@ -109,7 +109,7 @@ class AdversaryWorkflow:
             print(e)
 
 if __name__ == '__main__':
-    basicConfig(filename='adversary_ml_{}.log'.format(os.getpid()), format='[%(asctime)s][%(levelname)s] - %(message)s', level=INFO)
+    basicConfig(filename='adversary_ml_{}.log'.format(os.getpid()), format='[%(asctime)s][%(process)d.%(thread)d][%(levelname)s] - %(message)s', level=INFO)
     with open('config.json', 'r') as fh:
         config = json.load(fh)
     adv = AdversaryWorkflow(config)

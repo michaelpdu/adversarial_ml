@@ -33,7 +33,8 @@ class PEGeneratorRandom(PEGenerator):
 
         tmp_file = '{}_{}'.format(self.filename_wo_ext, self.modifier_.get_hash_sha1())
         new_pe_path = os.path.join(self.dest_dir_, tmp_file)
-        self.modifier_.save_pe(new_pe_path)
+        if not os.path.exists(new_pe_path):
+            self.modifier_.save_pe(new_pe_path)
         return new_pe_path
 
     def generate(self, count):

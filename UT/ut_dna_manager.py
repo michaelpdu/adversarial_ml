@@ -34,3 +34,12 @@ class DNAManagerTestCase(unittest.TestCase):
         dna_mgr = DNAManager()
         dna_mgr.load_all_dna_files(os.path.join('DNA','DNA_PE','section_add'))
         assert(len(dna_mgr.get_dna_random(40)) == 40)
+
+    def test_generate_random_indexes(self):
+        print('> test_generate_random_indexes')
+        dna_mgr = DNAManager()
+        print(dna_mgr.generate_random_indexes(10, 100))
+        print(dna_mgr.generate_random_indexes(10, 100))
+        print(dna_mgr.generate_random_indexes(10, 100))
+        print(dna_mgr.generate_random_indexes(10, 100))
+        print(dna_mgr.generate_random_indexes(10, 100))

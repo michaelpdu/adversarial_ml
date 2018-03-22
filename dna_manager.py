@@ -11,16 +11,19 @@ class DNAManager:
     def get_dna(self):
         return self.dna_code_list
 
-    def get_dna_random(self, count):
-        list_len = len(self.dna_code_list)
+    def generate_random_indexes(self, count, list_len):
         if list_len < count:
             raise Exception("Length of DNA is less than input count: {}".format(count))
-        random_list = []
+        random_indexes = []
         for i in range(count):
-            random_list.append(random.randint(0, list_len-1))
-        # print(random_list)
+            random_indexes.append(random.randint(0, list_len-1))
+        return random_indexes
+
+    def get_dna_random(self, count):
+        list_len = len(self.dna_code_list)
+        random_indexes = self.generate_random_indexes(count, list_len)
         result = []
-        for i in random_list:
+        for i in random_indexes:
             result.append(self.dna_code_list[i])
         return result
 

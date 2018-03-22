@@ -17,6 +17,7 @@ def suite():
     # DNAManager Test Cases
     suite.addTest(DNAManagerTestCase("test_load_dna"))
     suite.addTest(DNAManagerTestCase("test_load_dna_random"))
+    suite.addTest(DNAManagerTestCase("test_generate_random_indexes"))
     
     # HouseCallXReport Test Cases
     suite.addTest(HouseCallXReportTestCase("test_get_scores"))

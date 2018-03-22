@@ -42,8 +42,7 @@ class CuckooLogChecker:
                         os.remove(target)
                     if os.path.exists(task_dir):
                         shutil.rmtree(task_dir)
-                else:
-                    self.count_lt += 1
+                self.count_lt += 1
             else:
                 self.count_ge += 1
             self.total_count += 1
@@ -81,17 +80,19 @@ Usage:
 
 
 if __name__ == '__main__':
-    checker = CuckooLogChecker()
-    
-    if sys.argv[1] == '-s':
-        info_list = checker.check(sys.argv[2])
-        with open('bypassed_file_list.txt', 'w') as fh:
-            for info in info_list:
-                fh.write('{} {} {} {}\n'.format(info[0], info[1], info[2], info[3]))
-        checker.show_statistics()
-    elif sys.argv[1] == '-d':
-        checker.enable_delete_mode()
-        info_list = checker.check(sys.argv[1])
-    else:
+    try:
+        checker = CuckooLogChecker()
+        if sys.argv[1] == '-s':
+            info_list = checker.check(sys.argv[2])
+            with open('bypassed_file_list.txt', 'w') as fh:
+                for info in info_list:
+                    fh.write('{} {} {} {}\n'.format(info[0], info[1], info[2], info[3]))
+            checker.show_statistics()
+        elif sys.argv[1] == '-d':
+            checker.enable_delete_mode()
+            checker.check(sys.argv[2])
+        else:
+            print(help_msg)
+    except Exception as e:
+        print(e)
         print(help_msg)
-

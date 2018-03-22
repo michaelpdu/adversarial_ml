@@ -6,23 +6,35 @@ class CuckooLogChecker:
         self.timeout_ = timeout
 
     def check_file(self, file_path):
-        with open(file_path, 'r') as fh:
-            task = json.load(fh)
-            target = task['target']
-            if task['duration'] > self.timeout_:
-                print('> Find executable file: {}'.format(target))
-                return target
-            else:
+        try:
+            report_dir, report_filename = os.path.split(file_path)
+            if 'report.json' != report_filename:
                 return None
+            task_dir, report_name = os.path.split(report_dir)
+            task_path = os.path.join(task_dir, 'task.json')
+            score = 0
+            duration = 0
+            target = ''
+            with open(file_path, 'r') as fh:
+                reports = json.load(fh)
+                score = reports['info']['score']
+                duration = reports['info']['duration']
+            with open(task_path, 'r') as fh_task:
+                task = json.load(fh_task)
+                target = task['target']
+            return (score, duration, task_path, target)
+        except Exception as e:
+            print(e)
+            return None
 
     def check_dir(self, dir_path):
         result = []
         for root, dirs, files in os.walk(dir_path):
             for name in files:
-                if 'task.json' == name:
-                    target = self.check_file(os.path.join(root, name))
-                    if target:
-                        result.append(target)
+                if 'report.json' == name:
+                    info = self.check_file(os.path.join(root, name))
+                    if info:
+                        result.append(info)
         return result
 
     def check(self, target_path):
@@ -35,12 +47,10 @@ class CuckooLogChecker:
 
 if __name__ == '__main__':
     checker = CuckooLogChecker(60)
-    file_list = checker.check(sys.argv[1])
+    info_list = checker.check(sys.argv[1])
     with open('bypassed_file_list.txt', 'w') as fh:
-        for file_path in file_list:
-            if file_path:
-                print(file_path)
-                fh.write('{}\n'.format(file_path))
+        for info in info_list:
+            fh.write('{} {} {} {}\n'.format(info[0], info[1], info[2], info[3]))
 
 
 

@@ -51,6 +51,7 @@ class AdversaryWorkflow:
             hcx_path = os.path.join('tools', 'housecallx', 'hcx{}'.format(cpu_index+1))
             trendx.set_hcx(hcx_path)
             scores = trendx.scan_pe_dir(dest_dir)
+            
             for sample_path, value in scores.items():
                 if value[0] < 2:
                     try:
@@ -66,7 +67,7 @@ class AdversaryWorkflow:
                     os.remove(sample_path)
         except Exception as e:
             print(e)
-    
+        
     def process_dir(self, cpu_index, dir_path):
         for root, dirs, files in os.walk(dir_path):
             for name in files:
@@ -82,6 +83,7 @@ class AdversaryWorkflow:
                         print('[*] CPU index: {}, No enough disk space, sleep 10 minutes!'.format(cpu_index))
                         time.sleep(600) # sleep 10m
 
+
     def attack(self, cpu_index):
         print('> Begin to attack, index = {}'.format(cpu_index))
         #
@@ -91,13 +93,23 @@ class AdversaryWorkflow:
         if os.path.isdir(sample_path):
             self.process_dir(cpu_index, sample_path)
         elif os.path.isfile(sample_path):
-            self.process_file(cpu_index, 0,  sample_path)
+            round = self.config_['pe_generator_random']['round']
+            print('CPU index: {}, Total round is {}'.format(cpu_index, round))
+            for i in range(round):
+                print('CPU index: {}, Current round is {}'.format(cpu_index, i + 1))
+                self.process_file(cpu_index,i,sample_path)
+                # check free disk in root disk
+                free = check_free_disk('/')
+                if free < 1024:
+                    print('[*] CPU index: {}, No enough disk space, sleep 10 minutes!'.format(cpu_index))
+                    time.sleep(600)
+
         else:
             pass
 
     def start(self):
         try:
-            cpu_count = multiprocessing.cpu_count()
+            cpu_count = 1
             # cpu_count = 2
             # 
             p = NoDaemonPool(cpu_count)

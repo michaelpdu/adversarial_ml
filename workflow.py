@@ -73,7 +73,7 @@ class AdversaryWorkflow:
                 print(e)
 
             free = check_free_disk('/')
-            if free < 1024:
+            if free < self.config_['common']['free_disk']:
                 print('[*] CPU index: {}, No enough disk space, sleep 10 minutes!'.format(cpu_index))
                 time.sleep(600)  # sleep 10m
 

@@ -1,7 +1,7 @@
 import os, sys
 import unittest
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-from workflow import AdversaryWorkflow
+from workflow import AdversaryWorkflow, start, attack
 
 
 class AdversaryWorkflowTestCase(unittest.TestCase):
@@ -67,12 +67,13 @@ class AdversaryWorkflowTestCase(unittest.TestCase):
         adv = AdversaryWorkflow(config)
         adv.process_dir(1, os.path.join('UT','staff','pe', 'malicious'))
 
-    def test_attack(self):
+    def test_start(self):
         print('>> AdversaryWorkflowTestCase.test_attack')
         config = {
                     "common": {
                         "depth": 3,
                         "free_disk": 1024,
+                        "use_cpu_count": True,
                         "samples": "UT/staff/pe/malicious",
                         "generated_dir": "new_generated_samples"
                     }, 
@@ -91,16 +92,15 @@ class AdversaryWorkflowTestCase(unittest.TestCase):
                         "enable": False
                     }
                 }
+        start(0, config)
 
-        adv = AdversaryWorkflow(config)
-        adv.attack(2)
-
-    def test_start(self):
+    def test_attack(self):
         print('>> AdversaryWorkflowTestCase.test_start')
         config = {
                     "common": {
                         "depth": 3,
                         "free_disk": 1024,
+                        "use_cpu_count": True,
                         "samples": "UT/staff/pe/malicious",
                         "generated_dir": "new_generated_samples"
                     }, 
@@ -119,6 +119,4 @@ class AdversaryWorkflowTestCase(unittest.TestCase):
                         "enable": False
                     }
                 }
-
-        adv = AdversaryWorkflow(config)
-        adv.start()
+        attack(config)

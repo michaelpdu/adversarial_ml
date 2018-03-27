@@ -31,6 +31,8 @@ class AdversaryWorkflow:
         self.config_ = config
         self.index_ = 1
         self.generate_count_ = 0
+        self.generator_ = PEGeneratorRandom(self.config_)
+        self.generator_.load_dna()
 
     def process_file(self, cpu_index,file_path):
         try:
@@ -43,12 +45,12 @@ class AdversaryWorkflow:
                 dest_dir = os.path.abspath(os.path.join(self.config_['common']['generated_dir'], str(os.getpid()), str(i)))
                 if not os.path.exists(dest_dir):
                     os.makedirs(dest_dir)
-                generator = PEGeneratorRandom(self.config_)
-                generator.load_sample(file_path)
-                generator.load_dna()
-                generator.set_dest_dir(dest_dir)
+
+                self.generator_.load_sample(file_path)
+                self.generator_.set_dest_dir(dest_dir)
+
                 cur_count = self.config_['pe_generator_random']['count']
-                generator.generate(cur_count)
+                self.generator_.generate(cur_count)
                 self.generate_count_ += cur_count
                 #
                 trendx = TrendXWrapper(self.config_)
@@ -84,41 +86,34 @@ class AdversaryWorkflow:
                 mal_sample_path = os.path.join(root, name)
                 self.process_file(cpu_index, mal_sample_path)
 
+def start(cpu_index, config):
+    adv = AdversaryWorkflow(config)
+    print('> Begin to attack, index = {}'.format(cpu_index))
+    #
+    sample_path = config['common']['samples']
+    if not os.path.exists(sample_path):
+        raise Exception('Cannot find sample path: {}'.format(sample_path))
+    if os.path.isdir(sample_path):
+        adv.process_dir(cpu_index,sample_path)
+    elif os.path.isfile(sample_path):
+        adv.process_file(cpu_index,sample_path)
+    else:
+        pass
 
-
-    def attack(self, cpu_index):
-        print('> Begin to attack, index = {}'.format(cpu_index))
-        #
-        sample_path = self.config_['common']['samples']
-        if not os.path.exists(sample_path):
-            raise Exception('Cannot find sample path: {}'.format(sample_path))
-        if os.path.isdir(sample_path):
-            self.process_dir(cpu_index,sample_path)
-        elif os.path.isfile(sample_path):
-            self.process_file(cpu_index,sample_path)
-
-
-        else:
-            pass
-
-    def start(self):
-        try:
-            if self.config_['common']['use_cpu_count']:
-                cpu_count = multiprocessing.cpu_count()
-            else:
-                cpu_count = 1
-            # 
-            p = NoDaemonPool(cpu_count)
-            for i in range(cpu_count):
-                p.apply_async(self.attack, args=(i,))
-            p.close()
-            p.join()
-        except Exception as e:
-            print(e)
+def attack(config):
+    if config['common']['use_cpu_count']:
+        cpu_count = multiprocessing.cpu_count()
+    else:
+        cpu_count = 1
+    # 
+    p = NoDaemonPool(cpu_count)
+    for i in range(cpu_count):
+        p.apply_async(start, args=(i, config))
+    p.close()
+    p.join()
 
 if __name__ == '__main__':
     basicConfig(filename='adversary_ml_{}.log'.format(os.getpid()), format='[%(asctime)s][%(process)d.%(thread)d][%(levelname)s] - %(message)s', level=INFO)
     with open('config.json', 'r') as fh:
         config = json.load(fh)
-    adv = AdversaryWorkflow(config)
-    adv.start()
+    attack(config)

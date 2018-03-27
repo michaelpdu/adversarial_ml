@@ -33,10 +33,11 @@ class AdversaryWorkflow:
         self.generate_count_ = 0
 
     def process_file(self, cpu_index,file_path):
-        round = self.config_['pe_generator_random']['round']
-        for i in range(round):
-            print('CPU index: {}, Current round is {}'.format(cpu_index, i + 1))
-            try:
+        try:
+            round = self.config_['pe_generator_random']['round']
+            for i in range(round):
+                print('CPU index: {}, Current round is {}'.format(cpu_index, i + 1))
+
                 print('>> Attack {}'.format(file_path))
                 #
                 dest_dir = os.path.abspath(os.path.join(self.config_['common']['generated_dir'], str(os.getpid()), str(i)))
@@ -69,13 +70,13 @@ class AdversaryWorkflow:
                                 print(e)
                     else:
                         os.remove(sample_path)
-            except Exception as e:
-                print(e)
 
             free = check_free_disk('/')
             if free < self.config_['common']['free_disk']:
                 print('[*] CPU index: {}, No enough disk space, sleep 10 minutes!'.format(cpu_index))
                 time.sleep(600)  # sleep 10m
+        except Exception as e:
+            print(e)
 
     def process_dir(self, cpu_index, dir_path):
         for root, dirs, files in os.walk(dir_path):

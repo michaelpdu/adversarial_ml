@@ -16,6 +16,7 @@ class AdversaryWorkflowTestCase(unittest.TestCase):
         config = {
                     "common": {
                         "depth": 3,
+                        "free_disk": 1024,
                         "samples": "samples/Adversarial_baseline_samples",
                         "generated_dir": "new_generated_samples"
                     }, 
@@ -29,6 +30,9 @@ class AdversaryWorkflowTestCase(unittest.TestCase):
                     "trendx": {
                         "scan_type": 2,
                         "housecallx": "tools/housecallx"
+                    },
+                    "cuckoo": {
+                        "enable": False
                     }
                 }
 
@@ -40,6 +44,7 @@ class AdversaryWorkflowTestCase(unittest.TestCase):
         config = {
                     "common": {
                         "depth": 3,
+                        "free_disk": 1024,
                         "samples": "samples/Adversarial_baseline_samples",
                         "generated_dir": "new_generated_samples"
                     }, 
@@ -53,6 +58,9 @@ class AdversaryWorkflowTestCase(unittest.TestCase):
                     "trendx": {
                         "scan_type": 2,
                         "housecallx": "tools/housecallx"
+                    },
+                    "cuckoo": {
+                        "enable": False
                     }
                 }
 
@@ -64,6 +72,7 @@ class AdversaryWorkflowTestCase(unittest.TestCase):
         config = {
                     "common": {
                         "depth": 3,
+                        "free_disk": 1024,
                         "samples": "UT/staff/pe/malicious",
                         "generated_dir": "new_generated_samples"
                     }, 
@@ -77,6 +86,9 @@ class AdversaryWorkflowTestCase(unittest.TestCase):
                     "trendx": {
                         "scan_type": 2,
                         "housecallx": "tools/housecallx"
+                    },
+                    "cuckoo": {
+                        "enable": False
                     }
                 }
 
@@ -88,6 +100,7 @@ class AdversaryWorkflowTestCase(unittest.TestCase):
         config = {
                     "common": {
                         "depth": 3,
+                        "free_disk": 1024,
                         "samples": "UT/staff/pe/malicious",
                         "generated_dir": "new_generated_samples"
                     }, 
@@ -101,6 +114,9 @@ class AdversaryWorkflowTestCase(unittest.TestCase):
                     "trendx": {
                         "scan_type": 2,
                         "housecallx": "tools/housecallx"
+                    },
+                    "cuckoo": {
+                        "enable": False
                     }
                 }
 

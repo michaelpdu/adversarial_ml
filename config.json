@@ -14,5 +14,8 @@
     "trendx": {
         "scan_type": 2,
         "housecallx": "tools/housecallx"
+    },
+    "cuckoo": {
+        "enable": true
     }
 }

@@ -57,15 +57,16 @@ class AdversaryWorkflow:
                 
                 for sample_path, value in scores.items():
                     if value[0] < 2:
-                        try:
-                            print("> Sample: {}, Decision: {}, Current Generated Sample Count: {}".format(sample_path,value[0],self.generate_count_))
-                            info('Find non-malicious sample, decision is {}, submit to cuckoo sandbox: {}'.format(value[0], sample_path))
-                            cmd = 'cuckoo submit --timeout 60 {}'.format(sample_path)
-                            info('> ' + cmd)
-                            print('> ' + cmd)
-                            os.system(cmd)
-                        except Exception as e:
-                            print(e)
+                        if self.config_['cuckoo']['enable']:
+                            try:
+                                print("> Sample: {}, Decision: {}, Current Generated Sample Count: {}".format(sample_path,value[0],self.generate_count_))
+                                info('Find non-malicious sample, decision is {}, submit to cuckoo sandbox: {}'.format(value[0], sample_path))
+                                cmd = 'cuckoo submit --timeout 60 {}'.format(sample_path)
+                                info('> ' + cmd)
+                                print('> ' + cmd)
+                                os.system(cmd)
+                            except Exception as e:
+                                print(e)
                     else:
                         os.remove(sample_path)
             except Exception as e:

@@ -1,5 +1,6 @@
 {
     "common": {
+        "use_cpu_count": true,
         "depth": 3,
         "samples": "samples/Adversarial_baseline_samples",
         "generated_dir": "new_generated_samples"

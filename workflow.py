@@ -102,8 +102,10 @@ class AdversaryWorkflow:
 
     def start(self):
         try:
-            cpu_count = multiprocessing.cpu_count()
-            # cpu_count = 2
+            if self.config_['common']['use_cpu_count']:
+                cpu_count = multiprocessing.cpu_count()
+            else:
+                cpu_count = 1
             # 
             p = NoDaemonPool(cpu_count)
             for i in range(cpu_count):

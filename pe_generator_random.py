@@ -1,4 +1,5 @@
 import os, sys, time
+from logging import *
 from dna_manager import *
 from pe_generator import *
 
@@ -38,9 +39,10 @@ class PEGeneratorRandom(PEGenerator):
         return new_pe_path
 
     def generate(self, count):
+        begin = time.time()
         for i in range(count):
-            print("Generate {} sample randomly".format(i+1))
-            begin = time.time()
             self.add_section_random()
-            delta = time.time() - begin
-            print('- time delta: {}'.format(delta))
+        delta = time.time() - begin
+        msg = 'Generate {} sample randomly, time delta: {}'.format(count, delta)
+        info(msg)
+        print(msg)

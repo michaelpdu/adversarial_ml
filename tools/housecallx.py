@@ -1,5 +1,7 @@
 import os
 import sys
+import time
+from logging import *
 from hcx_report import *
 
 def scan_by_housecallx(housecallx_path, sample_path):
@@ -9,9 +11,14 @@ def scan_by_housecallx(housecallx_path, sample_path):
     # remove previous log and trendx cache
     os.system('rm -f *.log trx_file_cache.dat')
     # scan by HouseCallX
-    cmd  = 'wine HouseCallX.exe /RETRY /NOFB /REPORT "' + sample_path + '"'
+    cmd  = 'wine HouseCallX.exe /RETRY /NOFB /REPORT "' + sample_path + '" 2> /dev/null'
     print('>> ' + cmd)
+    begin = time.time()
     os.system(cmd)
+    delta = time.time() - begin
+    msg = 'Scan `{}` in TrendX, time delta: {}'.format(sample_path, delta)
+    print(msg)
+    info(msg)
     # find *_Report.log
     new_report_file = ''
     for filename in os.listdir('.'):

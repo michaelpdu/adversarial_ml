@@ -33,7 +33,7 @@ class AdversaryWorkflowTestCase(unittest.TestCase):
                 }
 
         adv = AdversaryWorkflow(config)
-        adv.process_file(1, 0, os.path.join('UT','staff','pe','malicious','malicious_pe.ex_'))
+        adv.process_file(1, os.path.join('UT','staff','pe','malicious','malicious_pe.ex_'))
 
     def test_process_dir(self):
         print('>> AdversaryWorkflowTestCase.test_process_dir')

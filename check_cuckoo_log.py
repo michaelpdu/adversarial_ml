@@ -8,6 +8,7 @@ class CuckooLogChecker:
         self.total_count = 0
         self.count_lt = 0
         self.count_ge = 0
+        self.baseline_info = {}
 
     def enable_delete_mode(self):
         self.delete_mode = True
@@ -16,8 +17,18 @@ class CuckooLogChecker:
         print('******************************************')
         print('Total Count: {}'.format(self.total_count))
         print('Count of `less than`: {}'.format(self.count_lt))
-        print('Count of `great equal`: {}'.format(self.count_ge))
+        print('Count of `greater equal`: {}'.format(self.count_ge))
         print('******************************************')
+        for key,value in self.baseline_info.items():
+            print('{}:{}'.format(key,value))
+
+    def count_baseline_sample(self, target_path):
+        dir_path, filename = os.path.split(target_path)
+        baseline_name, hash_value = filename.split('_')
+        if baseline_name in self.baseline_info.keys():
+            self.baseline_info[baseline_name] += 1
+        else:
+            self.baseline_info[baseline_name] = 1
 
     def check_file(self, file_path):
         try:
@@ -45,6 +56,7 @@ class CuckooLogChecker:
                 self.count_lt += 1
             else:
                 self.count_ge += 1
+                self.count_baseline_sample(target)
             self.total_count += 1
             return (score, duration, task_path, target)
         except Exception as e:
@@ -86,7 +98,9 @@ if __name__ == '__main__':
             info_list = checker.check(sys.argv[2])
             with open('bypassed_file_list.txt', 'w') as fh:
                 for info in info_list:
-                    fh.write('{} {} {} {}\n'.format(info[0], info[1], info[2], info[3]))
+                    # score, duration, task_path, target
+                    # fh.write('{} {} {} {}\n'.format(info[0], info[1], info[2], info[3]))
+                    fh.write('{}\n'.format(info[3]))
             checker.show_statistics()
         elif sys.argv[1] == '-d':
             checker.enable_delete_mode()

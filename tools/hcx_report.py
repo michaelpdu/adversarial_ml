@@ -46,7 +46,7 @@ class HouseCallXReport:
                     # else:
                     #     score = 200
 
-                    if decisio < DECISION_MALICIOUS:
+                    if decision < DECISION_MALICIOUS:
                         info('>> Found bypassed sample: [{}]'.format(line))
 
                     if file_name not in scores.keys():

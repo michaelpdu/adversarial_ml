@@ -1,12 +1,12 @@
 {
     "common": {
-        "UT": false,
         "enable_system_cpu": true,
         "use_cpu_count": 1,
         "depth": 3,
         "free_disk": 4096,
         "samples": "samples/Adversarial_baseline_samples",
-        "generated_dir": "new_generated_samples"
+        "generated_dir": "new_generated_samples",
+        "remove_not_bypassed": true
     }, 
     "dna_manager": {
         "random_count": 10
@@ -20,6 +20,7 @@
         "housecallx": "tools/housecallx"
     },
     "cuckoo": {
-        "enable": true
+        "enable": true,
+        "scan_in_file_proc": false
     }
 }

@@ -35,7 +35,7 @@ class AdversaryWorkflow:
         self.generator_ = PEGeneratorRandom(self.config_)
         self.generator_.load_dna()
 
-    def process_file(self, cpu_index,file_path):
+    def process_file(self, cpu_index, file_path):
         try:
             round = self.config_['pe_generator_random']['round']
             for i in range(round):
@@ -62,7 +62,7 @@ class AdversaryWorkflow:
                 for sample_path, value in scores.items():
                     if value[0] < 2:
                         self.bypassed_count_ += 1
-                        if self.config_['cuckoo']['enable']:
+                        if self.config_['cuckoo']['enable'] and self.config_['cuckoo']['scan_in_file_proc']:
                             try:
                                 print("> Sample: {}, Decision: {}, Current Generated Sample Count: {}".format(sample_path,value[0],self.generate_count_))
                                 info('Find non-malicious sample, decision is {}, submit to cuckoo sandbox: {}'.format(value[0], sample_path))
@@ -73,7 +73,8 @@ class AdversaryWorkflow:
                             except Exception as e:
                                 print(e)
                     else:
-                        os.remove(sample_path)
+                        if self.config_['common']['remove_not_bypassed']:
+                            os.remove(sample_path)
 
             free = check_free_disk('/')
             if free < self.config_['common']['free_disk']:
@@ -98,6 +99,17 @@ class AdversaryWorkflow:
             self.process_file(cpu_index,sample_path)
         else:
             pass
+        
+        #
+        if self.config_['cuckoo']['enable'] and (not self.config_['cuckoo']['scan_in_file_proc']):
+            try:
+                cmd = 'cuckoo submit --timeout 60 {}'.format(os.path.abspath(self.config_['common']['generated_dir']))
+                info('> ' + cmd)
+                print('> ' + cmd)
+                os.system(cmd)
+            except Exception as e:
+                print(e)
+
         return (self.generate_count_, self.bypassed_count_)
 
 def start(cpu_index, config):

@@ -118,33 +118,37 @@ def start(cpu_index, config):
     return adv.process(cpu_index)
 
 def attack(config):
-    results = []
-    def attack_callback(result):
-        results.append(result)
+    try:
+        results = []
+        def attack_callback(result):
+            results.append(result)
 
-    cpu_count = config['common']['use_cpu_count']
-    if config['common']['enable_system_cpu']:
-        cpu_count = multiprocessing.cpu_count()
+        cpu_count = config['common']['use_cpu_count']
+        if config['common']['enable_system_cpu']:
+            cpu_count = multiprocessing.cpu_count()
 
-    # 
-    p = NoDaemonPool(cpu_count)
-    for i in range(cpu_count):
-        p.apply_async(start, args=(i, config), callback=attack_callback)
-    p.close()
-    p.join()
+        # 
+        p = NoDaemonPool(cpu_count)
+        for i in range(cpu_count):
+            p.apply_async(start, args=(i, config), callback=attack_callback)
+        p.close()
+        p.join()
 
-    # show statistic info
-    total_gen = 0
-    total_bypassed = 0
+        # show statistic info
+        total_gen = 0
+        total_bypassed = 0
 
-    for result in results:
-        total_gen += result[0]
-        total_bypassed += result[1]
-    msg = '[*] Total generated: {}, total bypassed: {}'.format(total_gen, total_bypassed)
-    info(msg)
-    print(msg)
-    
-    return (total_gen, total_bypassed)
+        for result in results:
+            total_gen += result[0]
+            total_bypassed += result[1]
+        msg = '[*] Total generated: {}, total bypassed: {}'.format(total_gen, total_bypassed)
+        info(msg)
+        print(msg)
+        
+        return (total_gen, total_bypassed)
+    except Exception as e:
+        print(e)
+
 
 if __name__ == '__main__':
     basicConfig(filename='adversary_ml_{}.log'.format(os.getpid()), format='[%(asctime)s][%(process)d.%(thread)d][%(levelname)s] - %(message)s', level=INFO)

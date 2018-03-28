@@ -21,6 +21,17 @@ class HouseCallXReport:
                     conf_level = int(data[1].strip())
                     file_name = os.path.split(data[3].replace('\\', '/'))[-1]
 
+                # pattern = re.compile(r"([^\[\r\n]+?)\s\[.*?\]\s\[.*\]\s\[(.*?)\]\s\[(.*?)\]\s\[(.*?)\]\s\[(.*?)\]\sin\s(.*)\s\[")
+                # m = pattern.match(line)
+                # if m:
+                #     data = m.groups()
+                #     action = data[0]
+                #     rule = data[1].strip()
+                #     decision = int(data[2])
+                #     conf_level = int(data[3].strip())
+                #     file_name = os.path.split(data[5].replace('\\', '/'))[-1]
+
+
                     # if decision == DECISION_MALICIOUS:
                     #     score = 100 - conf_level
                     # elif decision == DECISION_FEEDBACK:
@@ -35,6 +46,9 @@ class HouseCallXReport:
                     # else:
                     #     score = 200
 
-                    if file_name not in scores.keys() or (file_name in scores.keys() and decision < scores[file_name][0]):
+                    if decisio < DECISION_MALICIOUS:
+                        info('>> Found bypassed sample: [{}]'.format(line))
+
+                    if file_name not in scores.keys():
                         scores[file_name] = (decision, conf_level)
         return scores

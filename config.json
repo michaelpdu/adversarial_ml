@@ -1,6 +1,8 @@
 {
     "common": {
-        "use_cpu_count": true,
+        "UT": false,
+        "enable_system_cpu": true,
+        "use_cpu_count": 1,
         "depth": 3,
         "free_disk": 4096,
         "samples": "samples/Adversarial_baseline_samples",

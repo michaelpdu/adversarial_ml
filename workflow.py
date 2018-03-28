@@ -31,6 +31,7 @@ class AdversaryWorkflow:
         self.config_ = config
         self.index_ = 1
         self.generate_count_ = 0
+        self.bypassed_count_ = 0
         self.generator_ = PEGeneratorRandom(self.config_)
         self.generator_.load_dna()
 
@@ -60,6 +61,7 @@ class AdversaryWorkflow:
                 
                 for sample_path, value in scores.items():
                     if value[0] < 2:
+                        self.bypassed_count_ += 1
                         if self.config_['cuckoo']['enable']:
                             try:
                                 print("> Sample: {}, Decision: {}, Current Generated Sample Count: {}".format(sample_path,value[0],self.generate_count_))
@@ -86,31 +88,51 @@ class AdversaryWorkflow:
                 mal_sample_path = os.path.join(root, name)
                 self.process_file(cpu_index, mal_sample_path)
 
+    def process(self, cpu_index):
+        sample_path = self.config_['common']['samples']
+        if not os.path.exists(sample_path):
+            raise Exception('Cannot find sample path: {}'.format(sample_path))
+        if os.path.isdir(sample_path):
+            self.process_dir(cpu_index,sample_path)
+        elif os.path.isfile(sample_path):
+            self.process_file(cpu_index,sample_path)
+        else:
+            pass
+        return (self.generate_count_, self.bypassed_count_)
+
 def start(cpu_index, config):
     adv = AdversaryWorkflow(config)
     print('> Begin to attack, index = {}'.format(cpu_index))
-    #
-    sample_path = config['common']['samples']
-    if not os.path.exists(sample_path):
-        raise Exception('Cannot find sample path: {}'.format(sample_path))
-    if os.path.isdir(sample_path):
-        adv.process_dir(cpu_index,sample_path)
-    elif os.path.isfile(sample_path):
-        adv.process_file(cpu_index,sample_path)
-    else:
-        pass
+    return adv.process(cpu_index)
 
 def attack(config):
-    if config['common']['use_cpu_count']:
+    results = []
+    def attack_callback(result):
+        results.append(result)
+
+    cpu_count = config['common']['use_cpu_count']
+    if config['common']['enable_system_cpu']:
         cpu_count = multiprocessing.cpu_count()
-    else:
-        cpu_count = 1
+
     # 
     p = NoDaemonPool(cpu_count)
     for i in range(cpu_count):
-        p.apply_async(start, args=(i, config))
+        p.apply_async(start, args=(i, config), callback=attack_callback)
     p.close()
     p.join()
+
+    # show statistic info
+    total_gen = 0
+    total_bypassed = 0
+
+    for result in results:
+        total_gen += result[0]
+        total_bypassed += result[1]
+    msg = '[*] Total generated: {}, total bypassed: {}'.format(total_gen, total_bypassed)
+    info(msg)
+    print(msg)
+    
+    return (total_gen, total_bypassed)
 
 if __name__ == '__main__':
     basicConfig(filename='adversary_ml_{}.log'.format(os.getpid()), format='[%(asctime)s][%(process)d.%(thread)d][%(levelname)s] - %(message)s', level=INFO)

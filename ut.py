@@ -1,5 +1,7 @@
 import os, sys
 import unittest
+from logging import *
+
 sys.path.append(os.path.join(os.path.dirname(__file__),'UT'))
 # from ut_trendx_predictor import TrendXPredictorTestCase
 from ut_dna_manager import DNAManagerTestCase
@@ -40,14 +42,14 @@ def suite():
 
     # AdversaryWorkflow Test Case
     if sys.version_info.major >= 3:
-        suite.addTest(AdversaryWorkflowTestCase("test_process_file"))
-        suite.addTest(AdversaryWorkflowTestCase("test_process_dir"))
-        suite.addTest(AdversaryWorkflowTestCase("test_attack"))
+        suite.addTest(AdversaryWorkflowTestCase("test_process"))
         suite.addTest(AdversaryWorkflowTestCase("test_start"))
+        suite.addTest(AdversaryWorkflowTestCase("test_attack"))
     else:
         pass
 
     return suite
   
-if __name__ == "__main__":  
+if __name__ == "__main__":
+    basicConfig(filename='adversary_ml_ut_{}.log'.format(os.getpid()), format='[%(asctime)s][%(process)d.%(thread)d][%(levelname)s] - %(message)s', level=INFO)
     unittest.main(defaultTest = 'suite')

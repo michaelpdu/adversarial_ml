@@ -4,6 +4,8 @@ Adversary Machine Learning project for experiment
 ## Interface Description
 
 ### automation tool
+
+#### startup.py
 In startup.py, it supports JavaScript and PE adversary process. More detailed information, please refer to following Usage.
 
 ```
@@ -26,7 +28,14 @@ Before PE adversarial process, it's necessary to startup cuckoo sandbox. Please 
 
 For more details, please refer to Cuckoo Sandbox: https://cuckoo.sh/docs/index.html
 
+#### workflow.py
+After refactoring, we add new entry and UT code in automation. New entry is workflow.py:
+```
+Usage:
+    python3 workflow.py
+```
 
+**Anytime before submiting code, please run UT firstly!!!**
 
 ## Utility Tools
 

@@ -10,7 +10,7 @@ class PEGeneratorGA(PEGenerator):
     
     def load_dna(self):
         self.dna_mgr_ = DNAManager()
-        self.dna_mgr_.load_all_dna_files(os.path.join('DNA','DNA_PE','section_add'))
+        self.dna_mgr_.load_dna_files(os.path.join('DNA','DNA_PE','section_add'))
     
     def add_section_random(self):
         dna_list = self.dna_mgr_.get_dna_random(self.config_['dna_manager']['random_count'])

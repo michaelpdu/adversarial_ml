@@ -11,13 +11,13 @@ class PEGeneratorRandom(PEGenerator):
     
     def load_dna(self):
         self.dna_mgr_ = DNAManager()
-        self.dna_mgr_.load_all_dna_files(os.path.join('DNA','DNA_PE','section_add'))
+        self.dna_mgr_.load_dna_files(os.path.join('DNA','DNA_PE','section_add'), DNAManager.DNA_TYPE_SECTION)
 
-    def add_section_random(self):
-        dna_list = self.dna_mgr_.get_dna_random(self.config_['dna_manager']['random_count'])
+    def add_dna_random(self):
+        dna_list_section = self.dna_mgr_.get_dna_random(self.config_['dna_manager']['random_count'], DNAManager.DNA_TYPE_SECTION)
         
         section_add_list = []
-        for dna in dna_list:
+        for dna in dna_list_section:
             lines = dna.strip().split('\n')
             cmd = lines[0]
             if cmd == 'section_add':
@@ -41,7 +41,7 @@ class PEGeneratorRandom(PEGenerator):
     def generate(self, count):
         begin = time.time()
         for i in range(count):
-            self.add_section_random()
+            self.add_dna_random()
         delta = time.time() - begin
         msg = 'Generate {} sample randomly, time delta: {}'.format(count, delta)
         info(msg)

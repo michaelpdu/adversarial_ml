@@ -18,7 +18,7 @@ class TrendXPredictorTestCase(unittest.TestCase):
         adv.set_generated_dir(os.path.join(new_generated_dir, 'JS'))
         helper = GeneticAlgorithmHelper(adv, dna_size)
         helper.set_dna_size(dna_size)
-        adv.load_dna_files(current_dna_dir, start_index, dna_size)
+        adv.load_dna_files_partial(current_dna_dir, start_index, dna_size)
         most_valuable_dna, max_value = helper.evolution()
 
     def test_pe_adversary(self):
@@ -30,5 +30,5 @@ class TrendXPredictorTestCase(unittest.TestCase):
         adv.set_hcx_target_dir(os.path.join(new_generated_dir, 'hcx_target_dir_{}'.format(os.getpid())))
         adv.set_housecallx_path(housecallx_dir)
         helper.set_dna_size(dna_size)
-        adv.load_dna_files(current_dna_dir, start_index, dna_size)
+        adv.load_dna_files_partial(current_dna_dir, start_index, dna_size)
         most_valuable_dna, max_value = helper.evolution()

@@ -1,4 +1,4 @@
-import os, sys
+import os, sys, shutil
 import time, json
 from logging import *
 from multiprocessing import Process, pool
@@ -54,10 +54,14 @@ class AdversaryWorkflow:
                 self.generator_.generate(cur_count)
                 self.generate_count_ += cur_count
                 #
-                trendx = TrendXWrapper(self.config_)
-                hcx_path = os.path.join('tools', 'housecallx', 'hcx{}'.format(cpu_index+1))
-                trendx.set_hcx(hcx_path)
-                scores = trendx.scan_pe_dir(dest_dir)
+                try:
+                    trendx = TrendXWrapper(self.config_)
+                    hcx_path = os.path.join('tools', 'housecallx', 'hcx{}'.format(cpu_index+1))
+                    trendx.set_hcx(hcx_path)
+                    scores = trendx.scan_pe_dir(dest_dir)
+                except Exception as e:
+                    warn('Exception in trendx.scan_pe_dir, {}'.format(e))
+                    shutil.rmtree(dest_dir)
                 
                 for sample_path, value in scores.items():
                     if value[0] < 2:
@@ -71,7 +75,7 @@ class AdversaryWorkflow:
                                 print('> ' + cmd)
                                 os.system(cmd)
                             except Exception as e:
-                                print(e)
+                                warn('Exception in cuckoo sandbox, {}'.format(e))
                     else:
                         if self.config_['common']['remove_not_bypassed']:
                             os.remove(sample_path)
@@ -81,7 +85,7 @@ class AdversaryWorkflow:
                 print('[*] CPU index: {}, No enough disk space, sleep 10 minutes!'.format(cpu_index))
                 time.sleep(600)  # sleep 10m
         except Exception as e:
-            print(e)
+            warn('Exception in workflow.process_file, {}'.format(e))
 
     def process_dir(self, cpu_index, dir_path):
         for root, dirs, files in os.walk(dir_path):
@@ -108,7 +112,7 @@ class AdversaryWorkflow:
                 print('> ' + cmd)
                 os.system(cmd)
             except Exception as e:
-                print(e)
+                warn('Exception in cuckoo sandbox, {}'.format(e))
 
         return (self.generate_count_, self.bypassed_count_)
 
@@ -147,7 +151,7 @@ def attack(config):
         
         return (total_gen, total_bypassed)
     except Exception as e:
-        print(e)
+        warn('Exception in attack, {}'.format(e))
 
 
 if __name__ == '__main__':

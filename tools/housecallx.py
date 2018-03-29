@@ -3,6 +3,7 @@ import sys
 import time
 from logging import *
 from hcx_report import *
+import re
 
 def scan_by_housecallx(housecallx_path, sample_path):
     owd = os.getcwd()
@@ -22,9 +23,13 @@ def scan_by_housecallx(housecallx_path, sample_path):
     # find *_Report.log
     new_report_file = ''
     for filename in os.listdir('.'):
-        if '_Report.log' in filename:
+        pattern=re.compile(r"\d+_Report.log")
+        m=pattern.match(filename)
+        if m:
+        #if '_Report.log' in filename:
             new_report_file = filename
             break
+
     if not os.path.exists(new_report_file):
         print('>> Cannot find HouseCallX report file, ' + new_report_file)
         exit(-1)

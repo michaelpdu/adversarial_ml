@@ -9,11 +9,11 @@
         "remove_not_bypassed": true
     }, 
     "dna_manager": {
-        "random_count": 10
+        "random_count": 16
     },
     "pe_generator_random": {
-        "count": 10,
-        "round": 5
+        "count": 20,
+        "round": 10
     },
     "trendx": {
         "scan_type": 2,

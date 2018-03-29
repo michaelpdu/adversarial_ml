@@ -40,10 +40,11 @@ class AdversaryWorkflow:
             round = self.config_['pe_generator_random']['round']
             for i in range(round):
                 print('CPU index: {}, Current round is {}'.format(cpu_index, i + 1))
-
                 print('>> Attack {}'.format(file_path))
+
                 #
-                dest_dir = os.path.abspath(os.path.join(self.config_['common']['generated_dir'], str(os.getpid()), str(i)))
+                dir_path, filename = os.path.split(file_path)
+                dest_dir = os.path.abspath(os.path.join(self.config_['common']['generated_dir'], str(os.getpid()), filename, str(i)))
                 if not os.path.exists(dest_dir):
                     os.makedirs(dest_dir)
 

@@ -1,0 +1,11 @@
+rule Baseline
+{
+    strings:
+        $a = "The executable contains unknown PE section names indicative of a packer (could be a false positive)"
+        $b = "Performs some HTTP requests"
+        $c = "Looks for the Windows Idle Time to determine the uptime"
+        $d = "Generates some ICMP traffic"
+
+    condition:
+        $a and $b and $c and $d
+}

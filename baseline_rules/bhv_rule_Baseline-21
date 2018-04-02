@@ -1,0 +1,16 @@
+rule Baseline-21
+{
+    strings:
+        $a = Performs some HTTP requests
+        $b = Foreign language identified in PE resource
+        $c = Creates a service
+        $d = Creates a suspicious process
+        $e = A process created a hidden window
+        $f = The binary likely contains encrypted or compressed data indicative of a packer
+        $g = The executable is compressed using UPX
+        $h = Installs itself for autorun at Windows startup
+        $i = Connects to IP addresses that are no longer responding to requests (legitimate services will remain up-and-running  usually)
+
+    condition:
+        all of them
+}

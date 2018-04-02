@@ -1,0 +1,20 @@
+rule Baseline-22
+{
+    strings:
+        $a = This executable has a PDB path
+        $b = One or more potentially interesting buffers were extracted, these generally contain injected code, configuration data, etc.
+        $c = Connects to a Dynamic DNS Domain
+        $d = Allocates read-write-execute memory (usually to unpack itself)
+        $e = Creates a suspicious process
+        $f = Checks adapter addresses which can be used to detect virtual network interfaces
+        $g = The binary likely contains encrypted or compressed data indicative of a packer
+        $h = Expresses interest in specific running processes
+        $i = Uses Windows utilities for basic Windows functionality
+        $j = Installs itself for autorun at Windows startup
+        $k = One or more martian processes was created
+        $l = The process excel.exe wrote an executable file to disk
+        $m = Executed a process and injected code into it, probably while unpacking
+
+    condition:
+        all of them
+}

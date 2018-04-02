@@ -1,0 +1,11 @@
+rule Baseline-13
+{
+    strings:
+        $a = Allocates read-write-execute memory (usually to unpack itself)
+        $b = Installs itself for autorun at Windows startup
+        $c = Creates a windows hook that monitors keyboard input (keylogger)
+        $d = Connects to an IP address that is no longer responding to requests (legitimate services will remain up-and-running usually)
+
+    condition:
+        all of them
+}

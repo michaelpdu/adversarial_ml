@@ -1,0 +1,15 @@
+rule Baseline-09
+{
+    strings:
+        $a = Checks amount of memory in system, this can be used to detect virtual machines that have a low amount of memory available
+        $b = One or more potentially interesting buffers were extracted, these generally contain injected code, configuration data, etc.
+        $c = Allocates read-write-execute memory (usually to unpack itself)
+        $d = The binary likely contains encrypted or compressed data indicative of a packer
+        $e = Expresses interest in specific running processes
+        $f = Installs itself for autorun at Windows startup
+        $g = Connects to an IP address that is no longer responding to requests (legitimate services will remain up-and-running usually)
+        $h = Executed a process and injected code into it, probably while unpacking
+
+    condition:
+        all of them
+}

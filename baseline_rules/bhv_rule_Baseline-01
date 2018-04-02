@@ -1,0 +1,29 @@
+rule Baseline-01
+{
+    strings:
+        $a = Queries for the computername
+        $b = Uses Windows APIs to generate a cryptographic key
+        $c = Tries to locate where the browsers are installed
+        $d = Checks amount of memory in system, this can be used to detect virtual machines that have a low amount of memory available
+        $e = The executable contains unknown PE section names indicative of a packer (could be a false positive)
+        $f = Performs some HTTP requests
+        $g = Resolves a suspicious Top Level Domain (TLD)
+        $h = Queries the disk size which could be used to detect virtual machine with small fixed size or dynamic allocation
+        $i = Steals private information from local Internet browsers
+        $j = Looks up the external IP address
+        $k = Checks adapter addresses which can be used to detect virtual network interfaces
+        $l = The binary likely contains encrypted or compressed data indicative of a packer
+        $m = Connects to smtp.mail.ru, possibly for spamming or data exfiltration
+        $n = Checks the CPU name from registry, possibly for anti-virtualization
+        $o = Harvests credentials from local FTP client softwares
+        $p = Harvests information related to installed instant messenger clients
+        $q = Collects information about installed applications
+        $r = Harvests credentials from local email clients
+        $s = Queried details from the computer were then used in a network or crypto API call indicative of command and control communications/preperations
+        $t = A process performed obfuscation on information about the computer or sent it to a remote location indicative of CnC Traffic/Preperations.
+        $u = Creates known UFR Stealer files, registry keys and/or mutexes
+        $v = Connects to an IP address that is no longer responding to requests (legitimate services will remain up-and-running usually)
+
+    condition:
+        all of them
+}

@@ -1,0 +1,16 @@
+rule Baseline-20
+{
+    strings:
+        $a = Performs some HTTP requests
+        $b = Allocates read-write-execute memory (usually to unpack itself)
+        $c = Steals private information from local Internet browsers
+        $d = Potentially malicious URLs were found in the process memory dump
+        $e = Harvests credentials from local FTP client softwares
+        $f = Collects information about installed applications
+        $g = Harvests credentials from local email clients
+        $h = Found IP Address URLs in process memory dump potentially indicative of C2 as normally domain names would be used
+        $i = Executed a process and injected code into it, probably while unpacking
+
+    condition:
+        all of them
+}

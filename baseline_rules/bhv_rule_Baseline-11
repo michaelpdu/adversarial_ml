@@ -1,0 +1,14 @@
+rule Baseline-11
+{
+    strings:
+        $a = The executable uses a known packer
+        $b = Performs some HTTP requests
+        $c = Creates a service
+        $d = A process created a hidden window
+        $e = Checks adapter addresses which can be used to detect virtual network interfaces
+        $f = The binary likely contains encrypted or compressed data indicative of a packer
+        $g = Installs itself for autorun at Windows startup
+
+    condition:
+        all of them
+}

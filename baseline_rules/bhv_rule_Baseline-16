@@ -1,0 +1,13 @@
+rule Baseline-16
+{
+    strings:
+        $a = Checks amount of memory in system, this can be used to detect virtual machines that have a low amount of memory available
+        $b = The executable uses a known packer
+        $c = Performs some HTTP requests
+        $d = Foreign language identified in PE resource
+        $e = Looks for the Windows Idle Time to determine the uptime
+        $f = Connects to an IP address that is no longer responding to requests (legitimate services will remain up-and-running usually)
+
+    condition:
+        all of them
+}

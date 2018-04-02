@@ -1,0 +1,19 @@
+rule Baseline-14
+{
+    strings:
+        $a = Queries for the computername
+        $b = Checks amount of memory in system, this can be used to detect virtual machines that have a low amount of memory available
+        $c = The executable uses a known packer
+        $d = One or more processes crashed
+        $e = One or more potentially interesting buffers were extracted, these generally contain injected code, configuration data, etc.
+        $f = Performs some HTTP requests
+        $g = Resolves a suspicious Top Level Domain (TLD)
+        $h = Allocates read-write-execute memory (usually to unpack itself)
+        $i = A process created a hidden window
+        $j = The binary likely contains encrypted or compressed data indicative of a packer
+        $k = Installs itself for autorun at Windows startup
+        $l = Executed a process and injected code into it, probably while unpacking
+
+    condition:
+        all of them
+}

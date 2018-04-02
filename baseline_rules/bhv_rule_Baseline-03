@@ -1,0 +1,10 @@
+rule Baseline-03
+{
+    strings:
+        $a = The executable contains unknown PE section names indicative of a packer (could be a false positive)
+        $b = Performs some HTTP requests
+        $c = Drops a binary and executes it
+
+    condition:
+        all of them
+}

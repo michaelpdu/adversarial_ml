@@ -1,0 +1,23 @@
+rule Baseline-10
+{
+    strings:
+        $a = Queries for the computername
+        $b = Checks amount of memory in system, this can be used to detect virtual machines that have a low amount of memory available
+        $c = One or more processes crashed
+        $d = One or more potentially interesting buffers were extracted, these generally contain injected code, configuration data, etc.
+        $e = Performs some HTTP requests
+        $f = Allocates read-write-execute memory (usually to unpack itself)
+        $g = Checks whether any human activity is being performed by constantly checking whether the foreground window changed
+        $h = Steals private information from local Internet browsers
+        $i = The binary likely contains encrypted or compressed data indicative of a packer
+        $j = Potentially malicious URLs were found in the process memory dump
+        $k = One or more of the buffers contains an embedded PE file
+        $l = Installs itself for autorun at Windows startup
+        $m = Harvests information related to installed instant messenger clients
+        $n = Creates a windows hook that monitors keyboard input (keylogger)
+        $o = Harvests credentials from local email clients
+        $p = Executed a process and injected code into it, probably while unpacking
+
+    condition:
+        all of them
+}

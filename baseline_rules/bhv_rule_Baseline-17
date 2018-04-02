@@ -1,0 +1,20 @@
+rule Baseline-17
+{
+    strings:
+        $a = The executable uses a known packer
+        $b = Performs some HTTP requests
+        $c = Allocates read-write-execute memory (usually to unpack itself)
+        $d = Foreign language identified in PE resource
+        $e = Creates a service
+        $f = Creates a suspicious process
+        $g = A process created a hidden window
+        $h = The binary likely contains encrypted or compressed data indicative of a packer
+        $i = The executable is compressed using UPX
+        $j = Installs itself for autorun at Windows startup
+        $k = Creates known Hupigon files, registry keys and/or mutexes
+        $l = Creates known Nitol/ServStart files, registry keys and/or mutexes
+        $m = Connects to an IP address that is no longer responding to requests (legitimate services will remain up-and-running usually)
+
+    condition:
+        all of them
+}

@@ -9,7 +9,8 @@
         "remove_not_bypassed": true
     }, 
     "dna_manager": {
-        "random_count": 16
+        "random_section_count": 16,
+        "random_imports_count": 16
     },
     "pe_generator_random": {
         "count": 20,

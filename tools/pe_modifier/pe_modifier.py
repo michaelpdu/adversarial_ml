@@ -25,8 +25,10 @@ class PEModifier:
     def get_hash_sha1(self):
         return hashlib.sha1(self.bytez).hexdigest()
 
-    def modify(self, dna):
+    def revert(self):
         self.bytez = self.backup_bytez
+
+    def modify(self, dna):
         self.bytez = bytes(modify(self.bytez, dna))
 
 help_msg = """

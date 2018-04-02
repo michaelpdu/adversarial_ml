@@ -112,6 +112,19 @@ class MalwareManipulator(object):
             if not funcname in names:
                 lib.add_entry(funcname)
 
+        # # modify section name
+        # for section in binary.sections:
+        #     new_section_name = '.' + "".join(chr(random.randrange(ord('a'), ord('z'))) for _ in range(4))
+        #     section.name = new_section_name
+
+        # # add funcname in first lib
+        # if len(binary.imports) > 1:
+        #     lib = binary.imports[0]
+        #     for libname, funcname in name_pair_list:
+        #         names = set([e.name for e in lib.entries])
+        #         if not funcname in names:
+        #             lib.add_entry(funcname)
+
         self.bytez = self.__binary_to_bytez(binary,imports=True)
 
         return self.bytez
@@ -134,7 +147,7 @@ class MalwareManipulator(object):
     #   # reorder exports
     #   pass
 
-    def section_rename(self, seed=None):
+    def section_rename_random(self, seed=None):
         # rename a random section
         random.seed(seed)
         binary = lief.PE.parse(self.bytez)

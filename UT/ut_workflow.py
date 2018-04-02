@@ -31,14 +31,14 @@ class AdversaryWorkflowTestCase(unittest.TestCase):
         sample_count = len(os.listdir(config['common']['samples']))
         assert(generate_count == 5*sample_count)
 
-        shutil.rmtree(config['common']['generated_dir'])
-        config['common']['remove_not_bypassed'] = False
-        config['common']['samples'] = "UT/staff/pe/malicious/malicious_pe.ex_"
-        config['cuckoo']['enable'] = True
-        config['common']['use_cpu_count'] = 1
-        config['pe_generator_random']['count'] = 5
-        config['pe_generator_random']['round'] = 2
-        generate_count, bypassed_count = adv.process(0)
+        # shutil.rmtree(config['common']['generated_dir'])
+        # config['common']['remove_not_bypassed'] = False
+        # config['common']['samples'] = "UT/staff/pe/malicious/malicious_pe.ex_"
+        # config['cuckoo']['enable'] = False
+        # config['common']['use_cpu_count'] = 1
+        # config['pe_generator_random']['count'] = 5
+        # config['pe_generator_random']['round'] = 2
+        # generate_count, bypassed_count = adv.process(0)
 
     def test_start(self):
         print('>> AdversaryWorkflowTestCase.test_start')

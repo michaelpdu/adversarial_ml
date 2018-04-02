@@ -3,7 +3,7 @@ import os, sys
 
 def submit_file(file_path):
     print("> submit "+file_path)
-    os.system('cuckoo submit --timeout 60 {}'.format(file_path))
+    os.system('cuckoo submit --timeout 30 {}'.format(file_path))
 
 def submit_dir(dir_path):
     for root, dirs, files in os.walk(dir_path):

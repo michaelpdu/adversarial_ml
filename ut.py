@@ -37,6 +37,7 @@ def suite():
     # PEGeneratorRandom Test Cases
     if sys.version_info.major >= 3:
         suite.addTest(PEGeneratorRandomTestCase("test_generate"))
+        # suite.addTest(PEGeneratorRandomTestCase("test_generate_imports"))
     else:
         pass
 

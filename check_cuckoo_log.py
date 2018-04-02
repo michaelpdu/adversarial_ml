@@ -25,11 +25,22 @@ class CuckooLogChecker:
 
     def count_baseline_sample(self, target_path):
         dir_path, filename = os.path.split(target_path)
-        baseline_name, hash_value = filename.split('_')
+        baseline_name = filename.split('_')[0]
         if baseline_name in self.baseline_info.keys():
             self.baseline_info[baseline_name] += 1
         else:
             self.baseline_info[baseline_name] = 1
+
+    def extract_bhv(self, report_map, filename):
+        descriptions = ''
+        signatures = report_map['signatures']
+        for sig in signatures:
+            description = sig['description']
+            descriptions += '%s\n' % description
+        if not os.path.exists('signatures'):
+            os.makedirs('signatures')
+        with open(os.path.join('signatures', filename), 'w+') as f:
+            f.write(descriptions)
 
     def check_file(self, file_path):
         try:
@@ -49,8 +60,8 @@ class CuckooLogChecker:
             with open(task_path, 'r') as fh_task:
                 task = json.load(fh_task)
                 target = task['target']
-            dir_path, filename = os.path.split(target)
-            baseline_name, hash_value = filename.split('_')
+            filename = os.path.split(target)[1]
+            baseline_name = filename.split('_')[0]
             rule_dir = 'baseline_rules/'
             rule_name = 'bhv_rule_%s' % (baseline_name)
             rule = yara.compile(rule_dir + rule_name)
@@ -59,6 +70,9 @@ class CuckooLogChecker:
                 isMatch = 'BHVmatch'
             else:
                 isMatch = 'BHVnotmatch'
+            with open(file_path, 'r') as f:
+                reports = json.load(f)
+                self.extract_bhv(reports, filename)
             if score < self.threshold_score:
                 if self.delete_mode:
                     if os.path.exists(target):
@@ -112,7 +126,7 @@ if __name__ == '__main__':
                 for info in info_list:
                     # score, duration, task_path, target
                     # fh.write('{} {} {} {}\n'.format(info[0], info[1], info[2], info[3]))
-                    fh.write('{} {}\n'.format(info[3], info[4]))
+                    fh.write('{} {} {}\n'.format(info[3], info[0], info[4]))
             checker.show_statistics()
         elif sys.argv[1] == '-d':
             checker.enable_delete_mode()

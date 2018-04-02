@@ -6,7 +6,7 @@ class RuleGenerator:
 
     def __init__(self,baseline_name):
         self.rule_file = 'bhv_rule_%s' % (baseline_name)
-        self.rule_name = baseline_name
+        self.rule_name = 'Baseline%s' % (baseline_name.split('-')[1])
         self.rule_number = 0
 
     def generateRuleFromReport(self, report_map):
@@ -16,8 +16,8 @@ class RuleGenerator:
         signatures = report_map['signatures']
         for sig in signatures:
             description = sig['description']
-            singleRule = '        $' + chr(self.rule_number + ord('a')) + ' = ' + description
-            rules = rules + '%s\n' % (singleRule)
+            singleRule = '        $' + chr(self.rule_number + ord('a')) + ' = "' + description
+            rules = rules + '%s"\n' % (singleRule)
             self.rule_number += 1
         rule_dir = os.getcwd() + '/baseline_rules'
         if not os.path.exists(rule_dir):

@@ -1,0 +1,15 @@
+rule Baseline-06
+{
+    strings:
+        $a = The executable uses a known packer
+        $b = Foreign language identified in PE resource
+        $c = Creates a service
+        $d = Creates a suspicious process
+        $e = The binary likely contains encrypted or compressed data indicative of a packer
+        $f = The executable is compressed using UPX
+        $g = Installs itself for autorun at Windows startup
+        $h = Creates known Nitol/ServStart files, registry keys and/or mutexes
+
+    condition:
+        all of them
+}

@@ -1,0 +1,8 @@
+rule Baseline-07
+{
+    strings:
+        $a = Looks for the Windows Idle Time to determine the uptime
+
+    condition:
+        all of them
+}

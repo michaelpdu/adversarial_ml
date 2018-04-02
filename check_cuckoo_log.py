@@ -1,4 +1,5 @@
 import os, sys, json, shutil
+import yara
 
 class CuckooLogChecker:
     """"""
@@ -40,6 +41,7 @@ class CuckooLogChecker:
             score = 0
             duration = 0
             target = ''
+            isMatch = ''
             with open(file_path, 'r') as fh:
                 reports = json.load(fh)
                 score = reports['info']['score']
@@ -47,6 +49,16 @@ class CuckooLogChecker:
             with open(task_path, 'r') as fh_task:
                 task = json.load(fh_task)
                 target = task['target']
+            dir_path, filename = os.path.split(target)
+            baseline_name, hash_value = filename.split('_')
+            rule_dir = 'baseline_rules/'
+            rule_name = 'bhv_rule_%s' % (baseline_name)
+            rule = yara.compile(rule_dir + rule_name)
+            matches = rule.match(file_path)
+            if matches:
+                isMatch = 'BHVmatch'
+            else:
+                isMatch = 'BHVnotmatch'
             if score < self.threshold_score:
                 if self.delete_mode:
                     if os.path.exists(target):
@@ -58,7 +70,7 @@ class CuckooLogChecker:
                 self.count_ge += 1
                 self.count_baseline_sample(target)
             self.total_count += 1
-            return (score, duration, task_path, target)
+            return (score, duration, task_path, target, isMatch)
         except Exception as e:
             print(e)
             return None
@@ -100,7 +112,7 @@ if __name__ == '__main__':
                 for info in info_list:
                     # score, duration, task_path, target
                     # fh.write('{} {} {} {}\n'.format(info[0], info[1], info[2], info[3]))
-                    fh.write('{}\n'.format(info[3]))
+                    fh.write('{} {}\n'.format(info[3], info[4]))
             checker.show_statistics()
         elif sys.argv[1] == '-d':
             checker.enable_delete_mode()

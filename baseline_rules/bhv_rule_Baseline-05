@@ -1,0 +1,19 @@
+rule Baseline-05
+{
+    strings:
+        $a = This executable has a PDB path
+        $b = Checks amount of memory in system, this can be used to detect virtual machines that have a low amount of memory available
+        $c = One or more potentially interesting buffers were extracted, these generally contain injected code, configuration data, etc.
+        $d = Connects to a Dynamic DNS Domain
+        $e = Allocates read-write-execute memory (usually to unpack itself)
+        $f = Creates (office) documents on the filesystem
+        $g = Drops a binary and executes it
+        $h = One or more of the buffers contains an embedded PE file
+        $i = Installs itself for autorun at Windows startup
+        $j = Deletes its original binary from disk
+        $k = Connects to an IP address that is no longer responding to requests (legitimate services will remain up-and-running usually)
+        $l = Executed a process and injected code into it, probably while unpacking
+
+    condition:
+        all of them
+}

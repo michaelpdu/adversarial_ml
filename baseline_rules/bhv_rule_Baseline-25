@@ -1,0 +1,12 @@
+rule Baseline-25
+{
+    strings:
+        $a = Queries for the computername
+        $b = The executable contains unknown PE section names indicative of a packer (could be a false positive)
+        $c = One or more processes crashed
+        $d = Allocates read-write-execute memory (usually to unpack itself)
+        $e = The binary likely contains encrypted or compressed data indicative of a packer
+
+    condition:
+        all of them
+}

@@ -1,0 +1,20 @@
+rule Baseline-04
+{
+    strings:
+        $a = Queries for the computername
+        $b = Uses Windows APIs to generate a cryptographic key
+        $c = Checks amount of memory in system, this can be used to detect virtual machines that have a low amount of memory available
+        $d = One or more processes crashed
+        $e = One or more potentially interesting buffers were extracted, these generally contain injected code, configuration data, etc.
+        $f = Performs some HTTP requests
+        $g = Allocates read-write-execute memory (usually to unpack itself)
+        $h = The binary likely contains encrypted or compressed data indicative of a packer
+        $i = The executable is compressed using UPX
+        $j = Attempts to identify installed AV products by installation directory
+        $k = A process attempted to delay the analysis task.
+        $l = Creates a windows hook that monitors keyboard input (keylogger)
+        $m = Attempts to remove evidence of file being downloaded from the Internet
+
+    condition:
+        all of them
+}

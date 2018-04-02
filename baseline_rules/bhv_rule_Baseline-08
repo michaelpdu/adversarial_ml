@@ -1,0 +1,11 @@
+rule Baseline-08
+{
+    strings:
+        $a = Checks amount of memory in system, this can be used to detect virtual machines that have a low amount of memory available
+        $b = One or more processes crashed
+        $c = Allocates read-write-execute memory (usually to unpack itself)
+        $d = The binary likely contains encrypted or compressed data indicative of a packer
+
+    condition:
+        all of them
+}

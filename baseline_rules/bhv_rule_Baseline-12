@@ -1,0 +1,21 @@
+rule Baseline-12
+{
+    strings:
+        $a = This executable has a PDB path
+        $b = Checks amount of memory in system, this can be used to detect virtual machines that have a low amount of memory available
+        $c = One or more potentially interesting buffers were extracted, these generally contain injected code, configuration data, etc.
+        $d = Connects to a Dynamic DNS Domain
+        $e = Performs some HTTP requests
+        $f = Allocates read-write-execute memory (usually to unpack itself)
+        $g = Creates (office) documents on the filesystem
+        $h = Drops a binary and executes it
+        $i = One or more of the buffers contains an embedded PE file
+        $j = Installs itself for autorun at Windows startup
+        $k = Deletes its original binary from disk
+        $l = Creates known Fynloski/DarkComet files, registry keys and/or mutexes
+        $m = Creates a windows hook that monitors keyboard input (keylogger)
+        $n = Executed a process and injected code into it, probably while unpacking
+
+    condition:
+        all of them
+}

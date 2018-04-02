@@ -1,0 +1,16 @@
+rule Baseline-15
+{
+    strings:
+        $a = Checks amount of memory in system, this can be used to detect virtual machines that have a low amount of memory available
+        $b = The executable contains unknown PE section names indicative of a packer (could be a false positive)
+        $c = The executable uses a known packer
+        $d = Connects to a Dynamic DNS Domain
+        $e = Allocates read-write-execute memory (usually to unpack itself)
+        $f = Attempts to identify installed AV products by installation directory
+        $g = Installs itself for autorun at Windows startup
+        $h = Creates known Fynloski/DarkComet files, registry keys and/or mutexes
+        $i = Creates a windows hook that monitors keyboard input (keylogger)
+
+    condition:
+        all of them
+}

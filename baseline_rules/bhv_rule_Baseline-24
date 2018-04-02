@@ -1,0 +1,18 @@
+rule Baseline-24
+{
+    strings:
+        $a = The executable uses a known packer
+        $b = Performs some HTTP requests
+        $c = Resolves a suspicious Top Level Domain (TLD)
+        $d = Foreign language identified in PE resource
+        $e = Creates a service
+        $f = Drops a binary and executes it
+        $g = A process created a hidden window
+        $h = Expresses interest in specific running processes
+        $i = Installs itself for autorun at Windows startup
+        $j = Deletes its original binary from disk
+        $k = The process wscript.exe wrote an executable file to disk
+
+    condition:
+        all of them
+}

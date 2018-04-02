@@ -55,9 +55,10 @@ class CuckooLogChecker:
             rule_name = 'bhv_rule_%s' % (baseline_name)
             rule = yara.compile(rule_dir + rule_name)
             matches = rule.match(file_path)
-            for m in matches['main']:
-                if m['matches']:
-                    isMatch = 'BHVmatch'
+            if matches:
+                isMatch = 'BHVmatch'
+            else:
+                isMatch = 'BHVnotmatch'
             if score < self.threshold_score:
                 if self.delete_mode:
                     if os.path.exists(target):

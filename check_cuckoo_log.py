@@ -112,7 +112,8 @@ class CuckooLogChecker:
             with open(file_path, 'r') as f:
                 reports = json.load(f)
                 self.extract_bhv(reports, filename)
-            self.count_total_baseline(baseline_name)
+            if 1 == len(filename.split('_')):
+                self.count_total_baseline(baseline_name)
             if score < self.threshold_score:
                 if self.delete_mode:
                     if os.path.exists(target):

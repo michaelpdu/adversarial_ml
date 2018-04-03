@@ -10,6 +10,13 @@ class CuckooLogChecker:
         self.count_lt = 0
         self.count_ge = 0
         self.baseline_info = {}
+        self.matched_baseline = {}
+        self.count_match = 0
+        self.count_unmatch = 0
+        self.matched_info = []
+        self.baseline = []
+        self.c_matches_base = 0
+        self.c_matches_gen = 0
 
     def enable_delete_mode(self):
         self.delete_mode = True
@@ -22,6 +29,18 @@ class CuckooLogChecker:
         print('******************************************')
         for key,value in self.baseline_info.items():
             print('{}:{}'.format(key,value))
+        print('\n------------- behavior match result -------------\n')
+        print('******************************************')
+        print('Total Count: {}'.format(self.total_count))
+        print('Count of `behavior unmatch`: {}'.format(self.count_unmatch))
+        print('Count of `behavior match`: {}'.format(self.count_match))
+        print('Count of `Baseline samples` in match: {}'.format(self.c_matches_base))
+        print('Count of `new generated samples` in match: {}'.format(self.c_matches_gen))
+        print('Total Baseline: {}'.format(len(self.baseline)))
+        print('******************************************')
+        for key,value in self.matched_baseline.items():
+            print('{}:{}'.format(key,value))
+        print('See matched_file_list.txt')
 
     def count_baseline_sample(self, target_path):
         dir_path, filename = os.path.split(target_path)
@@ -31,6 +50,18 @@ class CuckooLogChecker:
         else:
             self.baseline_info[baseline_name] = 1
 
+    def count_matched_sample(self, target_path):
+        dir_path, filename = os.path.split(target_path)
+        baseline_name = filename.split('_')[0]
+        if baseline_name in self.matched_baseline.keys():
+            self.matched_baseline[baseline_name] += 1
+        else:
+            self.matched_baseline[baseline_name] = 1
+
+    def count_total_baseline(self, baseline_name):
+        if baseline_name not in self.baseline:
+            self.baseline.append(baseline_name)
+
     def extract_bhv(self, report_map, filename):
         descriptions = ''
         signatures = report_map['signatures']
@@ -39,7 +70,7 @@ class CuckooLogChecker:
             descriptions += '%s\n' % description
         if not os.path.exists('signatures'):
             os.makedirs('signatures')
-        with open(os.path.join('signatures', filename), 'w+') as f:
+        with open(os.path.join('signatures', filename), 'w') as f:
             f.write(descriptions)
 
     def check_file(self, file_path):
@@ -68,11 +99,20 @@ class CuckooLogChecker:
             matches = rule.match(file_path)
             if matches:
                 isMatch = 'BHVmatch'
+                self.count_matched_sample(target)
+                self.count_match += 1
+                self.matched_info.append(filename)
+                if 1 == len(filename.split('_')):
+                    self.c_matches_base += 1
+                else:
+                    self.c_matches_gen += 1
             else:
                 isMatch = 'BHVnotmatch'
+                self.count_unmatch += 1
             with open(file_path, 'r') as f:
                 reports = json.load(f)
                 self.extract_bhv(reports, filename)
+            self.count_total_baseline(baseline_name)
             if score < self.threshold_score:
                 if self.delete_mode:
                     if os.path.exists(target):
@@ -127,6 +167,9 @@ if __name__ == '__main__':
                     # score, duration, task_path, target
                     # fh.write('{} {} {} {}\n'.format(info[0], info[1], info[2], info[3]))
                     fh.write('{} {} {}\n'.format(info[3], info[0], info[4]))
+            with open('matched_file_list.txt', 'w') as ft:
+                for file_path in checker.matched_info:
+                    ft.write('{}\n'.format(file_path))
             checker.show_statistics()
         elif sys.argv[1] == '-d':
             checker.enable_delete_mode()

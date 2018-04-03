@@ -118,10 +118,13 @@ class AdversaryWorkflow:
         return (self.generate_count_, self.bypassed_count_)
 
 def start(cpu_index, config):
-    adv = AdversaryWorkflow(config)
-    print('> Begin to attack, index = {}'.format(cpu_index))
-    return adv.process(cpu_index)
-
+    try:
+        adv = AdversaryWorkflow(config)
+        print('> Begin to attack, index = {}'.format(cpu_index))
+        return adv.process(cpu_index)
+    except Exception as e:
+        print(e)
+        return None
 def attack(config):
     try:
         results = []
@@ -144,8 +147,9 @@ def attack(config):
         total_bypassed = 0
 
         for result in results:
-            total_gen += result[0]
-            total_bypassed += result[1]
+            if result is not None:
+                total_gen += result[0]
+                total_bypassed += result[1]
         msg = '[*] Total generated: {}, total bypassed: {}'.format(total_gen, total_bypassed)
         info(msg)
         print(msg)

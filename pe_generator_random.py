@@ -14,6 +14,15 @@ class PEGeneratorRandom(PEGenerator):
         self.dna_mgr_.load_dna_files(os.path.join('DNA','DNA_PE','section_add'), DNAManager.DNA_TYPE_SECTION)
         self.dna_mgr_.load_dna_files(os.path.join('DNA','DNA_PE','imports_append'), DNAManager.DNA_TYPE_IMPORTF)
 
+    def generate(self, count):
+        begin = time.time()
+        for i in range(count):
+            self.add_dna_random()
+        delta = time.time() - begin
+        msg = 'Generate {} sample randomly, time delta: {}'.format(count, delta)
+        info(msg)
+        print(msg)
+
     def add_dna_random(self):
         self.modifier_.revert()
         dna_list_section = self.dna_mgr_.get_dna_random(self.config_['dna_manager']['random_section_count'], DNAManager.DNA_TYPE_SECTION)
@@ -55,12 +64,3 @@ class PEGeneratorRandom(PEGenerator):
         if not os.path.exists(new_pe_path):
             self.modifier_.save_pe(new_pe_path)
         return new_pe_path
-
-    def generate(self, count):
-        begin = time.time()
-        for i in range(count):
-            self.add_dna_random()
-        delta = time.time() - begin
-        msg = 'Generate {} sample randomly, time delta: {}'.format(count, delta)
-        info(msg)
-        print(msg)

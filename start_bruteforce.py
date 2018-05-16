@@ -125,6 +125,7 @@ def start(cpu_index, config):
     except Exception as e:
         print(e)
         return None
+
 def attack(config):
     try:
         results = []

@@ -2,7 +2,6 @@
     "common": {
         "enable_system_cpu": true,
         "use_cpu_count": 1,
-        "depth": 3,
         "free_disk": 4096,
         "samples": "samples/Adversarial_baseline_samples",
         "generated_dir": "new_generated_samples",
@@ -11,6 +10,9 @@
     "dna_manager": {
         "random_section_count": 16,
         "random_imports_count": 16
+    },
+    "pe_generator_ga": {
+        
     },
     "pe_generator_random": {
         "count": 20,
@@ -21,7 +23,7 @@
         "housecallx": "tools/housecallx"
     },
     "cuckoo": {
-        "enable": true,
+        "enable": false,
         "scan_in_file_proc": false
     }
 }

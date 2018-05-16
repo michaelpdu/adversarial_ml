@@ -1,6 +1,16 @@
 # Adversary-Machine-Learning
 Adversary Machine Learning project for experiment
 
+## Install packages
+
+```
+sudo pip3 install numpy
+sudo pip3 install xgboost
+sudo pip3 install lief
+```
+
+Install Wine, you could refer to [https://wiki.winehq.org/Ubuntu](https://wiki.winehq.org/Ubuntu)
+
 ## Interface Description
 
 ### automation tool

@@ -43,8 +43,15 @@ def process_one_group(type, mal_sample_file, current_dna_dir, new_dna_dir, start
             adv.set_generated_dir(os.path.join(new_generated_dir, 'JS'))
 
         # prepare algrithm helper and set DNA size in each group
-        helper = GeneticAlgorithmHelper(adv, dna_size)
-        helper.set_dna_size(dna_size)
+        config = {  "dna_size": dna_size,
+                    "population_size": 100,
+                    "mating_prob": 0.8,
+                    "mutation_prob": 0.03,
+                    "generations": 500 }
+        helper = GeneticAlgorithmHelper(config)
+        helper.set_adv(adv)
+        helper.set_callback(adv.calc_trendx_prediction)
+
         # prepare DNA snippet
         adv.load_dna_files(current_dna_dir, start_index, dna_size)
         # evolution

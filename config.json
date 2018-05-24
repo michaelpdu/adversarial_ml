@@ -3,16 +3,22 @@
         "enable_system_cpu": true,
         "use_cpu_count": 1,
         "free_disk": 4096,
-        "samples": "samples/Adversarial_baseline_samples",
+        "samples": "samples/coinminer",
         "generated_dir": "new_generated_samples",
-        "remove_not_bypassed": true
+        "remove_not_bypassed": false,
+        "__algorithm_comments__": "ga|bruteforce",
+        "algorithm": "bruteforce"
     }, 
+    "genetic_algorithm" : {
+        "dna_size": 32,
+        "population_size": 100,
+        "mating_prob": 0.8,
+        "mutation_prob": 0.03,
+        "generations": 500
+    },
     "dna_manager": {
         "random_section_count": 16,
         "random_imports_count": 16
-    },
-    "pe_generator_ga": {
-        
     },
     "pe_generator_random": {
         "count": 20,
@@ -21,6 +27,10 @@
     "trendx": {
         "scan_type": 2,
         "housecallx": "tools/housecallx"
+    },
+    "tlsh": {
+        "scan_type": 1,
+        "tlsh_tool": "tools/tlsh"
     },
     "cuckoo": {
         "enable": false,

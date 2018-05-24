@@ -4,25 +4,31 @@ Visit my tutorial website for more: https://morvanzhou.github.io/tutorials/
 """
 
 import numpy as np
-from calc_trendx_prediction import *
+from logging import *
+# from calc_trendx_prediction import *
 
 class GeneticAlgorithmHelper:
 
-    def __init__(self, adv, dna_size):
-        self.DNA_SIZE = dna_size      # DNA length
-        self.POP_SIZE = 100           # population size
-        self.CROSS_RATE = 0.8         # mating probability (DNA crossover)
-        self.MUTATION_RATE = 0.03    # mutation probability
-        self.N_GENERATIONS = 500
+    def __init__(self, config):
+        self.DNA_SIZE = config["dna_size"]                 # DNA length
+        self.POP_SIZE = config["population_size"]          # population size
+        self.CROSS_RATE = config["mating_prob"]            # mating probability (DNA crossover)
+        self.MUTATION_RATE = config["mutation_prob"]       # mutation probability
+        self.N_GENERATIONS = config["generations"]         # number of generations
 
+        self.adv = None
+        self.callback_func = None
+
+    def set_adv(self, adv):
         self.adv = adv
 
-    def set_dna_size(self, size):
-        self.DNA_SIZE = size
+    def set_callback(self, callback):
+        self.callback_func = callback
 
     # def F(x): return np.sin(10*x)*x + np.cos(2*x)*x     # to find the maximum of this function
     def F(self, x):
-        return self.adv.calc_trendx_prediction(x)
+        # return self.adv.calc_trendx_prediction(x)
+        return self.callback_func(x)
 
     # find non-zero fitness for selection
     def get_fitness(self, pred):

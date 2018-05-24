@@ -4,6 +4,7 @@ from logging import *
 from multiprocessing import Process, pool
 from pe_generator_random import *
 from tools.trendx_wrapper import *
+from adversary_tlsh import *
 
 class NoDaemonProcess(multiprocessing.Process):
     # make 'daemon' attribute always return False
@@ -35,7 +36,7 @@ class AdversaryWorkflow:
         self.generator_ = PEGeneratorRandom(self.config_)
         self.generator_.load_dna()
 
-    def process_file(self, cpu_index, file_path):
+    def process_file_in_brute_force(self, cpu_index, file_path):
         try:
             round = self.config_['pe_generator_random']['round']
             for i in range(round):
@@ -86,7 +87,44 @@ class AdversaryWorkflow:
                 print('[*] CPU index: {}, No enough disk space, sleep 10 minutes!'.format(cpu_index))
                 time.sleep(600)  # sleep 10m
         except Exception as e:
-            warn('Exception in workflow.process_file, {}'.format(e))
+            warn('Exception in workflow.process_file_in_bruteforce, {}'.format(e))
+
+    def process_file_in_ga(self, cpu_index, file_path):
+        try:
+            # set malicious content and new generated folder to adversary
+            adv = AdversaryTLSH()
+            adv.set_malicious_file(file_path)
+            new_generated_dir = self.config_['common']['generated_dir']+'_tlsh_ga'
+            type = AdversaryTLSH.SCAN_TYPE_BINARY
+            adv.set_scan_type(type) # scan PE only here
+            if type == AdversaryTLSH.SCAN_TYPE_BINARY:
+                adv.set_generated_dir(os.path.join(new_generated_dir, 'PE'))
+            elif type == AdversaryTLSH.SCAN_TYPE_SCRIPT:
+                adv.set_generated_dir(os.path.join(new_generated_dir, 'JS'))
+            else:
+                print('ERROR: Unsupported scan type in GA for TLSH')
+                exit(-1)
+
+            # prepare algrithm helper and set DNA size in each group
+            helper = GeneticAlgorithmHelper(adv, dna_size)
+            helper.set_dna_size(dna_size)
+            # prepare DNA snippet
+            adv.load_dna_files(current_dna_dir, start_index, dna_size)
+            # evolution
+            most_valuable_dna, max_value = helper.evolution()
+            print('*** In this evolution, most valuable DNA: {}, maximium value: {}'.format(str(most_valuable_dna), max_value))
+
+        except Exception as e:
+            warn('Exception in workflow.process_file_in_bruteforce, {}'.format(e))
+
+    def process_file(self, cpu_index, file_path):
+        algorithm = self.config_['common']['algorithm']
+        if algorithm == 'ga':
+            pass
+        elif algorithm == 'bruteforce':
+            self.process_file_in_brute_force(cpu_index, file_path)
+        else:
+            print("ERROR: Unsupported algorithm!")
 
     def process_dir(self, cpu_index, dir_path):
         for root, dirs, files in os.walk(dir_path):

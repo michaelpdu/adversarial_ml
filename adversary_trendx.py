@@ -17,5 +17,4 @@ class AdversaryTrendX:
         name_wo_ext, ext = os.path.splitext(file_name)
         self.mal_file_name_wo_ext = name_wo_ext
 
-    
 

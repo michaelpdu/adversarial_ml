@@ -17,6 +17,14 @@ class CuckooLogChecker:
         self.baseline = []
         self.c_matches_base = 0
         self.c_matches_gen = 0
+        self.yara_rule_file = 'cuckoo_behavior.yar'
+        if not os.path.exists(self.yara_rule_file):
+            print('ERROR: cannot find cuckoo_behavior.yar')
+            exit(-1)
+        with open(self.yara_rule_file, 'rb') as fh:
+            feature_rules = fh.read()
+        # print(feature_rules)
+        self.rules = yara.compile(source=feature_rules)
 
     def enable_delete_mode(self):
         self.delete_mode = True
@@ -29,18 +37,7 @@ class CuckooLogChecker:
         print('******************************************')
         for key,value in self.baseline_info.items():
             print('{}:{}'.format(key,value))
-        print('\n------------- behavior match result -------------\n')
-        print('******************************************')
-        print('Total Count: {}'.format(self.total_count))
-        print('Count of `behavior unmatch`: {}'.format(self.count_unmatch))
-        print('Count of `behavior match`: {}'.format(self.count_match))
-        print('Count of `Baseline samples` in match: {}'.format(self.c_matches_base))
-        print('Count of `new generated samples` in match: {}'.format(self.c_matches_gen))
-        print('Total Baseline: {}'.format(len(self.baseline)))
-        print('******************************************')
-        for key,value in self.matched_baseline.items():
-            print('{}:{}'.format(key,value))
-        print('See matched_file_list.txt')
+        print('see bypassed_file_list.txt')
 
     def count_baseline_sample(self, target_path):
         dir_path, filename = os.path.split(target_path)
@@ -62,70 +59,50 @@ class CuckooLogChecker:
         if baseline_name not in self.baseline:
             self.baseline.append(baseline_name)
 
-    def extract_bhv(self, report_map, filename):
-        descriptions = ''
-        signatures = report_map['signatures']
-        for sig in signatures:
-            description = sig['description']
-            descriptions += '%s\n' % description
-        if not os.path.exists('signatures'):
-            os.makedirs('signatures')
-        with open(os.path.join('signatures', filename), 'w') as f:
-            f.write(descriptions)
-
     def check_file(self, file_path):
         try:
             report_dir, report_filename = os.path.split(file_path)
             if 'report.json' != report_filename:
+                print('ERROR: report name is not report.json')
                 return None
             task_dir, report_name = os.path.split(report_dir)
             task_path = os.path.join(task_dir, 'task.json')
+            if not os.path.exists(task_path):
+                print('ERROR: cannot find task.json')
+                return None
+
+            # get score, duration and matched rules
             score = 0
             duration = 0
             target = ''
-            isMatch = ''
+            matched_rule = ''
             with open(file_path, 'r') as fh:
-                reports = json.load(fh)
+                report_content = fh.read()
+                reports = json.loads(report_content)
                 score = reports['info']['score']
                 duration = reports['info']['duration']
+                # 
+                matched_rules = self.rules.match(data=report_content)
+                for matched in matched_rules:
+                    matched_rule += matched.rule
+                    matched_rule += ';'
+                    
             with open(task_path, 'r') as fh_task:
                 task = json.load(fh_task)
                 target = task['target']
-            filename = os.path.split(target)[1]
-            baseline_name = filename.split('_')[0]
-            rule_dir = 'baseline_rules/'
-            rule_name = 'bhv_rule_%s' % (baseline_name)
-            rule = yara.compile(rule_dir + rule_name)
-            matches = rule.match(file_path)
-            if matches:
-                isMatch = 'BHVmatch'
-                self.count_matched_sample(target)
-                self.count_match += 1
-                self.matched_info.append(filename)
-                if 1 == len(filename.split('_')):
-                    self.c_matches_base += 1
-                else:
-                    self.c_matches_gen += 1
-            else:
-                isMatch = 'BHVnotmatch'
-                self.count_unmatch += 1
-            with open(file_path, 'r') as f:
-                reports = json.load(f)
-                self.extract_bhv(reports, filename)
-            if 1 == len(filename.split('_')):
-                self.count_total_baseline(baseline_name)
+
             if score < self.threshold_score:
-                if self.delete_mode:
-                    if os.path.exists(target):
-                        os.remove(target)
-                    if os.path.exists(task_dir):
-                        shutil.rmtree(task_dir)
+                # if self.delete_mode:
+                #     if os.path.exists(target):
+                #         os.remove(target)
+                #     if os.path.exists(task_dir):
+                #         shutil.rmtree(task_dir)
                 self.count_lt += 1
             else:
                 self.count_ge += 1
                 self.count_baseline_sample(target)
             self.total_count += 1
-            return (score, duration, task_path, target, isMatch)
+            return (score, duration, task_path, target, matched_rule)
         except Exception as e:
             print(e)
             return None
@@ -159,24 +136,20 @@ Usage:
 
 
 if __name__ == '__main__':
-    try:
-        checker = CuckooLogChecker()
-        if sys.argv[1] == '-s':
-            info_list = checker.check(sys.argv[2])
-            with open('bypassed_file_list.txt', 'w') as fh:
-                for info in info_list:
-                    # score, duration, task_path, target
-                    # fh.write('{} {} {} {}\n'.format(info[0], info[1], info[2], info[3]))
-                    fh.write('{} {} {}\n'.format(info[3], info[0], info[4]))
-            with open('matched_file_list.txt', 'w') as ft:
-                for file_path in checker.matched_info:
-                    ft.write('{}\n'.format(file_path))
-            checker.show_statistics()
-        elif sys.argv[1] == '-d':
-            checker.enable_delete_mode()
-            checker.check(sys.argv[2])
-        else:
-            print(help_msg)
-    except Exception as e:
-        print(e)
+    # try:
+    checker = CuckooLogChecker()
+    if sys.argv[1] == '-s':
+        info_list = checker.check(sys.argv[2])
+        with open('bypassed_file_list.txt', 'w') as fh:
+            for info in info_list:
+                # score, duration, task_path, target
+                fh.write('{} {} {} {} {}\n'.format(info[0], info[1], info[2], info[3], info[4]))
+        checker.show_statistics()
+    elif sys.argv[1] == '-d':
+        checker.enable_delete_mode()
+        checker.check(sys.argv[2])
+    else:
         print(help_msg)
+    # except Exception as e:
+    #     print(e)
+    #     print(help_msg)

@@ -6,7 +6,7 @@ from pe_generator import *
 sys.path.append(os.path.join(os.path.dirname(__file__), 'tools'))
 from tlsh_wrapper import *
 
-class TLSHAdversary:
+class TLSHGAAdversary:
     """"""
 
     SCAN_TYPE_SCRIPT = 0
@@ -21,7 +21,10 @@ class TLSHAdversary:
         self.generator_.set_dest_dir(self.config_['common']['generated_dir'])
         self.file2dna_ = {}
         self.file2dist_ = {}
-    
+        self.generate_count_ = 0
+        self.bypassed_count_ = 0
+        self.dna_start_index_ = int(self.config_['genetic_algorithm']['start_index'])
+
     def set_malicious_file(self, file_path):
         self.generator_.load_sample(file_path)
 
@@ -39,15 +42,19 @@ class TLSHAdversary:
 
         for dna in dna_list:
             # print item
-            indexes = [index for index, value in enumerate(dna) if value == 1]
+            indexes = [index + self.dna_start_index_ for index, value in enumerate(dna) if value == 1]
             # print '>> '+str(indexes)
             # generate new PE
             new_file = self.generator_.generate_indexes(indexes)
+            self.generate_count_ += 1
             self.file2dna_[new_file] = dna
             
             # use tlsh to scan new sample
             
             dist = tlsh_wrapper.scan_file(new_file)
+
+            if dist > 100:
+                self.bypassed_count_ += 1
             
             debug('Predict file: {}, and distance: {}'.format(new_file, dist))
             prob_list.append(dist)
@@ -65,3 +72,6 @@ class TLSHAdversary:
         msg = "G{}: Most fitted DNA: {}, file: {} and value: {}".format(round, dna, file_path, value)
         info(msg)
         print(msg)
+    
+    def get_sample_info(self):
+        return (self.generate_count_, self.bypassed_count_)

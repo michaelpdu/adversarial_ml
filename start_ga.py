@@ -1,6 +1,6 @@
 import os, sys
 import time
-from adversary_trendx import *
+from adversary_trendx_ga import *
 from genetic_algorithm_basic import *
 from optparse import OptionParser
 from logging import *

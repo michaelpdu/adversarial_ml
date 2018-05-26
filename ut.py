@@ -37,20 +37,27 @@ def suite():
     #     suite.addTest(TrendXWrapperTestCase("test_scan_script_dir"))
     #     suite.addTest(TrendXWrapperTestCase("test_scan_script_list"))
 
-    # # PEGeneratorRandom Test Cases
+    # # PEGenerator Test Cases
     # if sys.version_info.major >= 3:
     #     suite.addTest(PEGeneratorTestCase("test_generate"))
     #     # suite.addTest(PEGeneratorRandomTestCase("test_generate_imports"))
     # else:
     #     pass
 
-    # # AdversaryWorkflow Test Case
-    # if sys.version_info.major >= 3:
-    #     suite.addTest(AdversaryWorkflowTestCase("test_process"))
-    #     suite.addTest(AdversaryWorkflowTestCase("test_start"))
-    #     suite.addTest(AdversaryWorkflowTestCase("test_attack"))
-    # else:
-    #     pass
+    # AdversaryWorkflow Test Case
+    if sys.version_info.major >= 3:
+        # suite.addTest(AdversaryWorkflowTestCase("test_process_trendx_pe_bruteforce"))
+        # suite.addTest(AdversaryWorkflowTestCase("test_process_trendx_script_bruteforce"))
+        # suite.addTest(AdversaryWorkflowTestCase("test_process_trendx_pe_ga"))
+        # suite.addTest(AdversaryWorkflowTestCase("test_process_trendx_script_ga"))
+        # suite.addTest(AdversaryWorkflowTestCase("test_process_tlsh_pe_bruteforce"))
+        # suite.addTest(AdversaryWorkflowTestCase("test_process_tlsh_script_bruteforce"))
+        # suite.addTest(AdversaryWorkflowTestCase("test_process_tlsh_pe_ga"))
+        # suite.addTest(AdversaryWorkflowTestCase("test_process_tlsh_script_ga"))
+        suite.addTest(AdversaryWorkflowTestCase("test_start"))
+        # suite.addTest(AdversaryWorkflowTestCase("test_attack"))
+    else:
+        pass
 
     # # TLSH Test Case
     # suite.addTest(TLSHTestCase("test_get_tlsh"))
@@ -59,8 +66,8 @@ def suite():
     # suite.addTest(TLSHTestCase("test_gen_and_scan_csv"))
     # suite.addTest(TLSHTestCase("test_tlsh_wrapper_scan"))
 
-    # TLSHAdversary Test Case
-    suite.addTest(TLSHAdversaryTestCase("test_process_pe_in_ga"))
+    # # TLSHGAAdversary Test Case
+    # suite.addTest(TLSHAdversaryTestCase("test_process_tlsh_pe_ga"))
 
     return suite
   

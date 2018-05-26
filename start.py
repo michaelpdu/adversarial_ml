@@ -1,10 +1,14 @@
 import os, sys, shutil
 import time, json
 from logging import *
+import multiprocessing
 from multiprocessing import Process, pool
-from pe_generator import *
-from tools.trendx_wrapper import *
-from adversary_tlsh import *
+
+from adversary_tlsh_ga import TLSHGAAdversary
+from adversary_tlsh_bruteforce import TLSHBruteforceAdversary
+# from adversary_trendx_ga import *
+from adversary_trendx_bruteforce import TrendXBruteforceAdversary
+from genetic_algorithm_basic import GeneticAlgorithmHelper
 
 class NoDaemonProcess(multiprocessing.Process):
     # make 'daemon' attribute always return False
@@ -20,105 +24,75 @@ class NoDaemonPool(multiprocessing.pool.Pool):
     Process = NoDaemonProcess
 
 
-def check_free_disk(disk_path):
-    st = os.statvfs(disk_path)
-    free = st.f_bavail * st.f_frsize
-    free = free / 1024 / 1024 # convert to MB
-    return free
-
 class AdversaryWorkflow:
     """"""
     def __init__(self, config):
         self.config_ = config
         self.index_ = 1
-        self.generate_count_ = 0
+        self.generated_count_ = 0
         self.bypassed_count_ = 0
-        self.generator_ = PEGenerator(self.config_)
-        self.generator_.load_dna()
 
-    def process_file_in_brute_force(self, cpu_index, file_path):
-        try:
-            round = self.config_['pe_generator_random']['round']
-            for i in range(round):
-                print('CPU index: {}, Current round is {}'.format(cpu_index, i + 1))
-                print('>> Attack {}'.format(file_path))
+    def process_file_in_trendx_pe_brute_force(self, cpu_index, file_path):
+        # try:
+        trendx_adv = TrendXBruteforceAdversary(self.config_)
+        return trendx_adv.process_random(cpu_index, file_path)
+        # except Exception as e:
+        #     error('Exception in workflow.process_file_in_trendx_pe_brute_force, {}'.format(e))
 
-                #
-                dir_path, filename = os.path.split(file_path)
-                dest_dir = os.path.abspath(os.path.join(self.config_['common']['generated_dir'], str(os.getpid()), filename, str(i)))
-                if not os.path.exists(dest_dir):
-                    os.makedirs(dest_dir)
+    def process_file_in_trendx_pe_ga(self, cpu_index, file_path):
+        pass
 
-                self.generator_.load_sample(file_path)
-                self.generator_.set_dest_dir(dest_dir)
+    def process_file_in_tlsh_pe_brute_force(self, cpu_index, file_path):
+        tlsh_adv = TLSHBruteforceAdversary(self.config_)
+        return tlsh_adv.process_random(cpu_index, file_path)
 
-                cur_count = self.config_['pe_generator_random']['count']
-                self.generator_.generate_random(cur_count)
-                self.generate_count_ += cur_count
-                #
-                try:
-                    trendx = TrendXWrapper(self.config_)
-                    hcx_path = os.path.join('tools', 'housecallx', 'hcx{}'.format(cpu_index+1))
-                    trendx.set_hcx(hcx_path)
-                    scores = trendx.scan_pe_dir(dest_dir)
-                except Exception as e:
-                    warn('Exception in trendx.scan_pe_dir, {}'.format(e))
-                    shutil.rmtree(dest_dir)
-                
-                for sample_path, value in scores.items():
-                    if value[0] < 2:
-                        self.bypassed_count_ += 1
-                        if self.config_['cuckoo']['enable'] and self.config_['cuckoo']['scan_in_file_proc']:
-                            try:
-                                print("> Sample: {}, Decision: {}, Current Generated Sample Count: {}".format(sample_path,value[0],self.generate_count_))
-                                info('Find non-malicious sample, decision is {}, submit to cuckoo sandbox: {}'.format(value[0], sample_path))
-                                cmd = 'cuckoo submit --timeout 60 {}'.format(sample_path)
-                                info('> ' + cmd)
-                                print('> ' + cmd)
-                                os.system(cmd)
-                            except Exception as e:
-                                warn('Exception in cuckoo sandbox, {}'.format(e))
-                    else:
-                        if self.config_['common']['remove_not_bypassed']:
-                            os.remove(sample_path)
-
-            free = check_free_disk('/')
-            if free < self.config_['common']['free_disk']:
-                print('[*] CPU index: {}, No enough disk space, sleep 10 minutes!'.format(cpu_index))
-                time.sleep(600)  # sleep 10m
-        except Exception as e:
-            warn('Exception in workflow.process_file_in_bruteforce, {}'.format(e))
-
-    def process_file_in_ga(self, cpu_index, file_path):
-        try:
-            self.config_['tlsh']['scan_type'] = TLSHAdversary.SCAN_TYPE_BINARY
-            adv = TLSHAdversary(self.config_)
-            adv.set_malicious_file(file_path)
-            # prepare algrithm helper and set DNA size in each group
-            helper = GeneticAlgorithmHelper(self.config_['genetic_algorithm'])
-            helper.set_adv(adv)
-            helper.set_calc_callback(adv.calc_tlsh)
-            helper.set_msg_callback(adv.display_message)
-            # evolution
-            most_valuable_dna, max_value = helper.evolution()
-            print('*** In this evolution, most valuable DNA: {}, maximium value: {}'.format(str(most_valuable_dna), max_value))
-        except Exception as e:
-            warn('Exception in workflow.process_file_in_bruteforce, {}'.format(e))
+    def process_file_in_tlsh_pe_ga(self, cpu_index, file_path):
+        # try:
+        self.config_['tlsh']['scan_type'] = TLSHGAAdversary.SCAN_TYPE_BINARY
+        adv = TLSHGAAdversary(self.config_)
+        adv.set_malicious_file(file_path)
+        # prepare algrithm helper and set DNA size in each group
+        helper = GeneticAlgorithmHelper(self.config_['genetic_algorithm'])
+        helper.set_adv(adv)
+        helper.set_calc_callback(adv.calc_tlsh)
+        helper.set_msg_callback(adv.display_message)
+        # evolution
+        most_valuable_dna, max_value = helper.evolution()
+        print('*** In this evolution, most valuable DNA: {}, maximium value: {}'.format(str(most_valuable_dna), max_value))
+        # print(adv.get_sample_info())
+        return adv.get_sample_info()
+        # except Exception as e:
+        #     error('Exception in workflow.process_file_in_tlsh_pe_ga, {}'.format(e))
 
     def process_file(self, cpu_index, file_path):
         algorithm = self.config_['common']['algorithm']
+        target = self.config_['common']['target']
         if algorithm == 'ga':
-            pass
+            if target == 'tlsh_pe':
+                self.generated_count_, self.bypassed_count_ = self.process_file_in_tlsh_pe_ga(cpu_index, file_path)
+            else:
+                print('ERROR: Unsupported target name in GA')
         elif algorithm == 'bruteforce':
-            self.process_file_in_brute_force(cpu_index, file_path)
+            if target == 'tlsh_pe':
+                self.generated_count_, self.bypassed_count_ = self.process_file_in_tlsh_pe_brute_force(cpu_index, file_path)
+            elif target == 'trendx_pe':
+                self.generated_count_, self.bypassed_count_ = self.process_file_in_trendx_pe_brute_force(cpu_index, file_path)
+            else:
+                print('ERROR: Unsupported target name in Bruteforce')
         else:
             print("ERROR: Unsupported algorithm!")
 
     def process_dir(self, cpu_index, dir_path):
+        total_generated_count = 0
+        total_bypassed_count = 0
         for root, dirs, files in os.walk(dir_path):
             for name in files:
                 mal_sample_path = os.path.join(root, name)
                 self.process_file(cpu_index, mal_sample_path)
+                total_generated_count += self.generated_count_
+                total_bypassed_count += self.bypassed_count_
+        self.generated_count_ = total_generated_count
+        self.bypassed_count_ = total_bypassed_count
 
     def process(self, cpu_index):
         sample_path = self.config_['common']['samples']
@@ -141,49 +115,49 @@ class AdversaryWorkflow:
             except Exception as e:
                 warn('Exception in cuckoo sandbox, {}'.format(e))
 
-        return (self.generate_count_, self.bypassed_count_)
+        return (self.generated_count_, self.bypassed_count_)
 
 def start(cpu_index, config):
-    try:
-        adv = AdversaryWorkflow(config)
-        print('> Begin to attack, index = {}'.format(cpu_index))
-        return adv.process(cpu_index)
-    except Exception as e:
-        print(e)
-        return None
+    # try:
+    adv = AdversaryWorkflow(config)
+    print('> Begin to attack, index = {}'.format(cpu_index))
+    return adv.process(cpu_index)
+    # except Exception as e:
+    #     print(e)
+    #     return None
 
 def attack(config):
-    try:
-        results = []
-        def attack_callback(result):
-            results.append(result)
+    # try:
+    results = []
+    def attack_callback(result):
+        results.append(result)
 
-        cpu_count = config['common']['use_cpu_count']
-        if config['common']['enable_system_cpu']:
-            cpu_count = multiprocessing.cpu_count()
+    cpu_count = config['common']['use_cpu_count']
+    if config['common']['enable_system_cpu']:
+        cpu_count = multiprocessing.cpu_count()
 
-        # 
-        p = NoDaemonPool(cpu_count)
-        for i in range(cpu_count):
-            p.apply_async(start, args=(i, config), callback=attack_callback)
-        p.close()
-        p.join()
+    # 
+    p = NoDaemonPool(cpu_count)
+    for i in range(cpu_count):
+        p.apply_async(start, args=(i, config), callback=attack_callback)
+    p.close()
+    p.join()
 
-        # show statistic info
-        total_gen = 0
-        total_bypassed = 0
+    # show statistic info
+    total_gen = 0
+    total_bypassed = 0
 
-        for result in results:
-            if result is not None:
-                total_gen += result[0]
-                total_bypassed += result[1]
-        msg = '[*] Total generated: {}, total bypassed: {}'.format(total_gen, total_bypassed)
-        info(msg)
-        print(msg)
-        
-        return (total_gen, total_bypassed)
-    except Exception as e:
-        warn('Exception in attack, {}'.format(e))
+    for result in results:
+        if result is not None:
+            total_gen += result[0]
+            total_bypassed += result[1]
+    msg = '[*] Total generated: {}, total bypassed: {}'.format(total_gen, total_bypassed)
+    info(msg)
+    print(msg)
+    
+    return (total_gen, total_bypassed)
+    # except Exception as e:
+    #     warn('Exception in attack, {}'.format(e))
 
 
 if __name__ == '__main__':

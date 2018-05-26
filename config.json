@@ -1,20 +1,25 @@
 {
     "common": {
-        "enable_system_cpu": true,
+        "enable_system_cpu": false,
         "use_cpu_count": 1,
         "free_disk": 4096,
         "samples": "samples/coinminer",
         "generated_dir": "new_generated_samples",
         "remove_not_bypassed": false,
+
         "__algorithm_comments__": "ga|bruteforce",
-        "algorithm": "bruteforce"
+        "algorithm": "ga",
+
+        "__target_comments__": "trendx_script|trendx_pe|tlsh_html|tlsh_pe",
+        "target": "tlsh_pe"
     }, 
     "genetic_algorithm" : {
-        "dna_size": 32,
-        "population_size": 50,
+        "dna_size": 20,
+        "population_size": 30,
         "mating_prob": 0.8,
         "mutation_prob": 0.03,
-        "generations": 100
+        "generations": 40,
+        "start_index": 0
     },
     "dna_manager": {
         "random_section_count": 16,

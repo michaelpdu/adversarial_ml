@@ -1,4 +1,4 @@
-import os, shutil
+import os, sys, shutil
 from tlsh_tool.tlsh_tool import *
 
 class TLSHOutput:

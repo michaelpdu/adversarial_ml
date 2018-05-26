@@ -12,7 +12,7 @@ sudo pip3 install xgboost
 sudo pip3 install lief
 ```
 
-Install Wine, you could refer to [https://wiki.winehq.org/Ubuntu](https://wiki.winehq.org/Ubuntu)
+If you want to run Windows tool(such as, HouseCallX) in Linux, please install Wine. You could refer to [https://wiki.winehq.org/Ubuntu](https://wiki.winehq.org/Ubuntu)
 
 ## Description
 

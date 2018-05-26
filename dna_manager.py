@@ -42,6 +42,17 @@ class DNAManager:
                 pass
         return result
 
+    def get_dna_indexes(self, index_list, dna_type):
+        result = []
+        for i in index_list:
+            if dna_type == DNAManager.DNA_TYPE_SECTION:
+                result.append(self.dna_list_section[i])
+            elif dna_type == DNAManager.DNA_TYPE_IMPORTF:
+                result.append(self.dna_list_importf[i])
+            else:
+                pass
+        return result
+
     def load_dna_files(self, dir_path, dna_type):
         info('Load DNA files from {}'.format(dir_path))
         for root, dirs, files in os.walk(dir_path):

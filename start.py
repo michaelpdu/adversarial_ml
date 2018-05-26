@@ -2,7 +2,7 @@ import os, sys, shutil
 import time, json
 from logging import *
 from multiprocessing import Process, pool
-from pe_generator_random import *
+from pe_generator import *
 from tools.trendx_wrapper import *
 from adversary_tlsh import *
 
@@ -33,7 +33,7 @@ class AdversaryWorkflow:
         self.index_ = 1
         self.generate_count_ = 0
         self.bypassed_count_ = 0
-        self.generator_ = PEGeneratorRandom(self.config_)
+        self.generator_ = PEGenerator(self.config_)
         self.generator_.load_dna()
 
     def process_file_in_brute_force(self, cpu_index, file_path):
@@ -53,7 +53,7 @@ class AdversaryWorkflow:
                 self.generator_.set_dest_dir(dest_dir)
 
                 cur_count = self.config_['pe_generator_random']['count']
-                self.generator_.generate(cur_count)
+                self.generator_.generate_random(cur_count)
                 self.generate_count_ += cur_count
                 #
                 try:
@@ -91,29 +91,17 @@ class AdversaryWorkflow:
 
     def process_file_in_ga(self, cpu_index, file_path):
         try:
-            # set malicious content and new generated folder to adversary
-            adv = AdversaryTLSH()
+            self.config_['tlsh']['scan_type'] = TLSHAdversary.SCAN_TYPE_BINARY
+            adv = TLSHAdversary(self.config_)
             adv.set_malicious_file(file_path)
-            new_generated_dir = self.config_['common']['generated_dir']+'_tlsh_ga'
-            type = AdversaryTLSH.SCAN_TYPE_BINARY
-            adv.set_scan_type(type) # scan PE only here
-            if type == AdversaryTLSH.SCAN_TYPE_BINARY:
-                adv.set_generated_dir(os.path.join(new_generated_dir, 'PE'))
-            elif type == AdversaryTLSH.SCAN_TYPE_SCRIPT:
-                adv.set_generated_dir(os.path.join(new_generated_dir, 'JS'))
-            else:
-                print('ERROR: Unsupported scan type in GA for TLSH')
-                exit(-1)
-
             # prepare algrithm helper and set DNA size in each group
-            helper = GeneticAlgorithmHelper(adv, dna_size)
-            helper.set_dna_size(dna_size)
-            # prepare DNA snippet
-            adv.load_dna_files(current_dna_dir, start_index, dna_size)
+            helper = GeneticAlgorithmHelper(self.config_['genetic_algorithm'])
+            helper.set_adv(adv)
+            helper.set_calc_callback(adv.calc_tlsh)
+            helper.set_msg_callback(adv.display_message)
             # evolution
             most_valuable_dna, max_value = helper.evolution()
             print('*** In this evolution, most valuable DNA: {}, maximium value: {}'.format(str(most_valuable_dna), max_value))
-
         except Exception as e:
             warn('Exception in workflow.process_file_in_bruteforce, {}'.format(e))
 

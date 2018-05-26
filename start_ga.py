@@ -50,7 +50,7 @@ def process_one_group(type, mal_sample_file, current_dna_dir, new_dna_dir, start
                     "generations": 500 }
         helper = GeneticAlgorithmHelper(config)
         helper.set_adv(adv)
-        helper.set_callback(adv.calc_trendx_prediction)
+        helper.set_calc_callback(adv.calc_trendx_prediction)
 
         # prepare DNA snippet
         adv.load_dna_files(current_dna_dir, start_index, dna_size)

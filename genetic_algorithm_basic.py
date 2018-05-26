@@ -17,18 +17,22 @@ class GeneticAlgorithmHelper:
         self.N_GENERATIONS = config["generations"]         # number of generations
 
         self.adv = None
-        self.callback_func = None
+        self.calc_callback_ = None
+        self.msg_callback_ = None
 
     def set_adv(self, adv):
         self.adv = adv
 
-    def set_callback(self, callback):
-        self.callback_func = callback
+    def set_calc_callback(self, callback):
+        self.calc_callback_ = callback
+
+    def set_msg_callback(self, callback):
+        self.msg_callback_ = callback
 
     # def F(x): return np.sin(10*x)*x + np.cos(2*x)*x     # to find the maximum of this function
     def F(self, x):
         # return self.adv.calc_trendx_prediction(x)
-        return self.callback_func(x)
+        return self.calc_callback_(x)
 
     # find non-zero fitness for selection
     def get_fitness(self, pred):
@@ -43,7 +47,7 @@ class GeneticAlgorithmHelper:
         if np.random.rand() < self.CROSS_RATE:
             i_ = np.random.randint(0, self.POP_SIZE, size=1)                             # select another individual from pop
             cross_points = np.random.randint(0, 2, size=self.DNA_SIZE).astype(np.bool)   # choose crossover points
-            parent[cross_points] = pop[i_, cross_points]                            # mating and produce one child
+            parent[cross_points] = pop[i_, cross_points]                                 # mating and produce one child
         return parent
 
     def mutate(self, child):
@@ -66,9 +70,10 @@ class GeneticAlgorithmHelper:
             fitness = self.get_fitness(F_values)
             dna = pop[np.argmax(fitness), :]
             value = F_values[np.argmax(fitness)]
-            msg = "G{}: Most fitted DNA: {}, and value: {}".format(_, dna, value)
-            info(msg)
-            print(msg)
+            # print(type(dna))
+            # dump message
+            self.msg_callback_(_, dna.tolist(), value)
+
             if max_value < value:
                 max_value = value
                 most_dna = dna.tolist()

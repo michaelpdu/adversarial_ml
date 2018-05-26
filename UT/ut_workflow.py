@@ -1,7 +1,7 @@
 import os, sys, json, shutil
 import unittest
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-from workflow import AdversaryWorkflow, start, attack
+from start import AdversaryWorkflow, start, attack
 
 
 class AdversaryWorkflowTestCase(unittest.TestCase):

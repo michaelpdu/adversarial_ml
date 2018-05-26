@@ -11,10 +11,10 @@
     }, 
     "genetic_algorithm" : {
         "dna_size": 32,
-        "population_size": 100,
+        "population_size": 50,
         "mating_prob": 0.8,
         "mutation_prob": 0.03,
-        "generations": 500
+        "generations": 100
     },
     "dna_manager": {
         "random_section_count": 16,

@@ -40,7 +40,8 @@ class TLSHBruteforceAdversary:
             # scan in TLSH wrapper
             tlsh_wrapper = TLSHWrapper()
             tlsh_wrapper.set_middle_dir(os.path.join(self.config_['common']['generated_dir'], 'csv_dir', str(os.getpid()), filename, str(i)))
-            scores = tlsh_wrapper.scan_dir(file_path)
+            scores = tlsh_wrapper.scan_dir(dest_dir)
+            # print(scores)
             for file_name, dist in scores.items():
                 if dist > 100:
                     self.bypassed_count_ += 1

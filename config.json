@@ -8,7 +8,7 @@
         "remove_not_bypassed": false,
 
         "__algorithm_comments__": "ga|bruteforce",
-        "algorithm": "ga",
+        "algorithm": "bruteforce",
 
         "__target_comments__": "trendx_script|trendx_pe|tlsh_html|tlsh_pe",
         "target": "tlsh_pe"
@@ -22,7 +22,7 @@
         "start_index": 0
     },
     "dna_manager": {
-        "random_section_count": 16,
+        "random_section_count": 10,
         "random_imports_count": 16
     },
     "pe_generator_random": {
@@ -30,7 +30,7 @@
         "round": 10
     },
     "trendx": {
-        "scan_type": 2,
+        "scan_type": 1,
         "housecallx": "tools/housecallx"
     },
     "tlsh": {

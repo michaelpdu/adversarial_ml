@@ -54,6 +54,23 @@ def scan_csv(csv_file):
     output.close()
     return buf
 
+def dump_file_tlsh(file_path):
+    tlsh_value = get_tlsh(file_path)
+    print('File:{}, TLSH:{}'.format(file_path, tlsh_value))
+
+def dump_dir_tlsh(dir_path):
+    for root, dirs, files in os.walk(dir_path):
+        for name in files:
+            dump_file_tlsh(os.path.join(root, name))
+
+def dump_tlsh(target_path):
+    if os.path.isfile(target_path):
+        dump_file_tlsh(target_path)
+    elif os.path.isdir(target_path):
+        dump_dir_tlsh(target_path)
+    else:
+        pass
+
 # def scan_csv_dir(dir_file):
 #     for root, dirs, files in os.walk(input_dir):
 #         for name in files:
@@ -68,6 +85,8 @@ help_msg = """
         >> python tlsh_tool.py --gen target_path --outdir output_dir
     3. scan CSV file
         >> python tlsh_tool.py --scan target_path
+    4. dump TLSH value in terminal
+        >> python tlsh_tool.py --dump target_path
 """
 
 if __name__ == '__main__':
@@ -77,7 +96,7 @@ if __name__ == '__main__':
         parser.add_option("--gen", dest="csv_source", help="specify file path, and generate CSV file")
         parser.add_option("--outdir", dest="output_dir", help="specify output dir")
         parser.add_option("--scan", dest="scan_target", help="specify CSV file path")
-
+        parser.add_option("--dump", dest="dump_target", help="specify file path or dir path")
         (options, args) = parser.parse_args()
 
         # set config in logging
@@ -93,6 +112,8 @@ if __name__ == '__main__':
             # print(tlsh_output)
             for line in tlsh_output.split('\n'):
                 print(line.split('\t'))
+        elif options.dump_target:
+            dump_tlsh(options.dump_target)
         else:
             print(help_msg)
     except Exception as e:
